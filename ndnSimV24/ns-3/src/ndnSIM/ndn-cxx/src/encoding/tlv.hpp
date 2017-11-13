@@ -92,6 +92,18 @@ enum {
   LinkDelegation  = 31,
   SelectedDelegation = 32,
 
+  //Dome
+
+  	ActualPositionX = 33,
+  	ActualPositionY = 34,
+  	ActualPositionZ = 35,
+  	DeltaTimeToFuturePosition = 36,
+  	FuturePositionX = 37,
+  	FuturePositionY = 38,
+  	FuturePositionZ = 39,
+  	TimeAtFuturePosition = 40,
+  	FuturePositionInfo = 41,
+
   AppPrivateBlock1 = 128,
   AppPrivateBlock2 = 32767
 };

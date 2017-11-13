@@ -41,6 +41,13 @@ enum ControlParameterField {
   CONTROL_PARAMETER_ORIGIN,
   CONTROL_PARAMETER_COST,
   CONTROL_PARAMETER_MAC,
+	CONTROL_PARAMETER_POSITION_X,
+	CONTROL_PARAMETER_POSITION_Y,
+	CONTROL_PARAMETER_POSITION_Z,
+	CONTROL_PARAMETER_FUTURE_POSITION_X,
+	CONTROL_PARAMETER_FUTURE_POSITION_Y,
+	CONTROL_PARAMETER_FUTURE_POSITION_Z,
+	CONTROL_PARAMETER_TIME_AT_FUTUREPOSITION,
   CONTROL_PARAMETER_FLAGS,
   CONTROL_PARAMETER_MASK,
   CONTROL_PARAMETER_STRATEGY,
@@ -57,6 +64,13 @@ const std::string CONTROL_PARAMETER_FIELD[CONTROL_PARAMETER_UBOUND] = {
   "Origin",
   "Cost",
   "Mac",
+  "PositionX",
+  "PositionY",
+  "PositionZ",
+  "FuturePositionX",
+  "FuturePositionY",
+  "FuturePositionZ ",
+  "TimeAtFuturePosition",
   "Flags",
   "Mask",
   "Strategy",
@@ -307,6 +321,177 @@ public: // getters & setters
        m_hasFields[CONTROL_PARAMETER_MAC] = false;
        return *this;
      }
+
+     //Dome
+
+ 	bool hasPositionX() const {
+ 		return m_hasFields[CONTROL_PARAMETER_POSITION_X];
+ 	}
+
+ 	double getPositionX() const {
+ 		BOOST_ASSERT(this->hasPositionX());
+ 		return m_positionX;
+ 	}
+
+ 	ControlParameters&
+ 	setPositionX(double positionX) {
+ 		m_wire.reset();
+ 		m_positionX = positionX;
+ 		m_hasFields[CONTROL_PARAMETER_POSITION_X] = true;
+ 		return *this;
+ 	}
+
+ 	ControlParameters&
+ 	unsetPositionX() {
+ 		m_wire.reset();
+ 		m_hasFields[CONTROL_PARAMETER_POSITION_X] = false;
+ 		return *this;
+ 	}
+
+ 	bool hasPositionY() const {
+ 		return m_hasFields[CONTROL_PARAMETER_POSITION_Y];
+ 	}
+
+ 	double getPositionY() const {
+ 		BOOST_ASSERT(this->hasPositionY());
+ 		return m_positionY;
+ 	}
+
+ 	ControlParameters&
+ 	setPositionY(double positionY) {
+ 		m_wire.reset();
+ 		m_positionY = positionY;
+ 		m_hasFields[CONTROL_PARAMETER_POSITION_Y] = true;
+ 		return *this;
+ 	}
+
+ 	ControlParameters&
+ 	unsetPositionY() {
+ 		m_wire.reset();
+ 		m_hasFields[CONTROL_PARAMETER_POSITION_Y] = false;
+ 		return *this;
+ 	}
+
+ 	bool hasPositionZ() const {
+ 		return m_hasFields[CONTROL_PARAMETER_POSITION_Z];
+ 	}
+
+ 	double getPositionZ() const {
+ 		BOOST_ASSERT(this->hasPositionZ());
+ 		return m_positionZ;
+ 	}
+
+ 	ControlParameters&
+ 	setPositionZ(double positionZ) {
+ 		m_wire.reset();
+ 		m_positionZ = positionZ;
+ 		m_hasFields[CONTROL_PARAMETER_POSITION_Z] = true;
+ 		return *this;
+ 	}
+
+ 	ControlParameters&
+ 	unsetPositionZ() {
+ 		m_wire.reset();
+ 		m_hasFields[CONTROL_PARAMETER_POSITION_Z] = false;
+ 		return *this;
+ 	}
+
+ 	bool hasFuturePositionX() const {
+ 		return m_hasFields[CONTROL_PARAMETER_FUTURE_POSITION_X];
+ 	}
+
+ 	double getFuturePositionX() const {
+ 		BOOST_ASSERT(this->hasFuturePositionX());
+ 		return m_futurePositionX;
+ 	}
+
+ 	ControlParameters&
+ 	setFuturePositionX(double futurePositionX) {
+ 		m_wire.reset();
+ 		m_futurePositionX = futurePositionX;
+ 		m_hasFields[CONTROL_PARAMETER_FUTURE_POSITION_X] = true;
+ 		return *this;
+ 	}
+
+ 	ControlParameters&
+ 	unsetFuturePositionX() {
+ 		m_wire.reset();
+ 		m_hasFields[CONTROL_PARAMETER_FUTURE_POSITION_X] = false;
+ 		return *this;
+ 	}
+
+ 	bool hasFuturePositionY() const {
+ 		return m_hasFields[CONTROL_PARAMETER_FUTURE_POSITION_Y];
+ 	}
+
+ 	double getFuturePositionY() const {
+ 		BOOST_ASSERT(this->hasFuturePositionY());
+ 		return m_futurePositionY;
+ 	}
+
+ 	ControlParameters&
+ 	setFuturePositionY(double futurePositionY) {
+ 		m_wire.reset();
+ 		m_futurePositionY = futurePositionY;
+ 		m_hasFields[CONTROL_PARAMETER_FUTURE_POSITION_Y] = true;
+ 		return *this;
+ 	}
+
+ 	ControlParameters&
+ 	unsetFuturePositionY() {
+ 		m_wire.reset();
+ 		m_hasFields[CONTROL_PARAMETER_FUTURE_POSITION_Y] = false;
+ 		return *this;
+ 	}
+
+ 	bool hasFuturePositionZ() const {
+ 		return m_hasFields[CONTROL_PARAMETER_FUTURE_POSITION_Z];
+ 	}
+
+ 	double getFuturePositionZ() const {
+ 		BOOST_ASSERT(this->hasFuturePositionZ());
+ 		return m_futurePositionY;
+ 	}
+
+ 	ControlParameters&
+ 	setFuturePositionZ(double futurePositionZ) {
+ 		m_wire.reset();
+ 		m_futurePositionZ = futurePositionZ;
+ 		m_hasFields[CONTROL_PARAMETER_FUTURE_POSITION_Z] = true;
+ 		return *this;
+ 	}
+
+ 	ControlParameters&
+ 	unsetFuturePositionZ() {
+ 		m_wire.reset();
+ 		m_hasFields[CONTROL_PARAMETER_FUTURE_POSITION_Z] = false;
+ 		return *this;
+ 	}
+
+ 	bool hasTimeAtFuturePosition() const {
+ 		return m_hasFields[CONTROL_PARAMETER_TIME_AT_FUTUREPOSITION];
+ 	}
+
+ 	double getTimeAtFuturePosition() const {
+ 		BOOST_ASSERT(this->hasTimeAtFuturePosition());
+ 		return m_timeAtFuturePosition;
+ 	}
+
+ 	ControlParameters&
+ 	setTimeAtFuturePosition(double timeAtFuturePosition) {
+ 		m_wire.reset();
+ 		m_timeAtFuturePosition = timeAtFuturePosition;
+ 		m_hasFields[CONTROL_PARAMETER_TIME_AT_FUTUREPOSITION] = true;
+ 		return *this;
+ 	}
+
+ 	ControlParameters&
+ 	unsetTimeAtFuturePosition() {
+ 		m_wire.reset();
+ 		m_hasFields[CONTROL_PARAMETER_TIME_AT_FUTUREPOSITION] = false;
+ 		return *this;
+ 	}
+
   bool
   hasFlags() const
   {
@@ -503,6 +688,13 @@ private: // fields
   std::string         m_uri;
   std::string         m_localUri;
   std::string 		  m_mac;
+	double m_positionX;
+	double m_positionY;
+	double m_positionZ;
+	double m_futurePositionX;
+	double m_futurePositionY;
+	double m_futurePositionZ;
+	double m_timeAtFuturePosition;
   RouteOrigin         m_origin;
   uint64_t            m_cost;
   uint64_t            m_flags;

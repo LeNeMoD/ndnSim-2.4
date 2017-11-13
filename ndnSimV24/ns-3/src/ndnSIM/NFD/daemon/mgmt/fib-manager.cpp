@@ -76,10 +76,15 @@ void FibManager::addNextHop(const Name& topPrefix, const Interest& interest,
 		entry->addNextHop(*face, cost, mac, positionX, positionY, positionZ,
 				futurePisitionX, futurePositionY, timeAtFuturePosition);
 
-		NFD_LOG_DEBUG("add-nexthop result: OK"
-				<< " prefix:" << prefix
-				<< " faceid: " << faceId
-				<< " cost: " << cost);
+		//Dome error !
+//		NFD_LOG_DEBUG("add-nexthop result: OK"
+//				<< " prefix:" 		<< prefix
+//				<< " faceid: " 		<< faceId
+//				<< " cost: " 		<< cost)
+//				<< " positionX: "	<< positionX
+//				<< " positionY: "	<< positionY
+//				<< " positionZ: "	<< positionZ
+//				<< " timeAtFuturePosition: " << timeAtFuturePosition);
 
 
 		return done(

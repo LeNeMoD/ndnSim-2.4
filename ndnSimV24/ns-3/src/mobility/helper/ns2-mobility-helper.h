@@ -83,7 +83,8 @@ public:
   Ns2MobilityHelper (std::string filename);
 
 //  //Dome---------------
-    Vector GetPositionFromTCLFileForNodeAtTime (std::string caller,int Nodeid, double at);
+
+//  Vector GetPositionFromTCLFileForNodeAtTime (std::string caller,int Nodeid, double at);
 //  //  Vector GetSchedPosition (Ptr<ConstantVelocityMobilityModel> model, double at);
 
 

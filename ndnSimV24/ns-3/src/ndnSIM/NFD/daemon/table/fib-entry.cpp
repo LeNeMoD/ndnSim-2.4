@@ -56,18 +56,19 @@ Entry::hasNextHop(const Face& face) const
   return const_cast<Entry*>(this)->findNextHop(face) != m_nextHops.end();
 }
 
-void
-Entry::addNextHop(Face& face, uint64_t cost, std::string mac)
-{
-  auto it = this->findNextHop(mac);
-  if (it == m_nextHops.end()) {
-    m_nextHops.emplace_back(face);
-    it = std::prev(m_nextHops.end());
-  }
-  it->setMac(mac);
-  it->setCost(cost);
-  this->sortNextHops();
-}
+//Dome outcommented
+//void
+//Entry::addNextHop(Face& face, uint64_t cost, std::string mac)
+//{
+//  auto it = this->findNextHop(mac);
+//  if (it == m_nextHops.end()) {
+//    m_nextHops.emplace_back(face);
+//    it = std::prev(m_nextHops.end());
+//  }
+//  it->setMac(mac);
+//  it->setCost(cost);
+//  this->sortNextHops();
+//}
 
 //Dome
 void

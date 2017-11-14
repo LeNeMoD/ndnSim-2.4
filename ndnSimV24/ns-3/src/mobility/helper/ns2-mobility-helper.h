@@ -136,6 +136,8 @@ public:
    * \return pointer to a ConstantVelocityMobilityModel
    */
   Ptr<ConstantVelocityMobilityModel> GetMobilityModel (std::string idString, const ObjectStore &store) const;
+  //Dome
+  Vector GetPositionFromTCLFileForNodeAtTime(std::string caller, int NodeId, double timeRequest);
   std::string m_filename; //!< filename of file containing ns-2 mobility trace 
 };
 

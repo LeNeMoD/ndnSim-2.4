@@ -147,21 +147,23 @@ public: // Data fields
   Data&
   setMetaInfo(const MetaInfo& metaInfo);
 
-  //  //Dome
-  //  const ns3::Vector&
-  //  getFutureLocation() const;
+	//  //Dome
+	//  const ns3::Vector&
+	//  getFutureLocation() const;
 
-    const FuturePositionInfo&
-    getFuturePositionInfo() const;
+	const FuturePositionInfo&
+	getFuturePositionInfo() const {
+		return m_futurePositonInfo;
+	}
 
-    Data&
-    setFuturePositionInfo(const FuturePositionInfo& futurePositionInfo);
+	Data&
+	setFuturePositionInfo(const FuturePositionInfo& futurePositionInfo);
 
-    const double
-    getTimeAtFuturePosition() const;
+	const double
+	getTimeAtFuturePosition() const;
 
-    Data&
-    setTimeAtFuturePosition(const double timeAtFuturePosition);
+	Data&
+	setTimeAtFuturePosition(const double timeAtFuturePosition);
 
 
 
@@ -287,12 +289,12 @@ operator!=(const Data& lhs, const Data& rhs)
   return !(lhs == rhs);
 }
 
-//Dome
-inline const FuturePositionInfo&
-Data::getFuturePositionInfo() const
-{
-  return m_futurePositonInfo;
-}
+////Dome
+//inline const FuturePositionInfo&
+//Data::getFuturePositionInfo() const
+//{
+//  return m_futurePositonInfo;
+//}
 
 } // namespace ndn
 

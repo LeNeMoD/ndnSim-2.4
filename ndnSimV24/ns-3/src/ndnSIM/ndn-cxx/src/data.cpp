@@ -279,9 +279,8 @@ Data::setFuturePositionInfo(const FuturePositionInfo& futurePositionInfoObject)
 {
 	//2.3 was onChanged Dome
 	resetWire();
-  m_futurePositonInfo = futurePositionInfoObject;
-
-  return *this;
+	m_futurePositonInfo = futurePositionInfoObject;
+	return *this;
 }
 
 bool
@@ -290,9 +289,9 @@ operator==(const Data& lhs, const Data& rhs)
   return lhs.getName() == rhs.getName() &&
          lhs.getMetaInfo() == rhs.getMetaInfo() &&
          lhs.getContent() == rhs.getContent() &&
-         lhs.getSignature() == rhs.getSignature();
+         lhs.getSignature() == rhs.getSignature() &&
   //Dome was not in ndn 2.3
-  	  	 lhs.getFuturePositionInfo()= rhs.getFuturePositionInfo();
+  	  	 lhs.getFuturePositionInfo()== rhs.getFuturePositionInfo();
 }
 
 std::ostream&

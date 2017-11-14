@@ -208,12 +208,26 @@ FibAddNextHopCommand::FibAddNextHopCommand()
     .required(CONTROL_PARAMETER_NAME)
     .optional(CONTROL_PARAMETER_FACE_ID)
     .optional(CONTROL_PARAMETER_COST)
-    .optional(CONTROL_PARAMETER_MAC);
+    .optional(CONTROL_PARAMETER_MAC)
+	//Dome
+	.optional(CONTROL_PARAMETER_POSITION_X)
+	.optional(CONTROL_PARAMETER_POSITION_Y)
+	.optional(CONTROL_PARAMETER_POSITION_Z)
+	.optional(CONTROL_PARAMETER_FUTURE_POSITION_X)
+	.optional(CONTROL_PARAMETER_FUTURE_POSITION_Y)
+	.optional(CONTROL_PARAMETER_TIME_AT_FUTUREPOSITION);
   m_responseValidator
     .required(CONTROL_PARAMETER_NAME)
     .required(CONTROL_PARAMETER_FACE_ID)
     .required(CONTROL_PARAMETER_COST)
-    .required(CONTROL_PARAMETER_MAC);
+    .required(CONTROL_PARAMETER_MAC)
+	//Dome
+	.required(CONTROL_PARAMETER_POSITION_X)
+	.required(CONTROL_PARAMETER_POSITION_Y)
+	.required(CONTROL_PARAMETER_POSITION_Z)
+	.required(CONTROL_PARAMETER_FUTURE_POSITION_X)
+	.required(CONTROL_PARAMETER_FUTURE_POSITION_Y)
+	.required(CONTROL_PARAMETER_TIME_AT_FUTUREPOSITION);
 }
 
 void
@@ -224,8 +238,29 @@ FibAddNextHopCommand::applyDefaultsToRequest(ControlParameters& parameters) cons
   }
   if (!parameters.hasCost()) {
     parameters.setCost(0);
+
   }if (!parameters.hasMac()) {
-      parameters.setMac("eirini");    }
+      parameters.setMac("eirini");
+  }
+  //Dome
+  if (!parameters.hasPositionX()) {
+	  parameters.setPositionX(0);
+  }
+  if (!parameters.hasPositionY()) {
+	  parameters.setPositionY(0);
+  }
+  if (!parameters.hasPositionZ()) {
+		parameters.setPositionZ(0);
+  }
+  if (!parameters.hasFuturePositionX()) {
+		parameters.setFuturePositionX(0);
+  }
+  if (!parameters.hasFuturePositionY()) {
+	  parameters.setFuturePositionY(0);
+  }
+  if (!parameters.hasTimeAtFuturePosition()) {
+	  parameters.setTimeAtFuturePosition(0);
+  }
 }
 
 void
@@ -311,6 +346,13 @@ RibRegisterCommand::RibRegisterCommand()
     .optional(CONTROL_PARAMETER_ORIGIN)
     .optional(CONTROL_PARAMETER_COST)
     .optional(CONTROL_PARAMETER_MAC)
+	//Dome
+	.optional(CONTROL_PARAMETER_POSITION_X)
+	.optional(CONTROL_PARAMETER_POSITION_Y)
+	.optional(CONTROL_PARAMETER_POSITION_Z)
+	.optional(CONTROL_PARAMETER_FUTURE_POSITION_X)
+	.optional(CONTROL_PARAMETER_FUTURE_POSITION_Y)
+	.optional(CONTROL_PARAMETER_TIME_AT_FUTUREPOSITION)
     .optional(CONTROL_PARAMETER_FLAGS)
     .optional(CONTROL_PARAMETER_EXPIRATION_PERIOD);
   m_responseValidator
@@ -319,6 +361,13 @@ RibRegisterCommand::RibRegisterCommand()
     .required(CONTROL_PARAMETER_ORIGIN)
     .required(CONTROL_PARAMETER_COST)
     .required(CONTROL_PARAMETER_MAC)
+	//Dome
+	.required(CONTROL_PARAMETER_POSITION_X)
+	.required(CONTROL_PARAMETER_POSITION_Y)
+	.required(CONTROL_PARAMETER_POSITION_Z)
+	.required(CONTROL_PARAMETER_FUTURE_POSITION_X)
+	.required(CONTROL_PARAMETER_FUTURE_POSITION_Y)
+	.required(CONTROL_PARAMETER_TIME_AT_FUTUREPOSITION)
     .required(CONTROL_PARAMETER_FLAGS)
     .optional(CONTROL_PARAMETER_EXPIRATION_PERIOD);
 }
@@ -337,6 +386,15 @@ RibRegisterCommand::applyDefaultsToRequest(ControlParameters& parameters) const
   }
   if (!parameters.hasMac()) {
       parameters.setMac("eirini2");
+    }
+  if(!parameters.hasPositionX()){
+  	  parameters.setPositionX(0);
+    }
+  if (!parameters.hasTimeAtFuturePosition()) {
+          parameters.setTimeAtFuturePosition(0);
+    }
+  if (!parameters.hasPositionY()) {
+          parameters.setPositionY(0);
     }
   if (!parameters.hasFlags()) {
     parameters.setFlags(ROUTE_FLAG_CHILD_INHERIT);

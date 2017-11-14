@@ -60,6 +60,12 @@ public:
   void
   SetAttribute(std::string name, const AttributeValue& value);
 
+
+  //Dome
+  void
+  SetTraceFile(const std::string& traceFile);
+
+
   /**
    * Install an ns3::NdnConsumer on each node of the input container
    * configured with all the attributes set with SetAttribute.
@@ -92,6 +98,13 @@ public:
   Install(std::string nodeName);
 
 private:
+
+  //Dome
+  std::string m_traceFile;
+
+
+private:
+
   /**
    * \internal
    * Install an ns3::NdnConsumer on the node configured with all the

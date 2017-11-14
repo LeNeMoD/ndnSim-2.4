@@ -57,6 +57,9 @@ void
 FibHelper::AddNextHop(const ControlParameters& parameters, Ptr<Node> node)
 {
   NS_LOG_DEBUG("Add Next Hop command was initialized");
+  //Dome
+  std::cout << "Add Next Hop command was initialized" << std::endl;
+
   Block encodedParameters(parameters.wireEncode());
 
   Name commandName("/localhost/nfd/fib");

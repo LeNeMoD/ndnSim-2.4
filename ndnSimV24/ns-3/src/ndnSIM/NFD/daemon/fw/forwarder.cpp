@@ -427,7 +427,8 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 
   //Dome
   ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
-  std::cout << " on INcoming Data node " << node->GetId() << " name " << data.getName() << std::endl;
+//  std::cout << " on INcoming Data node " << node->GetId() << " name " << data.getName() << std::endl;
+  std::cout << " on Incoming Data node " << node->GetId() << std::endl;
 
 
   shared_ptr<Data> dataCopyWithoutTag = make_shared<Data>(data);
@@ -489,7 +490,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
        	std::cout<< "check position-X +5s pass in forwarder  :" << posX << " node id: " << node->GetId() <<std::endl;
        	std::cout<< "check position-Y +5s pass in forwarder  :" << posY << " node id: " << node->GetId() <<std::endl;
 
-       	ns3::ndn::FibHelper::AddRoute(node, "/", inFace.getId(), 111, a,posX,posY,11111,22222,33333,44444);
+       	ns3::ndn::FibHelper::AddRoute(node, "/", inFace.getId(), 111, a,555555,666666,11111,22222,33333,44444);
 
      }
     // invoke PIT satisfy callback

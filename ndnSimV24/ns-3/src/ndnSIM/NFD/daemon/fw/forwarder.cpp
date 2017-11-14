@@ -336,7 +336,7 @@ Forwarder::onOutgoingInterest(const shared_ptr<pit::Entry>& pitEntry, Face& outF
 
   //Dome
   ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
-  // std::cout<< " on outgoing interest: " << mac << " node : " << node->GetId() << " Interest name " << interest.getName() << std::endl;
+   std::cout<< " on outgoing interest: " << mac << " node : " << node->GetId() << " Interest name " << interest.getName() << std::endl;
 
   // send Interest
   outFace.sendInterest(interest);
@@ -482,6 +482,10 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 //       ns3::ndn::FibHelper::AddRoute(node, "/beacon", inFace.getId(), 111, a );
 
        	//Dome
+
+    	ns3::Ptr<ns3::MobilityModel> mobilityModel = node->GetObject<ns3::MobilityModel>();
+    	ns3::Vector pos = mobilityModel->GetPosition();
+
        	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-test2-n3.txt");
 
        	double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("Forwarder",node->GetId(),5).x;
@@ -490,7 +494,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
        	std::cout<< "check position-X +5s pass in forwarder  :" << posX << " node id: " << node->GetId() <<std::endl;
        	std::cout<< "check position-Y +5s pass in forwarder  :" << posY << " node id: " << node->GetId() <<std::endl;
 
-       	ns3::ndn::FibHelper::AddRoute(node, "/", inFace.getId(), 111, a,555555,666666,11111,22222,33333,44444);
+       	ns3::ndn::FibHelper::AddRoute(node, "/beacon", inFace.getId(), 111, a,pos.x,pos.y,pos.y,posX,posY,5);
 
      }
     // invoke PIT satisfy callback
@@ -522,6 +526,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
       this->onOutgoingData(data, *pendingDownstream);
     }
   }
+
 
 void
 Forwarder::onDataUnsolicited(Face& inFace, const Data& data)
@@ -565,7 +570,7 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
   //Dome
   ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
 
-//  std::cout<< " outgoing data node: " << node->GetId() << " target mac: " << targetmac << " name of data: " << data.getName() << std::endl;
+  std::cout<< " outgoing data node: " << node->GetId() << " target mac: " << targetmac << " name of data: " << data.getName() << std::endl;
 
 
   // send Data

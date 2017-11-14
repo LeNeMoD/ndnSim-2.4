@@ -82,11 +82,6 @@ public:
    */
   Ns2MobilityHelper (std::string filename);
 
-//  //Dome---------------
-
-//  Vector GetPositionFromTCLFileForNodeAtTime (std::string caller,int Nodeid, double at);
-//  //  Vector GetSchedPosition (Ptr<ConstantVelocityMobilityModel> model, double at);
-
 
   /**
    * Read the ns2 trace file and configure the movement
@@ -94,7 +89,14 @@ public:
    * whose nodeId is matches the nodeId of the nodes in the trace
    * file.
    */
+
   void Install (void) const;
+
+
+  //  //Dome---------------
+
+    Vector GetPositionFromTCLFileForNodeAtTime (std::string caller,int Nodeid, double at);
+
 
   /**
    * \param begin an iterator which points to the start of the input
@@ -137,7 +139,6 @@ public:
    */
   Ptr<ConstantVelocityMobilityModel> GetMobilityModel (std::string idString, const ObjectStore &store) const;
   //Dome
-  Vector GetPositionFromTCLFileForNodeAtTime(std::string caller, int NodeId, double timeRequest);
   std::string m_filename; //!< filename of file containing ns-2 mobility trace 
 };
 

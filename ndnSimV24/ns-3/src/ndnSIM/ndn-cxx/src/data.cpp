@@ -53,6 +53,8 @@ Data::wireEncode(EncodingImpl<TAG>& encoder, bool wantUnsignedPortionOnly) const
   //            Content
   //            SignatureInfo
   //            SignatureValue
+	//			FuturePosition
+
 
   size_t totalLength = 0;
 
@@ -75,6 +77,9 @@ Data::wireEncode(EncodingImpl<TAG>& encoder, bool wantUnsignedPortionOnly) const
 
   // Name
   totalLength += getName().wireEncode(encoder);
+
+  // Dome Missing ?
+  // getFuturePositionInfo
 
   if (!wantUnsignedPortionOnly) {
     totalLength += encoder.prependVarNumber(totalLength);
@@ -141,6 +146,13 @@ Data::wireDecode(const Block& wire)
   Block::element_const_iterator val = m_wire.find(tlv::SignatureValue);
   if (val != m_wire.elements_end()) {
     m_signature.setValue(*val);
+
+		//Dome
+		// FuturePositionInfo
+		val = m_wire.find(tlv::FuturePositionInfo);
+		if (val != m_wire.elements_end()) {
+			m_futurePositonInfo.wireDecode(m_wire.get(tlv::FuturePositionInfo));
+		}
   }
 }
 
@@ -261,6 +273,17 @@ Data::setFinalBlockId(const name::Component& finalBlockId)
   return *this;
 }
 
+//Dome
+Data&
+Data::setFuturePositionInfo(const FuturePositionInfo& futurePositionInfoObject)
+{
+	//2.3 was onChanged Dome
+	resetWire();
+  m_futurePositonInfo = futurePositionInfoObject;
+
+  return *this;
+}
+
 bool
 operator==(const Data& lhs, const Data& rhs)
 {
@@ -268,6 +291,8 @@ operator==(const Data& lhs, const Data& rhs)
          lhs.getMetaInfo() == rhs.getMetaInfo() &&
          lhs.getContent() == rhs.getContent() &&
          lhs.getSignature() == rhs.getSignature();
+  //Dome was not in ndn 2.3
+  	  	 lhs.getFuturePositionInfo()= rhs.getFuturePositionInfo();
 }
 
 std::ostream&
@@ -275,6 +300,8 @@ operator<<(std::ostream& os, const Data& data)
 {
   os << "Name: " << data.getName() << "\n";
   os << "MetaInfo: " << data.getMetaInfo() << "\n";
+  //Dome
+  os << "FuturePositionInfo: " << data.getFuturePositionInfo() << "\n";
   os << "Content: (size: " << data.getContent().value_size() << ")\n";
   os << "Signature: (type: " << data.getSignature().getType()
      << ", value_length: "<< data.getSignature().getValue().value_size() << ")";

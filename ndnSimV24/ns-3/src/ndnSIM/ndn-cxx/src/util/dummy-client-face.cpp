@@ -188,6 +188,14 @@ DummyClientFace::enableRegistrationReply()
     params.setOrigin(nfd::ROUTE_ORIGIN_APP);
     if (interest.getName().get(3) == name::Component("register")) {
       params.setCost(0);
+      //Dome
+      params.setPositionX(0);
+      params.setPositionY(0);
+      params.setPositionZ(0);
+      params.setFuturePositionX(0);
+      params.setFuturePositionY(0);
+      params.setFuturePositionZ(0);
+      params.setTimeAtFuturePosition(0);
     }
 
     nfd::ControlResponse resp;

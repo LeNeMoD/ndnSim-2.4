@@ -5,8 +5,8 @@
  *      Author: domenico
  */
 
-#ifndef NS_3_FUTUREPOSITIONINFO_HPP_
-#define NS_3_FUTUREPOSITIONINFO_HPP_
+#ifndef NDN_FUTUREPOSITIONINFO_HPP
+#define NDN_FUTUREPOSITIONINFO_HPP
 
 #include "encoding/block.hpp"
 #include "../../../../../ns-3/src/core/model/vector.h"
@@ -170,4 +170,5 @@ FuturePositionInfo::getTimeAtFutureLocation() const
 
 } //end Namespace ndn
 
-#endif /* NS_3_FUTUREPOSITION_HPP_ */
+
+#endif /* NDN_FUTUREPOSITION_HPP_ */

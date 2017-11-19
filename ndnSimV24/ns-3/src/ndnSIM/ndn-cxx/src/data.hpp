@@ -261,6 +261,7 @@ private:
   Block m_content;
   Signature m_signature;
   //Dome
+
   FuturePositionInfo m_futurePositonInfo;
   ns3::Vector m_futureLocation;
   double m_timeAtFuturePosition;

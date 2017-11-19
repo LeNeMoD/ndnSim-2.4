@@ -31,9 +31,14 @@
 
 //Dome
 //#include "ndn-cxx/src/futurePositionInfo.hpp"
-#include "../ndn-cxx/src/futurePositionInfo.hpp"
+//#include "../ndn-cxx/src/futurePositionInfo.hpp"
+#include "ns3/ndnSIM/ndn-cxx/futurePositionInfo.hpp"
+#include "ns3/ns2-mobility-helper.h"
+
 
 NS_LOG_COMPONENT_DEFINE("ndn.Producer");
+
+ndn::FuturePositionInfo futurePositionInfo;
 
 namespace ns3 {
 namespace ndn {
@@ -127,6 +132,22 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
 
   NS_LOG_INFO("node(" << GetNode()->GetId() << ") responding with Data: " << data->getName());
 
+  ns3::Ptr<ns3::Node> node = GetNode();
+
+  ns3::Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
+
+  double at = 5;
+  double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("Forwarder",node->GetId(),at).x;
+  double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("Forwarder",node->GetId(),at).y ;
+
+  std::cout<< "check position-X +5s pass in producer  :" << posX << " node id: " << node->GetId() <<std::endl;
+  std::cout<< "check position-Y +5s pass in producer  :" << posY << " node id: " << node->GetId() <<std::endl;
+
+  futurePositionInfo.setFutureLocationX(posX);
+  futurePositionInfo.setFutureLocationY(posY);
+  futurePositionInfo.setTimeAtFutureLocation(5);
+
+  data->setFuturePositionInfo(futurePositionInfo);
 
   // to create real wire encoding
   data->wireEncode();

@@ -51,6 +51,7 @@
 //Dome
 //#include "../../../../mobility/model/constant-velocity-mobility-model.h"
 #include "ns3/ns2-mobility-helper.h"
+#include "../../../ndn-cxx/src/futurePositionInfo.hpp"
 
 namespace nfd {
 
@@ -491,10 +492,12 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
        	double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("Forwarder",node->GetId(),5).x;
        	double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("Forwarder",node->GetId(),5).y ;
 
-       	std::cout<< "check position-X +5s pass in forwarder  :" << posX << " node id: " << node->GetId() <<std::endl;
-       	std::cout<< "check position-Y +5s pass in forwarder  :" << posY << " node id: " << node->GetId() <<std::endl;
+       	ndn::FuturePositionInfo futurePositionInfo = data.getFuturePositionInfo();
 
-       	ns3::ndn::FibHelper::AddRoute(node, "/beacon", inFace.getId(), 111, a,pos.x,pos.y,pos.y,posX,posY,5);
+       	std::cout<< "check position-X +5s pass in forwarder  :" << futurePositionInfo.getLocation_X() << " node id: " << node->GetId() <<std::endl;
+       	std::cout<< "check position-Y +5s pass in forwarder  :" << futurePositionInfo.getLocation_Y() << " node id: " << node->GetId() <<std::endl;
+
+       	ns3::ndn::FibHelper::AddRoute(node, "/beacon", inFace.getId(), 111, a,pos.x,pos.y,pos.z,futurePositionInfo.getLocation_X(),futurePositionInfo.getLocation_Y(),futurePositionInfo.getTimeAtFutureLocation());
 
      }
     // invoke PIT satisfy callback

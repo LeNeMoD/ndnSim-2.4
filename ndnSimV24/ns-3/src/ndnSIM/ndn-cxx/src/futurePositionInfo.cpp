@@ -287,23 +287,5 @@ FuturePositionInfo::setFutureLocationZ(double futureLocation_Z){
 	m_location_Z_Coord_Velocity = futureLocation_Z;
 	return *this;
 }
-//
-//double
-//FuturePositionInfo::getLocation_X() {
-//	return m_location_X_Coord ;
-//
-//}
-//
-//
-//double
-//FuturePositionInfo::getLocation_Y() {
-//	return m_location_Y_Coord ;
-//}
-//
-//double
-//FuturePositionInfo::getLocation_Z() {
-//	return m_location_Z_Coord_Velocity ;
-//
-//}
 }
 

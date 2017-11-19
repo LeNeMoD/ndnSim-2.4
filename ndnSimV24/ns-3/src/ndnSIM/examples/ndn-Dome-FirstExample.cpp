@@ -61,8 +61,8 @@ int main(int argc, char* argv[]) {
 	NqosWifiMacHelper wifiMacHelper = NqosWifiMacHelper::Default();
 	wifiMacHelper.SetType("ns3::AdhocWifiMac");
 
-	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
-	//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
+//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
+	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
 
 	// Create Moble nodes.
 	NodeContainer mobileNodes;

@@ -487,12 +487,14 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
     	ns3::Ptr<ns3::MobilityModel> mobilityModel = node->GetObject<ns3::MobilityModel>();
     	ns3::Vector pos = mobilityModel->GetPosition();
 
-       	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-test2-n3.txt");
+//       	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-test2-n3.txt");
 
-       	double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("Forwarder",node->GetId(),5).x;
-       	double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("Forwarder",node->GetId(),5).y ;
+//       	double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("Forwarder",node->GetId(),5).x;
+//       	double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("Forwarder",node->GetId(),5).y ;
 
        	ndn::FuturePositionInfo futurePositionInfo = data.getFuturePositionInfo();
+       	std::cout<<"data Forwarder contains: "<< data.getFuturePositionInfo().getLocation_X() <<std::endl;
+
 
        	std::cout<< "check position-X +5s pass in forwarder  :" << futurePositionInfo.getLocation_X() << " node id: " << node->GetId() <<std::endl;
        	std::cout<< "check position-Y +5s pass in forwarder  :" << futurePositionInfo.getLocation_Y() << " node id: " << node->GetId() <<std::endl;
@@ -573,7 +575,8 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
   //Dome
   ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
 
-  std::cout<< " outgoing data node: " << node->GetId() << " target mac: " << targetmac << " name of data: " << data.getName() << std::endl;
+  //Dome
+//  std::cout<< " outgoing data node: " << node->GetId() << " target mac: " << targetmac << " name of data: " << data.getName() << std::endl;
 
 
   // send Data

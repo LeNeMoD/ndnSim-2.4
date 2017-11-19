@@ -29,30 +29,14 @@
 using namespace std;
 namespace ns3 {
 
-NS_LOG_COMPONENT_DEFINE("ndn.WifiExample");
+NS_LOG_COMPONENT_DEFINE("ndn.FirsExampleDome");
 
-//
-// DISCLAIMER:  Note that this is an extremely simple example, containing just 2 wifi nodes
-// communicating directly over AdHoc channel.
-//
-
-// Ptr<ndn::NetDeviceFace>
-// MyNetDeviceFaceCallback (Ptr<Node> node, Ptr<ndn::L3Protocol> ndn, Ptr<NetDevice> device)
-// {
-//   // NS_LOG_DEBUG ("Create custom network device " << node->GetId ());
-//   Ptr<ndn::NetDeviceFace> face = CreateObject<ndn::MyNetDeviceFace> (node, device);
-//   ndn->AddFace (face);
-//   return face;
-// }
 
 int main(int argc, char* argv[]) {
 	// disable fragmentation
-	Config::SetDefault("ns3::WifiRemoteStationManager::FragmentationThreshold",
-			StringValue("2200"));
-	Config::SetDefault("ns3::WifiRemoteStationManager::RtsCtsThreshold",
-			StringValue("2200"));
-	Config::SetDefault("ns3::WifiRemoteStationManager::NonUnicastMode",
-			StringValue("OfdmRate24Mbps"));
+	Config::SetDefault("ns3::WifiRemoteStationManager::FragmentationThreshold", StringValue("2200"));
+	Config::SetDefault("ns3::WifiRemoteStationManager::RtsCtsThreshold", StringValue("2200"));
+	Config::SetDefault("ns3::WifiRemoteStationManager::NonUnicastMode", StringValue("OfdmRate24Mbps"));
 
 	CommandLine cmd;
 	cmd.Parse(argc, argv);
@@ -61,17 +45,14 @@ int main(int argc, char* argv[]) {
 	//////////////////////
 	//////////////////////
 	WifiHelper wifi = WifiHelper::Default();
-	// wifi.SetRemoteStationManager ("ns3::AarfWifiManager");
 	wifi.SetStandard(WIFI_PHY_STANDARD_80211a);
-	wifi.SetRemoteStationManager("ns3::ConstantRateWifiManager", "DataMode",
-			StringValue("OfdmRate24Mbps"));
+	wifi.SetRemoteStationManager("ns3::ConstantRateWifiManager", "DataMode", StringValue("OfdmRate24Mbps"));
 
-	YansWifiChannelHelper wifiChannel; // = YansWifiChannelHelper::Default ();
+	YansWifiChannelHelper wifiChannel;
 	wifiChannel.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
 	wifiChannel.AddPropagationLoss("ns3::ThreeLogDistancePropagationLossModel");
 	wifiChannel.AddPropagationLoss("ns3::NakagamiPropagationLossModel");
 
-	// YansWifiPhy wifiPhy = YansWifiPhy::Default();
 	YansWifiPhyHelper wifiPhyHelper = YansWifiPhyHelper::Default();
 	wifiPhyHelper.SetChannel(wifiChannel.Create());
 	wifiPhyHelper.Set("TxPowerStart", DoubleValue(5));
@@ -80,63 +61,40 @@ int main(int argc, char* argv[]) {
 	NqosWifiMacHelper wifiMacHelper = NqosWifiMacHelper::Default();
 	wifiMacHelper.SetType("ns3::AdhocWifiMac");
 
-	Ptr<UniformRandomVariable> randomizer =
-			CreateObject<UniformRandomVariable>();
-	randomizer->SetAttribute("Min", DoubleValue(10));
-	randomizer->SetAttribute("Max", DoubleValue(100));
+	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
+	//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
 
-//  MobilityHelper mobility;
-//  mobility.SetPositionAllocator("ns3::RandomBoxPositionAllocator", "X", PointerValue(randomizer),
-//                                "Y", PointerValue(randomizer), "Z", PointerValue(randomizer));
-
-//  mobility.SetMobilityModel("ns3::ConstantPositionMobilityModel");
-//
-//  NodeContainer nodes;
-//  nodes.Create(2);
-
-
-	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper(
-				"ns-movements-test2-n3.txt");
-
-//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper(
-//			"ns-movements-Slow-Fast-3n-10s.txt");
-	//	mobility.SetPositionAllocator(); //(ns2MobHelper.Ns2MobilityHelper("ns-movements-test2.txt"));
-	//// Create Moble nodes.
-	NodeContainer MobileNodes;
-	MobileNodes.Create(3);
+	// Create Moble nodes.
+	NodeContainer mobileNodes;
+	mobileNodes.Create(3);
 
 	// configure movements for each node, while reading trace file
 	ns2MobHelper.Install();
 
 	////////////////
 	// 1. Install Wifi
-	NetDeviceContainer wifiNetDevices = wifi.Install(wifiPhyHelper,
-			wifiMacHelper, MobileNodes);
-	NetDeviceContainer wifiNetDevices2 = wifi.Install(wifiPhyHelper,
-				wifiMacHelper, MobileNodes);
+	NetDeviceContainer wifiNetDevices = wifi.Install(wifiPhyHelper, wifiMacHelper, mobileNodes);
 	// 2. Install Mobility model
-//  mobility.Install(nodes);
 
 	// 3. Install NDN stack
 	NS_LOG_INFO("Installing NDN stack");
 	ndn::StackHelper ndnHelper;
-	// ndnHelper.AddNetDeviceFaceCreateCallback (WifiNetDevice::GetTypeId (), MakeCallback
-	// (MyNetDeviceFaceCallback));
+	// ndnHelper.AddNetDeviceFaceCreateCallback (WifiNetDevice::GetTypeId (), MakeCallback(MyNetDeviceFaceCallback));
 	ndnHelper.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize", "1000");
 	ndnHelper.SetDefaultRoutes(true);
-	ndnHelper.Install(MobileNodes);
+	ndnHelper.Install(mobileNodes);
 
-	// Set BestRoute strategy
-	ndn::StrategyChoiceHelper::Install(MobileNodes, "/",
-			"/localhost/nfd/strategy/multicast");
+	ndn::StrategyChoiceHelper::Install(mobileNodes, "/", "/localhost/nfd/strategy/multicast");
+
 
 	// 4. Set up applications
 	NS_LOG_INFO("Installing Applications");
 
 	ndn::AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
-	consumerHelper.SetPrefix("/test/prefix");
+//	consumerHelper.SetTraceFile("ns-movements-test2-n3.txt");
+	consumerHelper.SetPrefix("/beacon");
 	consumerHelper.SetAttribute("Frequency", DoubleValue(10.0));
-	consumerHelper.Install(MobileNodes.Get(0));
+	consumerHelper.Install(mobileNodes.Get(0));
 
 // 	ndn::AppHelper consumerHelper2("ns3::ndn::ConsumerCbr");
 //	consumerHelper2.SetPrefix("/test/prefix");
@@ -144,9 +102,10 @@ int main(int argc, char* argv[]) {
 //	consumerHelper2.Install(MobileNodes.Get(2));
 
 	ndn::AppHelper producerHelper("ns3::ndn::Producer");
-	producerHelper.SetPrefix("/");
+//	producerHelper.SetTraceFile("ns-movements-test2-n3.txt");
+	producerHelper.SetPrefix("/beacon");
 	producerHelper.SetAttribute("PayloadSize", StringValue("1200"));
-	producerHelper.Install(MobileNodes.Get(1));
+	producerHelper.Install(mobileNodes.Get(1));
 
 	////////////////
 

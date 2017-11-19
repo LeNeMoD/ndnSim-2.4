@@ -274,6 +274,7 @@ Data::setFinalBlockId(const name::Component& finalBlockId)
 }
 
 //Dome
+
 Data&
 Data::setFuturePositionInfo(const FuturePositionInfo& futurePositionInfoObject)
 {

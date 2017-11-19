@@ -121,6 +121,8 @@ main(int argc, char* argv[])
   consumerHelper.Install(nodes.Get(0));
 
   ndn::AppHelper producerHelper("ns3::ndn::Producer");
+  //Dome
+//  producerHelper.SetTraceFile("ns-movements-test2-n3.txt");
   producerHelper.SetPrefix("/beacon");
   producerHelper.SetAttribute("PayloadSize", StringValue("1200"));
   producerHelper.Install(nodes.Get(1));

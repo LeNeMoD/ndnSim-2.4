@@ -29,13 +29,16 @@
 
 #include <memory>
 
+//Dome
+//#include "ndn-cxx/src/futurePositionInfo.hpp"
+#include "../ndn-cxx/src/futurePositionInfo.hpp"
+
 NS_LOG_COMPONENT_DEFINE("ndn.Producer");
 
 namespace ns3 {
 namespace ndn {
 
 NS_OBJECT_ENSURE_REGISTERED(Producer);
-
 TypeId
 Producer::GetTypeId(void)
 {
@@ -123,6 +126,7 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
   data->setSignature(signature);
 
   NS_LOG_INFO("node(" << GetNode()->GetId() << ") responding with Data: " << data->getName());
+
 
   // to create real wire encoding
   data->wireEncode();

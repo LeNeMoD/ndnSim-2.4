@@ -60,6 +60,39 @@ public:
 
   public:
 
+  ns3::Vector
+  getFuturePositionVector();
+
+  FuturePositionInfo&
+  setFuturePositionVector(ns3::Vector position);
+
+  double
+  getFutureLocation_X() const;
+
+  double
+  getFutureLocation_Y() const;
+
+  double
+  getFutureLocation_Z() const;
+
+  FuturePositionInfo&
+  setFutureLocationX(double futurelocation_X);
+
+  FuturePositionInfo&
+  setFutureLocationY(double futureLocation_Y);
+
+  FuturePositionInfo&
+  setFutureLocationZ(double futureLocation_Z);
+
+
+  double
+  getTimeAtFutureLocation() const;
+
+  FuturePositionInfo&
+  setTimeAtFutureLocation(double time);
+
+
+
   /*const std::list<Block>&
   getAppFuturePositionInfo() const ;
 
@@ -75,39 +108,6 @@ public:
   const Block*
   findAppFuturePositionInfo(uint32_t tlvType) const;
   */
-
-  FuturePositionInfo&
-  setFuturePositionVector(ns3::Vector position);
-
-  ns3::Vector
-  getFuturePositionVector();
-  bool
-  Getemptyposition() const;
-
-  FuturePositionInfo&
-  setFutureLocationX(double futurelocation_X);
-
-  FuturePositionInfo&
-  setFutureLocationY(double futureLocation_Y);
-
-  FuturePositionInfo&
-  setFutureLocationZ(double futureLocation_Z);
-
-  double
-  getLocation_X() const;
-
-  double
-  getLocation_Y() const;
-
-  double
-  getLocation_Z() const;
-
-  double
-  getTimeAtFutureLocation() const;
-
-  FuturePositionInfo&
-  setTimeAtFutureLocation(double time);
-
 
 
   public:
@@ -133,34 +133,6 @@ private:
 
 std::ostream&
 operator<<(std::ostream& os, const FuturePositionInfo& info);
-
-inline double
-FuturePositionInfo::getLocation_X() const
-{
-	return m_location_X_Coord;
-}
-inline bool
-FuturePositionInfo::Getemptyposition() const
-{
-	return m_bool_position_is_empty;
-}
-inline double
-FuturePositionInfo::getLocation_Y() const
-{
-	return m_location_Y_Coord;
-}
-
-inline double
-FuturePositionInfo::getLocation_Z() const
-{
-	return m_location_Z_Coord_Velocity;
-}
-
-inline double
-FuturePositionInfo::getTimeAtFutureLocation() const
-{
-	return m_timeAtFuturePosition;
-}
 //inline bool
 //FuturePositionInfo::hasWire() const
 //{

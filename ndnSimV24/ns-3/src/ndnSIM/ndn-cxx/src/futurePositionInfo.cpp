@@ -20,10 +20,10 @@ static_assert(std::is_base_of<tlv::Error, FuturePositionInfo::Error>::value,
               "FuturePositionInfo::Error must inherit from tlv::Error");
 
 FuturePositionInfo::FuturePositionInfo() {
-	m_location_X_Coord = 0;
-	m_location_Y_Coord = 0;
-	m_location_Z_Coord_Velocity = 0;
-	m_timeAtFuturePosition = 0;
+	m_location_X_Coord = 99;
+	m_location_Y_Coord = 99;
+	m_location_Z_Coord_Velocity = 99;
+	m_timeAtFuturePosition = 99;
 	m_bool_position_is_empty = true;
 
 }
@@ -123,7 +123,7 @@ FuturePositionInfo::wireDecode(const Block& wire) {
 
 	//Block::element_const_iterator val = m_mWire_futurePositionInfo.elements_begin();
 
-	//Dome !!! missnign else statements if decoding fales
+	//Dome !!! missing else statements if decoding false
 	//FuturePosistion
 	Block::element_const_iterator val= m_mWire_futurePositionInfo.find(tlv::FuturePositionX);
 	if (val != m_mWire_futurePositionInfo.elements_end()) {
@@ -159,20 +159,16 @@ std::ostream&
 operator<<(std::ostream& os, const FuturePositionInfo& info)
 {
   // FuturePositionX
-  os << "FuturePositionX: " << info.getLocation_X();
+  os << "FuturePositionX: " << info.getFutureLocation_X();
 
   // FuturePositionY
-  os << ", FuturePositionY: " << info.getLocation_Y();
+  os << ", FuturePositionY: " << info.getFutureLocation_Y();
 
   // FuturePositionZ
-  os << ", FuturePositionZ: " << info.getLocation_Z();
+  os << ", FuturePositionZ: " << info.getFutureLocation_Z();
 
   // TimeAtFuturePosition
-   os << ", TimeAtFuturePosition: " << info.getTimeAtFutureLocation();
-
-
-  // App-defined MetaInfo items
-
+  os << ", TimeAtFuturePosition: " << info.getTimeAtFutureLocation();
 
   return os;
 }
@@ -240,11 +236,11 @@ FuturePositionInfo::findAppFuturePositionInfo(uint32_t tlvType) const
   }
   return 0;
 }*/
-//
-//double
-//FuturePositionInfo::getTimeAtFutureLocation() const{
-//	return m_timeAtFuturePosition;
-//}
+
+double
+FuturePositionInfo::getTimeAtFutureLocation() const{
+	return m_timeAtFuturePosition;
+}
 
 FuturePositionInfo&
 FuturePositionInfo::setTimeAtFutureLocation(double timeAtFutureLocation){
@@ -275,17 +271,43 @@ FuturePositionInfo::setFutureLocationX(double futureLocation_X){
 	m_location_X_Coord = futureLocation_X;
 	return *this;
 }
+
 FuturePositionInfo&
 FuturePositionInfo::setFutureLocationY(double futureLocation_Y){
 	m_mWire_futurePositionInfo.reset();
 	m_location_Y_Coord = futureLocation_Y;
 	return *this;
 }
+
 FuturePositionInfo&
 FuturePositionInfo::setFutureLocationZ(double futureLocation_Z){
 	m_mWire_futurePositionInfo.reset();
 	m_location_Z_Coord_Velocity = futureLocation_Z;
 	return *this;
+}
+
+double
+FuturePositionInfo::getFutureLocation_X() const
+{
+  return m_location_X_Coord;
+}
+
+double
+FuturePositionInfo::getFutureLocation_Y() const
+{
+  return m_location_Y_Coord;
+}
+
+double
+FuturePositionInfo::getFutureLocation_Z() const
+{
+  return m_location_Z_Coord_Velocity;
+}
+
+double
+FuturePositionInfo::getTimeAtFutureLocation() const
+{
+  return m_timeAtFuturePosition;
 }
 }
 

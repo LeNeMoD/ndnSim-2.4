@@ -135,8 +135,12 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
   //Dome
   ns3::Ptr<ns3::Node> node = GetNode();
 
-//  ns3::Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
-  ns3::Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
+//  Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
+// 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
+//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
+	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-Ring-7n.txt");
+
+
 
 
   double at = 5;

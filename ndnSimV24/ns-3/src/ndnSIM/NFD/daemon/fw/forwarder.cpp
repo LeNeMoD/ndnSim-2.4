@@ -493,13 +493,13 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 //       	double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("Forwarder",node->GetId(),5).y ;
 
        	ndn::FuturePositionInfo futurePositionInfo = data.getFuturePositionInfo();
-       	std::cout<<"data Forwarder contains: "<< data.getFuturePositionInfo().getLocation_X() <<std::endl;
+       	std::cout<<"data Forwarder contains: "<< data.getFuturePositionInfo().getFutureLocation_X() <<std::endl;
 
 
-       	std::cout<< "check position-X +5s pass in forwarder  :" << futurePositionInfo.getLocation_X() << " node id: " << node->GetId() <<std::endl;
-       	std::cout<< "check position-Y +5s pass in forwarder  :" << futurePositionInfo.getLocation_Y() << " node id: " << node->GetId() <<std::endl;
+       	std::cout<< "check position-X +5s pass in forwarder  :" << futurePositionInfo.getFutureLocation_X() << " node id: " << node->GetId() <<std::endl;
+       	std::cout<< "check position-Y +5s pass in forwarder  :" << futurePositionInfo.getFutureLocation_Y() << " node id: " << node->GetId() <<std::endl;
 
-       	ns3::ndn::FibHelper::AddRoute(node, "/beacon", inFace.getId(), 111, a,pos.x,pos.y,pos.z,futurePositionInfo.getLocation_X(),futurePositionInfo.getLocation_Y(),futurePositionInfo.getTimeAtFutureLocation());
+       	ns3::ndn::FibHelper::AddRoute(node, "/beacon", inFace.getId(), 111, a,pos.x,pos.y,pos.z,futurePositionInfo.getFutureLocation_X(),futurePositionInfo.getFutureLocation_Y(),futurePositionInfo.getTimeAtFutureLocation());
 
      }
     // invoke PIT satisfy callback

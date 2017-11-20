@@ -304,10 +304,5 @@ FuturePositionInfo::getFutureLocation_Z() const
   return m_location_Z_Coord_Velocity;
 }
 
-double
-FuturePositionInfo::getTimeAtFutureLocation() const
-{
-  return m_timeAtFuturePosition;
-}
 }
 

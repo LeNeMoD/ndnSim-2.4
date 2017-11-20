@@ -81,6 +81,10 @@ Data::wireEncode(EncodingImpl<TAG>& encoder, bool wantUnsignedPortionOnly) const
   // Dome Missing ?
   // getFuturePositionInfo
 
+  //FuturePositionInfo
+  totalLength += getFuturePositionInfo().wireEncode(encoder);
+
+
   if (!wantUnsignedPortionOnly) {
     totalLength += encoder.prependVarNumber(totalLength);
     totalLength += encoder.prependVarNumber(tlv::Data);
@@ -147,12 +151,13 @@ Data::wireDecode(const Block& wire)
   if (val != m_wire.elements_end()) {
     m_signature.setValue(*val);
 
-		//Dome
-		// FuturePositionInfo
-		val = m_wire.find(tlv::FuturePositionInfo);
-		if (val != m_wire.elements_end()) {
-			m_futurePositonInfo.wireDecode(m_wire.get(tlv::FuturePositionInfo));
-		}
+  //Dome
+  // FuturePositionInfo
+  val = m_wire.find(tlv::FuturePositionInfo);
+  if (val != m_wire.elements_end()) {
+	m_futurePositonInfo.wireDecode(m_wire.get(tlv::FuturePositionInfo));
+	std::cout<<"check content futurePosInfo after decode: x: "<< m_futurePositonInfo.getFutureLocation_X()<<" y: "<< m_futurePositonInfo.getFutureLocation_Y()<<std::endl;
+	}
   }
 }
 

@@ -159,13 +159,6 @@ public: // Data fields
 	Data&
 	setFuturePositionInfo(const FuturePositionInfo& futurePositionInfo);
 
-	const double
-	getTimeAtFuturePosition() const;
-
-	Data&
-	setTimeAtFuturePosition(const double timeAtFuturePosition);
-
-
 
   /** @brief Get Content
    *
@@ -261,10 +254,7 @@ private:
   Block m_content;
   Signature m_signature;
   //Dome
-
   FuturePositionInfo m_futurePositonInfo;
-  ns3::Vector m_futureLocation;
-  double m_timeAtFuturePosition;
 
   mutable Block m_wire;
   mutable Name m_fullName; ///< cached FullName computed from m_wire

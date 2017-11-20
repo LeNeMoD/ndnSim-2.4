@@ -19,12 +19,14 @@ BOOST_CONCEPT_ASSERT((WireDecodable<FuturePositionInfo>));
 static_assert(std::is_base_of<tlv::Error, FuturePositionInfo::Error>::value,
               "FuturePositionInfo::Error must inherit from tlv::Error");
 
+
+//Ask Eirini how to initialize properly the future position with his variables.
 FuturePositionInfo::FuturePositionInfo() {
-	m_location_X_Coord = 99;
-	m_location_Y_Coord = 99;
-	m_location_Z_Coord_Velocity = 99;
-	m_timeAtFuturePosition = 99;
-	m_bool_position_is_empty = true;
+//	m_location_X_Coord = 0;
+//	m_location_Y_Coord = 0;
+//	m_location_Z_Coord_Velocity = 0;
+//	m_timeAtFuturePosition = 99;
+//	m_bool_position_is_empty = true;
 
 }
 /*bool

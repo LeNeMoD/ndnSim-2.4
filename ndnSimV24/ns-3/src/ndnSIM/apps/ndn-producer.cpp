@@ -138,17 +138,18 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
 //  ns3::Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
   ns3::Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
 
+
   double at = 5;
 
   double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node->GetId(),at).x;
   double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node->GetId(),at).y ;
 
-  std::cout<< "check position-X +5s pass in producer  :" << posX << " node id: " << node->GetId() <<std::endl;
-  std::cout<< "check position-Y +5s pass in producer  :" << posY << " node id: " << node->GetId() <<std::endl;
+//  std::cout<< "check position-X +5s pass in producer  :" << posX << " node id: " << node->GetId() <<std::endl;
+//  std::cout<< "check position-Y +5s pass in producer  :" << posY << " node id: " << node->GetId() <<std::endl;
 
   futurePositionInfo.setFutureLocationX(posX);
   futurePositionInfo.setFutureLocationY(posY);
-  futurePositionInfo.setTimeAtFutureLocation(5);
+  futurePositionInfo.setTimeAtFutureLocation(at);
 
   data->setFuturePositionInfo(futurePositionInfo);
 

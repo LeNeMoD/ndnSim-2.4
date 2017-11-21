@@ -28,6 +28,10 @@
 #include "signature.hpp"
 #include "encoding/block.hpp"
 
+//Dome
+#include "../../../core/model/vector.h"
+#include "futurePositionInfo.hpp"
+
 namespace ndn {
 
 /** @brief Represents a Data packet
@@ -143,6 +147,19 @@ public: // Data fields
   Data&
   setMetaInfo(const MetaInfo& metaInfo);
 
+	//  //Dome
+	//  const ns3::Vector&
+	//  getFutureLocation() const;
+
+	const FuturePositionInfo&
+	getFuturePositionInfo() const {
+		return m_futurePositonInfo;
+	}
+
+	Data&
+	setFuturePositionInfo(const FuturePositionInfo& futurePositionInfo);
+
+
   /** @brief Get Content
    *
    *  The Content value is accessible through value()/value_size() or value_begin()/value_end()
@@ -236,6 +253,8 @@ private:
   MetaInfo m_metaInfo;
   Block m_content;
   Signature m_signature;
+  //Dome
+  FuturePositionInfo m_futurePositonInfo;
 
   mutable Block m_wire;
   mutable Name m_fullName; ///< cached FullName computed from m_wire
@@ -260,6 +279,13 @@ operator!=(const Data& lhs, const Data& rhs)
 {
   return !(lhs == rhs);
 }
+
+////Dome
+//inline const FuturePositionInfo&
+//Data::getFuturePositionInfo() const
+//{
+//  return m_futurePositonInfo;
+//}
 
 } // namespace ndn
 

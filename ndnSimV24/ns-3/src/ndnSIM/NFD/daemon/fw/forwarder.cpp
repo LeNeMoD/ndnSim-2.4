@@ -48,6 +48,11 @@
 
 #include "ns3/ndnSIM/model/ndn-net-device-transport.hpp"
 
+//Dome
+//#include "../../../../mobility/model/constant-velocity-mobility-model.h"
+#include "ns3/ns2-mobility-helper.h"
+#include "../../../ndn-cxx/src/futurePositionInfo.hpp"
+
 namespace nfd {
 
 NFD_LOG_INIT("Forwarder");
@@ -163,6 +168,9 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
   			  return;
   		  }
   	  }
+  	  //Dome
+  	  //std::cout<< " on incoming interest node: " << node->GetId() << " comes from mac add: " << a<< " interest name: "<< interest.getName()<<std::endl;
+
     }
   const pit::InRecordCollection& inRecords = pitEntry->getInRecords();
   bool isPending = inRecords.begin() != inRecords.end();
@@ -326,6 +334,11 @@ Forwarder::onOutgoingInterest(const shared_ptr<pit::Entry>& pitEntry, Face& outF
   // insert out-record
   pitEntry->insertOrUpdateOutRecord(outFace, interest);
   targetmac= mac;
+
+  //Dome
+  ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
+   std::cout<< " on outgoing interest: " << mac << " node : " << node->GetId() << " Interest name " << interest.getName() << std::endl;
+
   // send Interest
   outFace.sendInterest(interest);
   ++m_counters.nOutInterests;
@@ -413,6 +426,12 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
     return;
   }
 
+  //Dome
+  ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
+//  std::cout << " on INcoming Data node " << node->GetId() << " name " << data.getName() << std::endl;
+  std::cout << " on Incoming Data node " << node->GetId() << std::endl;
+
+
   shared_ptr<Data> dataCopyWithoutTag = make_shared<Data>(data);
   dataCopyWithoutTag->removeTag<lp::HopCountTag>();
 
@@ -439,7 +458,8 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
         macs.push_back(inRecord.getMac());
       }
     }
-    ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
+    //Dome outcommented
+//    ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
     std::ostringstream addr[node->GetNDevices()];
        std::string currentMacAddresses[node->GetNDevices()];
 
@@ -456,8 +476,30 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
        			return;
        		}
        	}
-       	//FIB POPULATION WHEN A DATA MSG IS COMING BACK
-       	ns3::ndn::FibHelper::AddRoute(node, "/beacon", inFace.getId(), 111, a );
+       	//Dome
+    	//update position to Fib
+//      //FIB POPULATION WHEN A DATA MSG IS COMING BACK
+//      //	Dome outcomment
+//       ns3::ndn::FibHelper::AddRoute(node, "/beacon", inFace.getId(), 111, a );
+
+       	//Dome
+
+    	ns3::Ptr<ns3::MobilityModel> mobilityModel = node->GetObject<ns3::MobilityModel>();
+    	ns3::Vector pos = mobilityModel->GetPosition();
+
+//       	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-test2-n3.txt");
+
+//       	double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("Forwarder",node->GetId(),5).x;
+//       	double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("Forwarder",node->GetId(),5).y ;
+
+       	ndn::FuturePositionInfo futurePositionInfo = data.getFuturePositionInfo();
+//       	std::cout<<"data Forwarder contains: "<< data.getFuturePositionInfo().getFutureLocation_X() <<std::endl;
+
+
+//       	std::cout<< "check position-X +5s pass in forwarder  :" << futurePositionInfo.getFutureLocation_X() << " node id: " << node->GetId() <<std::endl;
+//       	std::cout<< "check position-Y +5s pass in forwarder  :" << futurePositionInfo.getFutureLocation_Y() << " node id: " << node->GetId() <<std::endl;
+
+       	ns3::ndn::FibHelper::AddRoute(node, "/beacon", inFace.getId(), 111, a,pos.x,pos.y,pos.z,futurePositionInfo.getFutureLocation_X(),futurePositionInfo.getFutureLocation_Y(),futurePositionInfo.getTimeAtFutureLocation());
 
      }
     // invoke PIT satisfy callback
@@ -489,6 +531,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
       this->onOutgoingData(data, *pendingDownstream);
     }
   }
+
 
 void
 Forwarder::onDataUnsolicited(Face& inFace, const Data& data)
@@ -528,6 +571,13 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
   }
 
   // TODO traffic manager
+
+  //Dome
+  ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
+
+  //Dome
+//  std::cout<< " outgoing data node: " << node->GetId() << " target mac: " << targetmac << " name of data: " << data.getName() << std::endl;
+
 
   // send Data
   outFace.sendData(data);

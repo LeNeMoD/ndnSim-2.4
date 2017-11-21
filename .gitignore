@@ -66,3 +66,5 @@ ndnSimV24/ns-3/Makefile
 ndnSimV24/ns-3/utils/
 
 ndnSimV24/ns-3/examples/
+
+ndnSimV24/ns-3/output\.txt

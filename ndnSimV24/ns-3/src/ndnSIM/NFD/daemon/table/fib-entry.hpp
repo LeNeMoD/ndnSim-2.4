@@ -83,8 +83,14 @@ public:
    *
    *  If a NextHop record for \p face already exists, its cost is updated.
    */
+  //Dome uncomment
+//  void
+//    addNextHop(Face& face, uint64_t cost,std::string mac);
+
+  //Dome
   void
-    addNextHop(Face& face, uint64_t cost,std::string mac);
+    addNextHop(Face& face, uint64_t cost,std::string mac, double positionX, double positionY, double positionZ, double futurePositionX, double futurePositionY, double timeAtFuturePosition);
+
 
   /** \brief removes a NextHop record
    *

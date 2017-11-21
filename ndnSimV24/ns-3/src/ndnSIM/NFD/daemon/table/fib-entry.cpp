@@ -56,8 +56,25 @@ Entry::hasNextHop(const Face& face) const
   return const_cast<Entry*>(this)->findNextHop(face) != m_nextHops.end();
 }
 
+//Dome outcommented
+//void
+//Entry::addNextHop(Face& face, uint64_t cost, std::string mac)
+//{
+//  auto it = this->findNextHop(mac);
+//  if (it == m_nextHops.end()) {
+//    m_nextHops.emplace_back(face);
+//    it = std::prev(m_nextHops.end());
+//  }
+//  it->setMac(mac);
+//  it->setCost(cost);
+//  this->sortNextHops();
+//}
+
+//Dome
 void
-Entry::addNextHop(Face& face, uint64_t cost, std::string mac)
+Entry::addNextHop(Face& face, uint64_t cost, std::string mac, double positionX, double positionY, double positionZ,
+		double futurePositionX, double futurePositionY,
+		double timeAtFuturePosition)
 {
   auto it = this->findNextHop(mac);
   if (it == m_nextHops.end()) {
@@ -66,6 +83,12 @@ Entry::addNextHop(Face& face, uint64_t cost, std::string mac)
   }
   it->setMac(mac);
   it->setCost(cost);
+  it->setPositionX(positionX);
+  it->setPositionY(positionY);
+  it->setPositionZ(positionZ);
+  it->setFuturePositionX(futurePositionX);
+  it->setFuturePositionY(futurePositionY);
+  it->setTimeAtFuturePosition(timeAtFuturePosition);
   this->sortNextHops();
 }
 

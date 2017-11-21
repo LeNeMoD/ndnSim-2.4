@@ -40,6 +40,8 @@
 #include "table/network-region-table.hpp"
 
 #include "ns3/ndnSIM/model/cs/ndn-content-store.hpp"
+#include "ns3/ns2-mobility-helper.h"
+
 
 namespace nfd {
 

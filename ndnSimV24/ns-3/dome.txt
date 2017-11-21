@@ -1,0 +1,4 @@
+Waf: Entering directory `/home/domenico/ndnSim24/ndnSimV24/ns-3/build'
+[2509/3186] Compiling src/ndnSIM/examples/ndn-Dome-FirstExample.cpp
+Waf: Leaving directory `/home/domenico/ndnSim24/ndnSimV24/ns-3/build'
+Interrupted 

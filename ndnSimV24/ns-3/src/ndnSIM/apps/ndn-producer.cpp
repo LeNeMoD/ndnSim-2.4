@@ -29,13 +29,21 @@
 
 #include <memory>
 
+//Dome
+//#include "ndn-cxx/src/futurePositionInfo.hpp"
+//#include "../ndn-cxx/src/futurePositionInfo.hpp"
+#include "ns3/ndnSIM/ndn-cxx/futurePositionInfo.hpp"
+#include "ns3/ns2-mobility-helper.h"
+
+
 NS_LOG_COMPONENT_DEFINE("ndn.Producer");
+
+ndn::FuturePositionInfo futurePositionInfo;
 
 namespace ns3 {
 namespace ndn {
 
 NS_OBJECT_ENSURE_REGISTERED(Producer);
-
 TypeId
 Producer::GetTypeId(void)
 {
@@ -123,6 +131,34 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
   data->setSignature(signature);
 
   NS_LOG_INFO("node(" << GetNode()->GetId() << ") responding with Data: " << data->getName());
+
+  //Dome
+  ns3::Ptr<ns3::Node> node = GetNode();
+
+//  Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
+// 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
+//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
+	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-Ring-7n.txt");
+
+
+
+
+  double at = 5;
+
+  double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node->GetId(),at).x;
+  double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node->GetId(),at).y ;
+
+//  std::cout<< "check position-X +5s pass in producer  :" << posX << " node id: " << node->GetId() <<std::endl;
+//  std::cout<< "check position-Y +5s pass in producer  :" << posY << " node id: " << node->GetId() <<std::endl;
+
+  futurePositionInfo.setFutureLocationX(posX);
+  futurePositionInfo.setFutureLocationY(posY);
+  futurePositionInfo.setTimeAtFutureLocation(at);
+
+  data->setFuturePositionInfo(futurePositionInfo);
+
+//  std::cout<<"data futurPos in producer contains: "<< data->getFuturePositionInfo().m_location_X_Coord <<std::endl;
+//  std::cout<<"data futurPos in producer contains: "<< data->getFuturePositionInfo().m_location_Y_Coord <<std::endl;
 
   // to create real wire encoding
   data->wireEncode();

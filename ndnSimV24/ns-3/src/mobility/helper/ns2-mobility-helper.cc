@@ -211,65 +211,65 @@ Ns2MobilityHelper::GetMobilityModel (std::string idString, const ObjectStore &st
 }
 
 
-////Dome
-//Vector Ns2MobilityHelper::GetPositionFromTCLFileForNodeAtTime(
-//		std::string caller, int Nodeid, double at) {
-////	std::cout<< "GetPositionFromTCLFileForNodeAtTime is called :" << std::endl;
-//	std::ifstream file(m_filename.c_str(), std::ios::in);
-//	int NodeId = Nodeid;
-//	double atTimeDouble = at;
-//	Time atTimeSeconds = Seconds(at);
-//	Vector futurePosition;
-//	bool entryFound = false;
-//
-//	if (file.is_open()) {
-//
-////	      std::cout<<"file is open"<<std::endl;
-//		while (!file.eof() && !entryFound) {
-////	        	std::cout<< "first while loop is called :" << std::endl;
-//
-//			std::string line;
-//			getline(file, line);
-//
-//			// ignore empty lines
-//			if (line.empty()) {
-//				continue;
-//			}
-//
-//			ParseResult pr = ParseNs2Line(line); // Parse line and obtain tokens
-//
-//			// Check if the line corresponds with setting the initial
-//			// node positions
-//			if (pr.tokens.size() == 4) {
-//				continue;
-//			} else {
-//
-////	            std::cout << "node id : " <<GetNodeIdInt(pr) << " time: " << pr.tokens[2] << " time2 : " << pr.has_dval[2] <<" X: " << pr.tokens[5] << " Y: " << pr.tokens[6] << " speed...: " << pr.tokens[7]<< std::endl;
-////	            std::cout<<" val1: "<< pr.ivals[1] <<" val1: "<< pr.ivals[1] << " val2: " << pr.ivals[2] << " val3: " << pr.ivals[3] << " val4: " << pr.ivals[4] << " val5: " << pr.ivals[5] << " val6: " << pr.ivals[6]<<std::endl;
-//
-//				if (pr.ivals[3] == NodeId && pr.dvals[2] == atTimeDouble) {
-//					futurePosition.x = pr.dvals[5];
-//					futurePosition.y = pr.dvals[6];
-//					futurePosition.z = pr.dvals[7];
-////	            	std::cout<< "futurePosition from nsHelper"<< futurePosition <<std::endl;
-//					std::cout
-//							<< "----------------------Requestet Future Position--------------------------------------"
-//							<< std::endl;
-//					std::cout << "Requestet from " << caller
-//							<< ": requestet NodeID: " << NodeId << " = "
-//							<< pr.ivals[3] << " at req time: " << atTimeDouble
-//							<< " = " << pr.dvals[2]
-//							<< " has Future Position X Y Z" << pr.tokens[5]
-//							<< pr.tokens[6] << std::endl;
-//					std::cout << "" << std::endl;
-//					entryFound = true;
-//				}
-//			}
-//		}
-//	}
-//	return futurePosition;
-//}
-//
+//Dome
+Vector
+Ns2MobilityHelper::GetPositionFromTCLFileForNodeAtTime(std::string caller, int Nodeid, double at) {
+//	std::cout<< "GetPositionFromTCLFileForNodeAtTime is called :" << std::endl;
+	std::ifstream file(m_filename.c_str(), std::ios::in);
+	int NodeId = Nodeid;
+	double atTimeDouble = at;
+	Time atTimeSeconds = Seconds(at);
+	Vector futurePosition;
+	bool entryFound = false;
+
+	if (file.is_open()) {
+
+//	      std::cout<<"file is open"<<std::endl;
+		while (!file.eof() && !entryFound) {
+//	        	std::cout<< "first while loop is called :" << std::endl;
+
+			std::string line;
+			getline(file, line);
+
+			// ignore empty lines
+			if (line.empty()) {
+				continue;
+			}
+
+			ParseResult pr = ParseNs2Line(line); // Parse line and obtain tokens
+
+			// Check if the line corresponds with setting the initial
+			// node positions
+			if (pr.tokens.size() == 4) {
+				continue;
+			} else {
+
+//	            std::cout << "node id : " <<GetNodeIdInt(pr) << " time: " << pr.tokens[2] << " time2 : " << pr.has_dval[2] <<" X: " << pr.tokens[5] << " Y: " << pr.tokens[6] << " speed...: " << pr.tokens[7]<< std::endl;
+//	            std::cout<<" val1: "<< pr.ivals[1] <<" val1: "<< pr.ivals[1] << " val2: " << pr.ivals[2] << " val3: " << pr.ivals[3] << " val4: " << pr.ivals[4] << " val5: " << pr.ivals[5] << " val6: " << pr.ivals[6]<<std::endl;
+
+				if (pr.ivals[3] == NodeId && pr.dvals[2] == atTimeDouble) {
+					futurePosition.x = pr.dvals[5];
+					futurePosition.y = pr.dvals[6];
+					futurePosition.z = pr.dvals[7];
+//	            	std::cout<< "futurePosition from nsHelper"<< futurePosition <<std::endl;
+					std::cout
+							<< "----------------------Requestet Future Position--------------------------------------"
+							<< std::endl;
+					std::cout << "Requestet from " << caller
+							<< ": requestet NodeID: " << NodeId << " = "
+							<< pr.ivals[3] << " at req time: " << atTimeDouble
+							<< " = " << pr.dvals[2]
+							<< " has Future Position X Y Z" << pr.tokens[5]
+							<< pr.tokens[6] << std::endl;
+					std::cout << "" << std::endl;
+					entryFound = true;
+				}
+			}
+		}
+	}
+	return futurePosition;
+}
+
 
 void
 Ns2MobilityHelper::ConfigNodesMovements (const ObjectStore &store) const

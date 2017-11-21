@@ -35,44 +35,90 @@ namespace fib {
 /** \class NextHop
  *  \brief represents a nexthop record in FIB entry
  */
-class NextHop
-{
+class NextHop {
 public:
-  explicit
-  NextHop(Face& face);
+	explicit
+	NextHop(Face& face);
 
-  Face&
-  getFace() const
-  {
-    return *m_face;
-  }
+	Face&
+	getFace() const {
+		return *m_face;
+	}
 
-  uint64_t
-  getCost() const
-  {
-    return m_cost;
-  }
+	uint64_t getCost() const {
+		return m_cost;
+	}
 
-  void
-  setCost(uint64_t cost)
-  {
-    m_cost = cost;
-  }
-  void
-    setMac(std::string mac)
-    {
-      m_mac = mac;
-    }
+	void setCost(uint64_t cost) {
+		m_cost = cost;
+	}
+	void setMac(std::string mac) {
+		m_mac = mac;
+	}
 
-    std::string
-    getMac() const
-    {
-      return m_mac;
-    }
+	std::string getMac() const {
+		return m_mac;
+	}
+
+	//Dome
+	double getPositionX() const {
+		return m_positionX;
+	}
+
+	void setPositionX(double positionX) {
+		m_positionX = positionX;
+	}
+
+	void setPositionY(double positionY) {
+		m_positionY = positionY;
+	}
+
+	double getPositionY() const {
+		return m_positionY;
+	}
+
+	void setPositionZ(double positionZ) {
+		m_positionZ = positionZ;
+	}
+
+	double getPositionZ() const {
+		return m_positionZ;
+	}
+
+	double getFuturePositionX() const {
+		return m_futurePositionX;
+	}
+
+	void setFuturePositionX(double futurePositionX) {
+		m_futurePositionX = futurePositionX;
+	}
+
+	void setFuturePositionY(double futurePositionY) {
+		m_futurePositionY = futurePositionY;
+	}
+
+	double getFuturePositionY() const {
+		return m_futurePositionY;
+	}
+
+	void setTimeAtFuturePosition(double timeAtFuturePosition) {
+		m_timeAtFuturePosition = timeAtFuturePosition;
+	}
+
+	double getTimeAtFuturePosition() const {
+		return m_timeAtFuturePosition;
+	}
+
 private:
-  Face* m_face;
-  uint64_t m_cost;
-  std::string m_mac;
+	Face* m_face;
+	uint64_t m_cost;
+	std::string m_mac;
+	double m_positionX;
+	double m_positionY;
+	double m_positionZ;
+	double m_futurePositionX;
+	double m_futurePositionY;
+	double m_timeAtFuturePosition;
 };
 
 } // namespace fib

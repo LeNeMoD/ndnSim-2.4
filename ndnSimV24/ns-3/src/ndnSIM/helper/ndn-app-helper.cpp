@@ -50,11 +50,13 @@ AppHelper::SetAttribute(std::string name, const AttributeValue& value)
   m_factory.Set(name, value);
 }
 
+//Dome
 void
 AppHelper::SetTraceFile(const std::string& tracefile){
 	  m_factory.Set("TraceFile", StringValue(tracefile));
 	  m_traceFile = tracefile;
 }
+//
 
 ApplicationContainer
 AppHelper::Install(Ptr<Node> node)

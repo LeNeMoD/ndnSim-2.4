@@ -156,7 +156,7 @@ Data::wireDecode(const Block& wire)
   val = m_wire.find(tlv::FuturePositionInfo);
   if (val != m_wire.elements_end()) {
 	m_futurePositonInfo.wireDecode(m_wire.get(tlv::FuturePositionInfo));
-	std::cout<<"check content futurePosInfo after decode: x: "<< m_futurePositonInfo.getFutureLocation_X()<<" y: "<< m_futurePositonInfo.getFutureLocation_Y()<<std::endl;
+//	std::cout<<"check content futurePosInfo after decode: x: "<< m_futurePositonInfo.getFutureLocation_X()<<" y: "<< m_futurePositonInfo.getFutureLocation_Y()<<std::endl;
 	}
   }
 }

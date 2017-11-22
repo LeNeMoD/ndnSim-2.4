@@ -9,6 +9,13 @@
 
 #include "ns3/ndnSIM-module.h"
 
+#include "ns3/spectrum-helper.h"
+#include "ns3/antenna-model.h"
+#include "ns3/parabolic-antenna-model.h"
+#include "ns3/spectrum-wifi-phy.h"
+#include "ns3/spectrum-wifi-helper.h"
+#include "ns3/angles.h"
+
 using namespace std;
 namespace ns3 {
 
@@ -28,13 +35,29 @@ int main(int argc, char* argv[]) {
 	//////////////////////
 	//////////////////////
 	WifiHelper wifi = WifiHelper::Default();
-	wifi.SetStandard(WIFI_PHY_STANDARD_80211a);
+	wifi.SetStandard(WIFI_PHY_STANDARD_80211ac);
 	wifi.SetRemoteStationManager("ns3::ConstantRateWifiManager", "DataMode", StringValue("OfdmRate24Mbps"));
+
+	//Dome spectrum
+	SpectrumChannelHelper spectrumChannelHelper = SpectrumChannelHelper::Default();
+	spectrumChannelHelper.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
+	spectrumChannelHelper.AddPropagationLoss ("ns3::ThreeLogDistancePropagationLossModel");
+	spectrumChannelHelper.AddPropagationLoss("ns3::NakagamiPropagationLossModel");
+	Config::SetDefault ("ns3::WifiPhy::CcaMode1Threshold", DoubleValue (-62.0));
 
 	YansWifiChannelHelper wifiChannel;
 	wifiChannel.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
 	wifiChannel.AddPropagationLoss("ns3::ThreeLogDistancePropagationLossModel");
 	wifiChannel.AddPropagationLoss("ns3::NakagamiPropagationLossModel");
+
+	//Dome spectrum
+	SpectrumWifiPhyHelper spectrumWifiPhyHelper = SpectrumWifiPhyHelper::Default ();
+	spectrumWifiPhyHelper.SetChannel(spectrumChannelHelper.Create());
+	spectrumWifiPhyHelper.Set("TxPowerStart", DoubleValue(100));
+	spectrumWifiPhyHelper.Set("TxPowerEnd", DoubleValue(100));
+
+	spectrumWifiPhyHelper.SetPcapDataLinkType (YansWifiPhyHelper::DLT_IEEE802_11_RADIO);
+	spectrumWifiPhyHelper.SetPcapDataLinkType (SpectrumWifiPhyHelper::DLT_IEEE802_11_RADIO);
 
 	YansWifiPhyHelper wifiPhyHelper = YansWifiPhyHelper::Default();
 	wifiPhyHelper.SetChannel(wifiChannel.Create());
@@ -44,29 +67,67 @@ int main(int argc, char* argv[]) {
 	NqosWifiMacHelper wifiMacHelper = NqosWifiMacHelper::Default();
 	wifiMacHelper.SetType("ns3::AdhocWifiMac");
 
+
 //	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
 //	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
 //	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
-	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-Ring-7n.txt");
+//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-Ring-7n.txt");
+	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Diamond-5n.txt");
 
 
 
-	// Create Moble nodes.
+
+	// Create Mobile nodes.
 	NodeContainer mobileNodes;
-	mobileNodes.Create(7);
+	int nodeNr = 5;
+	mobileNodes.Create(nodeNr);
 
+	NetDeviceContainer netDeviceContParabolic1 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
+
+	for (int i = 0; i < 1; i++)
+	  {
+		Ptr<WifiPhy> wp = netDeviceContParabolic1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+		Ptr<SpectrumWifiPhy> swp = DynamicCast<SpectrumWifiPhy> (wp);
+
+		Ptr<ParabolicAntennaModel> parabolicAntenna = CreateObject<ParabolicAntennaModel>();
+		parabolicAntenna->SetBeamwidth(20);
+		parabolicAntenna->SetOrientation(90);
+		swp->SetAntenna(parabolicAntenna);
+
+	  }
+
+	NetDeviceContainer netDeviceContParabolic2 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(2));
+
+		for (int i = 0; i < 1; i++)
+		  {
+			Ptr<WifiPhy> wp = netDeviceContParabolic2.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+			Ptr<SpectrumWifiPhy> swp = DynamicCast<SpectrumWifiPhy> (wp);
+
+			Ptr<ParabolicAntennaModel> parabolicAntenna = CreateObject<ParabolicAntennaModel>();
+			parabolicAntenna->SetBeamwidth(20);
+			parabolicAntenna->SetOrientation(270);
+			swp->SetAntenna(parabolicAntenna);
+
+		  }
 	// configure movements for each node, while reading trace file
-	ns2MobHelper.Install();
 
 	////////////////
 	// 1. Install Wifi
-	NetDeviceContainer wifiNetDevices = wifi.Install(wifiPhyHelper, wifiMacHelper, mobileNodes);
+//	NetDeviceContainer wifiNetDevices = wifi.Install(wifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
+	NetDeviceContainer wifiNetDevices2 = wifi.Install(wifiPhyHelper, wifiMacHelper, mobileNodes.Get(1));
+	NetDeviceContainer wifiNetDevices3 = wifi.Install(wifiPhyHelper, wifiMacHelper, mobileNodes.Get(2));
+	NetDeviceContainer wifiNetDevices4 = wifi.Install(wifiPhyHelper, wifiMacHelper, mobileNodes.Get(3));
+	NetDeviceContainer wifiNetDevices5 = wifi.Install(wifiPhyHelper, wifiMacHelper, mobileNodes.Get(4));
+//	NetDeviceContainer wifiNetDevices6 = wifi.Install(wifiPhyHelper, wifiMacHelper, mobileNodes.Get(5));
+
 	// 2. Install Mobility model
+//	Config::Set ("/NodeList/*/DeviceList/*/$ns3::WifiNetDevice/Phy/ChannelWidth", UintegerValue (80));
+	ns2MobHelper.Install();
+
 
 	// 3. Install NDN stack
 	NS_LOG_INFO("Installing NDN stack");
 	ndn::StackHelper ndnHelper;
-	// ndnHelper.AddNetDeviceFaceCreateCallback (WifiNetDevice::GetTypeId (), MakeCallback(MyNetDeviceFaceCallback));
 	ndnHelper.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize", "1000");
 	ndnHelper.SetDefaultRoutes(true);
 	ndnHelper.Install(mobileNodes);
@@ -74,54 +135,55 @@ int main(int argc, char* argv[]) {
 	ndn::StrategyChoiceHelper::Install(mobileNodes, "/", "/localhost/nfd/strategy/multicast");
 
 
+
 	// 4. Set up applications
 	NS_LOG_INFO("Installing Applications");
 
+//	ndn::AppHelper producerHelper("ns3::ndn::Producer");
+//	producerHelper.SetPrefix("/beacon");
+//	producerHelper.SetAttribute("PayloadSize", StringValue("1200"));
+//	producerHelper.Install(mobileNodes.Get(6));
+
 	ndn::AppHelper producerHelper("ns3::ndn::Producer");
-//	producerHelper.SetTraceFile("ns-movements-test2-n3.txt");
 	producerHelper.SetPrefix("/beacon");
 	producerHelper.SetAttribute("PayloadSize", StringValue("1200"));
-	producerHelper.Install(mobileNodes.Get(6));
+	producerHelper.Install(mobileNodes.Get(0));
 
-	ndn::AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
-//	consumerHelper.SetTraceFile("ns-movements-test2-n3.txt");
-	consumerHelper.SetPrefix("/beacon");
-	consumerHelper.SetAttribute("Frequency", DoubleValue(10.0));
-	consumerHelper.Install(mobileNodes.Get(0));
+//	ndn::AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
+//	consumerHelper.SetPrefix("/beacon");
+//	consumerHelper.SetAttribute("Frequency", DoubleValue(10.0));
+//	consumerHelper.Install(mobileNodes.Get(0));
 
- 	ndn::AppHelper consumerHelper2("ns3::ndn::ConsumerCbr");
-	consumerHelper2.SetPrefix("/beacon");
-	consumerHelper2.SetAttribute("Frequency", DoubleValue(10.0));
-	consumerHelper2.Install(mobileNodes.Get(1));
+// 	ndn::AppHelper consumerHelper2("ns3::ndn::ConsumerCbr");
+//	consumerHelper2.SetPrefix("/beacon");
+//	consumerHelper2.SetAttribute("Frequency", DoubleValue(10.0));
+//	consumerHelper2.Install(mobileNodes.Get(1));
 
 	ndn::AppHelper consumerHelper3("ns3::ndn::ConsumerCbr");
-//	consumerHelper.SetTraceFile("ns-movements-test2-n3.txt");
 	consumerHelper3.SetPrefix("/beacon");
 	consumerHelper3.SetAttribute("Frequency", DoubleValue(10.0));
 	consumerHelper3.Install(mobileNodes.Get(2));
 
-	ndn::AppHelper consumerHelper4("ns3::ndn::ConsumerCbr");
-//	consumerHelper.SetTraceFile("ns-movements-test2-n3.txt");
+	/*ndn::AppHelper consumerHelper4("ns3::ndn::ConsumerCbr");
 	consumerHelper4.SetPrefix("/beacon");
 	consumerHelper4.SetAttribute("Frequency", DoubleValue(10.0));
 	consumerHelper4.Install(mobileNodes.Get(3));
 
 	ndn::AppHelper consumerHelper5("ns3::ndn::ConsumerCbr");
-//	consumerHelper.SetTraceFile("ns-movements-test2-n3.txt");
 	consumerHelper5.SetPrefix("/beacon");
 	consumerHelper5.SetAttribute("Frequency", DoubleValue(10.0));
 	consumerHelper5.Install(mobileNodes.Get(4));
 
-	ndn::AppHelper consumerHelper6("ns3::ndn::ConsumerCbr");
-//	consumerHelper.SetTraceFile("ns-movements-test2-n3.txt");
-	consumerHelper6.SetPrefix("/beacon");
-	consumerHelper6.SetAttribute("Frequency", DoubleValue(10.0));
-	consumerHelper6.Install(mobileNodes.Get(5));
-
+//	ndn::AppHelper consumerHelper6("ns3::ndn::ConsumerCbr");
+////	consumerHelper.SetTraceFile("ns-movements-test2-n3.txt");
+//	consumerHelper6.SetPrefix("/beacon");
+//	consumerHelper6.SetAttribute("Frequency", DoubleValue(10.0));
+//	consumerHelper6.Install(mobileNodes.Get(5));
+*/
 
 	////////////////
 
-	Simulator::Stop(Seconds(30.0));
+	Simulator::Stop(Seconds(20.0));
 
 	Simulator::Run();
 	Simulator::Destroy();

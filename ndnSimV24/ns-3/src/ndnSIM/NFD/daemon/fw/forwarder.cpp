@@ -505,8 +505,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
      }
     // invoke PIT satisfy callback
     beforeSatisfyInterest(*pitEntry, inFace, data);
-    this->dispatchToStrategy(*pitEntry,
-      [&] (fw::Strategy& strategy) { strategy.beforeSatisfyInterest(pitEntry, inFace, data); });
+    this->dispatchToStrategy(*pitEntry,[&] (fw::Strategy& strategy) { strategy.beforeSatisfyInterest(pitEntry, inFace, data); });
 
     // Dead Nonce List insert if necessary (for out-record of inFace)
     this->insertDeadNonceList(*pitEntry, true, data.getFreshnessPeriod(), &inFace);

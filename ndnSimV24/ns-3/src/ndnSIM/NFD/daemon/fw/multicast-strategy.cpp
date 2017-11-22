@@ -100,6 +100,10 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
 				<< " Future-position-X : " << it->getFuturePositionX() << " Future-position-Y : " << it->getFuturePositionY() << std::endl
 				<< " Time-At-FuturePos : "<< it->getTimeAtFuturePosition()<< std::endl
 				<< std::endl;
+
+  		if(it->getFuturePositionX()!=0 || it->getFuturePositionX()!=0){
+  			std::cout<< "FuturePosition was Set!"<<std::endl<<std::endl;
+  		}
   	}
 
  // for (const auto& nexthop : nexthops) {

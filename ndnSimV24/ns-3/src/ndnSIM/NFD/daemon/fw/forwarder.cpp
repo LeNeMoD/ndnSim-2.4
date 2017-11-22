@@ -428,8 +428,9 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 
   //Dome
   ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
-//  std::cout << " on INcoming Data node " << node->GetId() << " name " << data.getName() << std::endl;
-  std::cout << " on Incoming Data node " << node->GetId() << std::endl;
+//  std::cout << " on Incoming Data node : " << node->GetId() << " name " << data.getName() << std::endl;
+//  std::cout << " on Incoming Data node : " << node->GetId() << "at time : " << ns3::Simulator::Now() << std::endl;
+  	std::cout << " on Incoming Data node : " << node->GetId() << std::endl;
 
 
   shared_ptr<Data> dataCopyWithoutTag = make_shared<Data>(data);

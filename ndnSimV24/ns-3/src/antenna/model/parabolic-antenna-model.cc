@@ -82,6 +82,18 @@ ParabolicAntennaModel::SetOrientation (double orientationDegrees)
   m_orientationRadians = DegreesToRadians (orientationDegrees);
 }
 
+//Dome perhaps use increment :   ++this->nInData;
+
+void
+ParabolicAntennaModel::TurnAntenna(double orientationDegrees){
+	this->SetOrientation(orientationDegrees);
+}
+
+void
+ParabolicAntennaModel::ChangeBeamwidth(double beamwidthDegrees){
+	this->SetBeamwidth(beamwidthDegrees);
+}
+
 double
 ParabolicAntennaModel::GetOrientation () const
 {

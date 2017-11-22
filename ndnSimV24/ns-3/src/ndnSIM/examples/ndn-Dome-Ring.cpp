@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
 	//////////////////////
 	//////////////////////
 	WifiHelper wifi = WifiHelper::Default();
-	wifi.SetStandard(WIFI_PHY_STANDARD_80211a);
+	wifi.SetStandard(WIFI_PHY_STANDARD_80211ac);
 	wifi.SetRemoteStationManager("ns3::ConstantRateWifiManager", "DataMode", StringValue("OfdmRate24Mbps"));
 
 	//Dome spectrum
@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
 	spectrumChannelHelper.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
 	spectrumChannelHelper.AddPropagationLoss ("ns3::ThreeLogDistancePropagationLossModel");
 	spectrumChannelHelper.AddPropagationLoss("ns3::NakagamiPropagationLossModel");
-	Config::SetDefault ("ns3::WifiPhy::CcaMode1Threshold", DoubleValue (-90.0));
+	Config::SetDefault ("ns3::WifiPhy::CcaMode1Threshold", DoubleValue (-62.0));
 
 	YansWifiChannelHelper wifiChannel;
 	wifiChannel.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
@@ -61,8 +61,8 @@ int main(int argc, char* argv[]) {
 
 	YansWifiPhyHelper wifiPhyHelper = YansWifiPhyHelper::Default();
 	wifiPhyHelper.SetChannel(wifiChannel.Create());
-	wifiPhyHelper.Set("TxPowerStart", DoubleValue(100));
-	wifiPhyHelper.Set("TxPowerEnd", DoubleValue(100));
+	wifiPhyHelper.Set("TxPowerStart", DoubleValue(5));
+	wifiPhyHelper.Set("TxPowerEnd", DoubleValue(5));
 
 	NqosWifiMacHelper wifiMacHelper = NqosWifiMacHelper::Default();
 	wifiMacHelper.SetType("ns3::AdhocWifiMac");
@@ -84,36 +84,9 @@ int main(int argc, char* argv[]) {
 
 	NetDeviceContainer netDeviceContParabolicN0Dev1 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
 	NetDeviceContainer netDeviceContParabolicN0Dev2 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
-	NetDeviceContainer netDeviceContParabolicN0Dev3 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
 
 	for (int i = 0; i < 1; i++)
 	  {
-//		Ptr<WifiPhy> wp = netDeviceContParabolicN0Dev1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
-//		Ptr<SpectrumWifiPhy> swp = DynamicCast<SpectrumWifiPhy> (wp);
-//
-//		Ptr<ParabolicAntennaModel> parabolicAntenna = CreateObject<ParabolicAntennaModel>();
-//		parabolicAntenna->SetBeamwidth(20);
-//		parabolicAntenna->SetOrientation(90);
-//		swp->SetAntenna(parabolicAntenna);
-//
-//		Ptr<WifiPhy> wp2 = netDeviceContParabolicN0Dev2.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
-//		Ptr<SpectrumWifiPhy> swp2 = DynamicCast<SpectrumWifiPhy> (wp2);
-//
-//		Ptr<ParabolicAntennaModel> parabolicAntenna2 = CreateObject<ParabolicAntennaModel>();
-//		parabolicAntenna2->SetBeamwidth(20);
-//		parabolicAntenna2->SetOrientation(270);
-//		swp2->SetAntenna(parabolicAntenna2);
-//
-//		Ptr<WifiPhy> wp3 = netDeviceContParabolicN0Dev3.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
-//		Ptr<SpectrumWifiPhy> swp3 = DynamicCast<SpectrumWifiPhy> (wp3);
-//
-//		Ptr<ParabolicAntennaModel> parabolicAntenna3 = CreateObject<ParabolicAntennaModel>();
-//		parabolicAntenna3->SetBeamwidth(20);
-//		parabolicAntenna3->SetOrientation(0);
-//		swp3->SetAntenna(parabolicAntenna3);
-
-
-		//set antenna on one netdevice
 		Ptr<WifiPhy> wp = netDeviceContParabolicN0Dev1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
 		Ptr<SpectrumWifiPhy> swp = DynamicCast<SpectrumWifiPhy> (wp);
 
@@ -122,15 +95,13 @@ int main(int argc, char* argv[]) {
 		parabolicAntenna->SetOrientation(90);
 		swp->SetAntenna(parabolicAntenna);
 
+		Ptr<WifiPhy> wp2 = netDeviceContParabolicN0Dev2.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+		Ptr<SpectrumWifiPhy> swp2 = DynamicCast<SpectrumWifiPhy> (wp2);
+
 		Ptr<ParabolicAntennaModel> parabolicAntenna2 = CreateObject<ParabolicAntennaModel>();
 		parabolicAntenna2->SetBeamwidth(20);
 		parabolicAntenna2->SetOrientation(270);
-		swp->SetAntenna(parabolicAntenna2);
-
-		Ptr<ParabolicAntennaModel> parabolicAntenna3 = CreateObject<ParabolicAntennaModel>();
-		parabolicAntenna3->SetBeamwidth(20);
-		parabolicAntenna3->SetOrientation(270);
-		swp->SetAntenna(parabolicAntenna3);
+		swp2->SetAntenna(parabolicAntenna2);
 	  }
 
 
@@ -250,7 +221,7 @@ int main(int argc, char* argv[]) {
 
 	////////////////
 
-	Simulator::Stop(Seconds(40.0));
+	Simulator::Stop(Seconds(20.0));
 
 	Simulator::Run();
 	Simulator::Destroy();

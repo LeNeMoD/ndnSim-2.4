@@ -34,6 +34,8 @@
 //#include "../ndn-cxx/src/futurePositionInfo.hpp"
 #include "ns3/ndnSIM/ndn-cxx/futurePositionInfo.hpp"
 #include "ns3/ns2-mobility-helper.h"
+#include "ns3/parabolic-antenna-model.h"
+
 
 
 NS_LOG_COMPONENT_DEFINE("ndn.Producer");
@@ -88,6 +90,14 @@ Producer::StartApplication()
   App::StartApplication();
 
   FibHelper::AddRoute(GetNode(), m_prefix, m_face, 0);
+
+  if(ns3::Simulator::Now()/1000000>5){
+	  std::cout<<"turning Antenna to 90 at time s: " <<ns3::Simulator::Now()/1000000<<std::endl;
+	  ns3::Ptr<ns3::Node> node = GetNode();
+	  Ptr<ParabolicAntennaModel> parabolicAntennaPtr = node->GetObject<ParabolicAntennaModel>();
+	  double degrees = 90;
+	  parabolicAntennaPtr->TurnAntenna(degrees);
+  }
 }
 
 void
@@ -147,6 +157,7 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
 
   double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node->GetId(),at).x;
   double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node->GetId(),at).y ;
+
 
 //  std::cout<< "check position-X +5s pass in producer  :" << posX << " node id: " << node->GetId() <<std::endl;
 //  std::cout<< "check position-Y +5s pass in producer  :" << posY << " node id: " << node->GetId() <<std::endl;

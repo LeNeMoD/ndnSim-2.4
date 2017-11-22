@@ -87,37 +87,37 @@ int main(int argc, char* argv[]) {
 
 	for (int i = 0; i < 1; i++)
 	  {
-		Ptr<WifiPhy> wp = netDeviceContParabolicN0Dev1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
-		Ptr<SpectrumWifiPhy> swp = DynamicCast<SpectrumWifiPhy> (wp);
-
-		Ptr<ParabolicAntennaModel> parabolicAntenna = CreateObject<ParabolicAntennaModel>();
-		parabolicAntenna->SetBeamwidth(10);
-		parabolicAntenna->SetOrientation(90);
-		swp->SetAntenna(parabolicAntenna);
-
-		Ptr<WifiPhy> wp2 = netDeviceContParabolicN0Dev2.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
-		Ptr<SpectrumWifiPhy> swp2 = DynamicCast<SpectrumWifiPhy> (wp2);
-
-		Ptr<ParabolicAntennaModel> parabolicAntenna2 = CreateObject<ParabolicAntennaModel>();
-		parabolicAntenna2->SetBeamwidth(10);
-		parabolicAntenna2->SetOrientation(270);
-		swp2->SetAntenna(parabolicAntenna2);
-
-		Ptr<WifiPhy> wp3 = netDeviceContParabolicN0Dev2.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
-		Ptr<SpectrumWifiPhy> swp3 = DynamicCast<SpectrumWifiPhy>(wp3);
-
-		Ptr<ParabolicAntennaModel> parabolicAntenna3 = CreateObject<ParabolicAntennaModel>();
-		parabolicAntenna3->SetBeamwidth(10);
-		parabolicAntenna3->SetOrientation(270);
-		swp2->SetAntenna(parabolicAntenna3);
-
-		Ptr<WifiPhy> wp4 = netDeviceContParabolicN0Dev2.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
-		Ptr<SpectrumWifiPhy> swp4 = DynamicCast<SpectrumWifiPhy>(wp4);
-
-		Ptr<ParabolicAntennaModel> parabolicAntenna4 = CreateObject<ParabolicAntennaModel>();
-		parabolicAntenna4->SetBeamwidth(10);
-		parabolicAntenna4->SetOrientation(270);
-		swp2->SetAntenna(parabolicAntenna4);
+//		Ptr<WifiPhy> wp = netDeviceContParabolicN0Dev1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+//		Ptr<SpectrumWifiPhy> swp = DynamicCast<SpectrumWifiPhy> (wp);
+//
+//		Ptr<ParabolicAntennaModel> parabolicAntenna = CreateObject<ParabolicAntennaModel>();
+//		parabolicAntenna->SetBeamwidth(10);
+//		parabolicAntenna->SetOrientation(90);
+//		swp->SetAntenna(parabolicAntenna);
+//
+//		Ptr<WifiPhy> wp2 = netDeviceContParabolicN0Dev2.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+//		Ptr<SpectrumWifiPhy> swp2 = DynamicCast<SpectrumWifiPhy> (wp2);
+//
+//		Ptr<ParabolicAntennaModel> parabolicAntenna2 = CreateObject<ParabolicAntennaModel>();
+//		parabolicAntenna2->SetBeamwidth(10);
+//		parabolicAntenna2->SetOrientation(270);
+//		swp2->SetAntenna(parabolicAntenna2);
+//
+//		Ptr<WifiPhy> wp3 = netDeviceContParabolicN0Dev2.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+//		Ptr<SpectrumWifiPhy> swp3 = DynamicCast<SpectrumWifiPhy>(wp3);
+//
+//		Ptr<ParabolicAntennaModel> parabolicAntenna3 = CreateObject<ParabolicAntennaModel>();
+//		parabolicAntenna3->SetBeamwidth(10);
+//		parabolicAntenna3->SetOrientation(270);
+//		swp2->SetAntenna(parabolicAntenna3);
+//
+//		Ptr<WifiPhy> wp4 = netDeviceContParabolicN0Dev2.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+//		Ptr<SpectrumWifiPhy> swp4 = DynamicCast<SpectrumWifiPhy>(wp4);
+//
+//		Ptr<ParabolicAntennaModel> parabolicAntenna4 = CreateObject<ParabolicAntennaModel>();
+//		parabolicAntenna4->SetBeamwidth(10);
+//		parabolicAntenna4->SetOrientation(270);
+//		swp2->SetAntenna(parabolicAntenna4);
 
 		//4 antennas in 1 net dev
 		Ptr<WifiPhy> wp = netDeviceContParabolicN0Dev1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();

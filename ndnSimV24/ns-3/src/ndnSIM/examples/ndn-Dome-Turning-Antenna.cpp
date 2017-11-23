@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
 	wifiMacHelper.SetType("ns3::AdhocWifiMac");
 
 	//Mobility Helper
-	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Diamond-5n-with-moving.txt");
+	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-line-3n-far-Dist.txt");
 
 	// Create Mobile nodes.
 	NodeContainer mobileNodes;
@@ -64,15 +64,39 @@ int main(int argc, char* argv[]) {
 	NetDeviceContainer netDeviceContainerParabolicN0Dev1 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
 
 	//Set SpectrumPhy from WifiPhy
-	Ptr<WifiPhy> wp = netDeviceContainerParabolicN0Dev1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
-	Ptr<SpectrumWifiPhy> swp = DynamicCast<SpectrumWifiPhy> (wp);
+	Ptr<WifiPhy> wp0 = netDeviceContainerParabolicN0Dev1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+	Ptr<SpectrumWifiPhy> swp0 = DynamicCast<SpectrumWifiPhy> (wp0);
 
-	//Set Parabolic Antenna to node
-	Ptr<ParabolicAntennaModel> parabolicAntenna = CreateObject<ParabolicAntennaModel>();
-	parabolicAntenna->SetBeamwidth(10);
-	parabolicAntenna->SetOrientation(0);
-	swp->SetAntenna(parabolicAntenna);
+	//Set Parabolic Antenna to node 0
+	Ptr<ParabolicAntennaModel> parabolicAntenna0 = CreateObject<ParabolicAntennaModel>();
+	parabolicAntenna0->SetBeamwidth(10);
+	parabolicAntenna0->SetOrientation(270);
+	swp0->SetAntenna(parabolicAntenna0);
 
+	NetDeviceContainer netDeviceContainerParabolicN1Dev1 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(1));
+
+	//Set SpectrumPhy from WifiPhy
+	Ptr<WifiPhy> wp1 = netDeviceContainerParabolicN1Dev1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+	Ptr<SpectrumWifiPhy> swp1 = DynamicCast<SpectrumWifiPhy> (wp1);
+
+	//Set Parabolic Antenna to node 1
+	Ptr<ParabolicAntennaModel> parabolicAntenna1 = CreateObject<ParabolicAntennaModel>();
+	parabolicAntenna1->SetBeamwidth(10);
+	parabolicAntenna1->SetOrientation(270);
+	swp1->SetAntenna(parabolicAntenna1);
+
+
+	NetDeviceContainer netDeviceContainerParabolicN2Dev1 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(2));
+
+	//Set SpectrumPhy from WifiPhy
+	Ptr<WifiPhy> wp2 = netDeviceContainerParabolicN2Dev1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+	Ptr<SpectrumWifiPhy> swp2 = DynamicCast<SpectrumWifiPhy> (wp2);
+
+	//Set Parabolic Antenna to node 2
+	Ptr<ParabolicAntennaModel> parabolicAntenna2 = CreateObject<ParabolicAntennaModel>();
+	parabolicAntenna2->SetBeamwidth(10);
+	parabolicAntenna2->SetOrientation(90);
+	swp2->SetAntenna(parabolicAntenna2);
 
 	//Install Mobility model
 	ns2MobHelper.Install();
@@ -90,17 +114,22 @@ int main(int argc, char* argv[]) {
 	NS_LOG_INFO("Installing Applications");
 
 	// Producer
-	ndn::AppHelper producerHelper("ns3::ndn::Producer");
-	producerHelper.SetPrefix("/beacon");
-	producerHelper.SetAttribute("PayloadSize", StringValue("1200"));
-	producerHelper.Install(mobileNodes.Get(0));
+	ndn::AppHelper producerHelper0("ns3::ndn::Producer");
+	producerHelper0.SetPrefix("/beacon");
+	producerHelper0.SetAttribute("PayloadSize", StringValue("1200"));
+	producerHelper0.Install(mobileNodes.Get(0));
+
+	//Consumer
+ 	ndn::AppHelper consumerHelper1("ns3::ndn::ConsumerCbr");
+	consumerHelper1.SetPrefix("/beacon");
+	consumerHelper1.SetAttribute("Frequency", DoubleValue(10.0));
+	consumerHelper1.Install(mobileNodes.Get(1));
 
 	//Consumer
  	ndn::AppHelper consumerHelper2("ns3::ndn::ConsumerCbr");
 	consumerHelper2.SetPrefix("/beacon");
 	consumerHelper2.SetAttribute("Frequency", DoubleValue(10.0));
-	consumerHelper2.Install(mobileNodes.Get(1));
-
+	consumerHelper2.Install(mobileNodes.Get(2));
 
 	Simulator::Stop(Seconds(20.0));
 

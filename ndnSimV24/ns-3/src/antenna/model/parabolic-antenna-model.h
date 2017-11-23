@@ -58,10 +58,6 @@ public:
   double GetBeamwidth () const;
   void SetOrientation (double orientationDegrees);
   double GetOrientation () const;
-  //Dome
-  void TurnAntenna (double orientationDegrees);
-  void ChangeBeamwidth (double beamwidthDegrees);
-
 
 private:
 

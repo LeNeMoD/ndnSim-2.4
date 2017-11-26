@@ -65,6 +65,9 @@ public:
   void
   SetTraceFile(const std::string& traceFile);
 
+  std::string
+  getTraceFile();
+
 
   /**
    * Install an ns3::NdnConsumer on each node of the input container

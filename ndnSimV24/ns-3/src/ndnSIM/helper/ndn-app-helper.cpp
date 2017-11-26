@@ -56,6 +56,10 @@ AppHelper::SetTraceFile(const std::string& tracefile){
 	  m_factory.Set("TraceFile", StringValue(tracefile));
 	  m_traceFile = tracefile;
 }
+std::string
+AppHelper::getTraceFile(){
+	return m_traceFile;
+}
 //
 
 ApplicationContainer

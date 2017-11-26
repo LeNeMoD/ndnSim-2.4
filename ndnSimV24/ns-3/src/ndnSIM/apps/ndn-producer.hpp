@@ -69,6 +69,10 @@ private:
 
   uint32_t m_signature;
   Name m_keyLocator;
+
+  //Dome
+  std::string m_traceFileString;
+
 };
 
 } // namespace ndn

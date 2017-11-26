@@ -90,14 +90,6 @@ Producer::StartApplication()
   App::StartApplication();
 
   FibHelper::AddRoute(GetNode(), m_prefix, m_face, 0);
-
-  if(ns3::Simulator::Now()/1000000>5){
-	  std::cout<<"turning Antenna to 90 at time s: " <<ns3::Simulator::Now()/1000000<<std::endl;
-	  ns3::Ptr<ns3::Node> node = GetNode();
-	  Ptr<ParabolicAntennaModel> parabolicAntennaPtr = node->GetObject<ParabolicAntennaModel>();
-	  double degrees = 90;
-	  parabolicAntennaPtr->TurnAntenna(degrees);
-  }
 }
 
 void
@@ -143,28 +135,39 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
   NS_LOG_INFO("node(" << GetNode()->GetId() << ") responding with Data: " << data->getName());
 
   //Dome
+
+  std::cout<<"node: " << GetNode()->GetId() << " Has incomming interest " <<std::endl;
+  std::cout<<"node: " << GetNode()->GetId() << " responding with Data: "<< data->getName() <<std::endl;
+
   ns3::Ptr<ns3::Node> node = GetNode();
+  std::cout<<"node has number of applications running : "<<   node->GetNApplications()<<std::endl;
 
 //  Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
 // 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
 //	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
-	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-Ring-7n.txt");
+	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
 
+  Time time = (ns3::Simulator::Now());
+  double at = time.GetSeconds();
+  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
 
-
-
-  double at = 5;
 
   double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node->GetId(),at).x;
   double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node->GetId(),at).y ;
+  double posZ = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node->GetId(),at).z ;
 
 
 //  std::cout<< "check position-X +5s pass in producer  :" << posX << " node id: " << node->GetId() <<std::endl;
 //  std::cout<< "check position-Y +5s pass in producer  :" << posY << " node id: " << node->GetId() <<std::endl;
 
+
+
   futurePositionInfo.setFutureLocationX(posX);
   futurePositionInfo.setFutureLocationY(posY);
-  futurePositionInfo.setTimeAtFutureLocation(at);
+  futurePositionInfo.setFutureLocationZ(posZ);
+  futurePositionInfo.setTimeAtFutureLocation(at+1);
+
+  std::cout<<"futpos set x,y,z :"<<posX<<" , "<<posY<<" , "<<posZ<<" , "<<" at time: "<< at<<std::endl;
 
   data->setFuturePositionInfo(futurePositionInfo);
 
@@ -173,6 +176,8 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
 
   // to create real wire encoding
   data->wireEncode();
+
+  std::cout<<"producer this :"<< this->GetId()<<" this producer node: "<< this->GetNode()->GetId()<< at<<std::endl;
 
   m_transmittedDatas(data, this, m_face);
   m_appLink->onReceiveData(*data);

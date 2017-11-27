@@ -73,11 +73,13 @@ $ns_ at 67.0 "$node_(1) setdest 0.0 80.0 30.0"
 $ns_ at 68.0 "$node_(1) setdest 0.0 90.0 30.0"
 $ns_ at 69.0 "$node_(1) setdest 0.0 100.0 30.0"
 $ns_ at 70.0 "$node_(1) setdest 0.0 110.0 30.0"
-
-
-
-
-
-
-
+$ns_ at 71.0 "$node_(1) setdest 0.0 120.0 30.0"
+$ns_ at 72.0 "$node_(1) setdest 0.0 130.0 30.0"
+$ns_ at 73.0 "$node_(1) setdest 0.0 140.0 30.0"
+$ns_ at 74.0 "$node_(1) setdest 0.0 150.0 30.0"
+$ns_ at 75.0 "$node_(1) setdest 0.0 160.0 30.0"
+$ns_ at 76.0 "$node_(1) setdest 0.0 170.0 30.0"
+$ns_ at 77.0 "$node_(1) setdest 0.0 180.0 30.0"
+$ns_ at 78.0 "$node_(1) setdest 0.0 190.0 30.0"
+$ns_ at 79.0 "$node_(1) setdest 0.0 200.0 30.0"
 

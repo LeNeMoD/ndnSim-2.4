@@ -5,8 +5,8 @@
  *      Author: domenico
  */
 
-#ifndef NDN_FUTUREPOSITIONINFO_HPP
-#define NDN_FUTUREPOSITIONINFO_HPP
+#ifndef NDN_FUTURE_POSITION_INFO_HPP
+#define NDN_FUTURE_POSITION_INFO_HPP
 
 #include "encoding/block.hpp"
 #include "../../../../../ns-3/src/core/model/vector.h"
@@ -92,6 +92,16 @@ public:
   setTimeAtFutureLocation(double time);
 
 
+//  bool
+//  isfuturePositionSet() const;
+//
+//  FuturePositionInfo&
+//  setFuturePositionWasSet(bool wasItSet);
+  int
+  isfuturePositionSet() const;
+
+  FuturePositionInfo&
+  setFuturePositionWasSet(int wasItSet);
 
   /*const std::list<Block>&
   getAppFuturePositionInfo() const ;
@@ -115,7 +125,7 @@ public:
   	  double m_location_Y_Coord;
   	  double m_location_Z_Coord_Velocity;
   	  double m_timeAtFuturePosition;
-  	  bool m_bool_position_is_empty;
+  	  int m_futurePositionWasSet;
   	  ns3::Vector m_futurePositionVector;
 
 

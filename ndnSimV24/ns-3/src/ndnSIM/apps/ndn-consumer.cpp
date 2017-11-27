@@ -254,9 +254,9 @@ Consumer::OnData(shared_ptr<const Data> data)
   NS_LOG_DEBUG("Hop count: " << hopCount);
   //LOGS
     NS_LOG_DEBUG("Hop count: " << hopCount);
-    std::cout << "*****************************************************************" << std::endl;
-    std::cout << "......consumer receiving data for: " << seq << " with hopcount: " << hopCount << " and name " << data->getName() << std::endl;
-    std::cout << "*****************************************************************" << std::endl;
+//    std::cout << "*****************************************************************" << std::endl;
+//    std::cout << "......consumer receiving data for: " << seq << " with hopcount: " << hopCount << " and name " << data->getName() << std::endl;
+//    std::cout << "*****************************************************************" << std::endl;
     Name name;
     name = data->getName();
     std::ostringstream tmpName;
@@ -278,7 +278,7 @@ Consumer::OnData(shared_ptr<const Data> data)
     int send = 0;
     for(int i = 0; i < NUMBER_OF_INTERESTS; i++) {
   	  if(results[i][0] != "x") {
-  		  std::cout << results[i][0] << " - " << results[i][1] << " - " << results[i][2] << " - " << results[i][3] << " - "<< results[i][4] << std::endl;
+//  		  std::cout << results[i][0] << " - " << results[i][1] << " - " << results[i][2] << " - " << results[i][3] << " - "<< results[i][4] << std::endl;
   		  send++;
   		  if(results[i][1] == "OK") {
   			  arrivedData++;

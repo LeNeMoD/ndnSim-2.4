@@ -30,7 +30,7 @@
 
 //Dome
 #include "../../../core/model/vector.h"
-#include "futurePositionInfo.hpp"
+#include "future-position-info.hpp"
 
 namespace ndn {
 

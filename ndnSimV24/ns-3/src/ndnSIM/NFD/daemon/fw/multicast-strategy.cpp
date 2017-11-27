@@ -86,7 +86,7 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
   //print to check what the FIB contains
 
 
-//    ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-test2-n3.txt");
+//  ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-test2-n3.txt");
 //	std::cout<< ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("Multicast-Strategy",node->GetId(),5) << "  is scheduled position for node "<< node->GetId() << "at time 5 " <<std::endl;
 
 	std::cout<< "time in multicastStrategy: " << ns3::Simulator::Now() << std::endl;

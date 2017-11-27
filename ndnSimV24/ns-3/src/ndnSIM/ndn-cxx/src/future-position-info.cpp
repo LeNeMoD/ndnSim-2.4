@@ -5,10 +5,10 @@
  *      Author: domenico
  */
 
+#include "future-position-info.hpp"
+
 #include "encoding/block-helpers.hpp"
 #include "encoding/encoding-buffer.hpp"
-#include "futurePositionInfo.hpp"
-//#include "../../../core/model/nstime.h"
 
 namespace ndn {
 
@@ -22,11 +22,11 @@ static_assert(std::is_base_of<tlv::Error, FuturePositionInfo::Error>::value,
 
 //Ask Eirini how to initialize properly the future position with his variables.
 FuturePositionInfo::FuturePositionInfo() {
-//	m_location_X_Coord = 0;
-//	m_location_Y_Coord = 0;
-//	m_location_Z_Coord_Velocity = 0;
-//	m_timeAtFuturePosition = 99;
-//	m_bool_position_is_empty = true;
+	m_location_X_Coord = 3215;
+	m_location_Y_Coord = 3215;
+	m_location_Z_Coord_Velocity = 3215;
+	m_timeAtFuturePosition = 3215;
+	m_futurePositionWasSet = 0;
 
 }
 /*bool
@@ -49,7 +49,7 @@ FuturePositionInfo::FuturePositionInfo(ns3::Vector positionVector, double timeAt
 	m_location_Y_Coord = positionVector.y;
 	m_location_Z_Coord_Velocity = positionVector.z;
 	m_timeAtFuturePosition = timeAtFutureLocation;
-	m_bool_position_is_empty = false;
+	m_futurePositionWasSet = 1;
 
 }
 
@@ -64,28 +64,37 @@ FuturePositionInfo::wireEncode(EncodingImpl<TAG>& encoder) const {
 	  }*/
 
 	// time
-	if (!m_bool_position_is_empty) {
+	if (m_futurePositionWasSet) {
 				totalLength += prependNonNegativeIntegerBlock(encoder,
 						tlv::FuturePositionZ, m_location_Z_Coord_Velocity);
 			}
 
 	// if positions are not emptiy encode them
-	if (!m_bool_position_is_empty) {
+	if (m_futurePositionWasSet) {
 
 			totalLength += prependNonNegativeIntegerBlock(encoder,
 					tlv::TimeAtFuturePosition, m_timeAtFuturePosition);
 		}
 
-	if (!m_bool_position_is_empty) {
+	if (m_futurePositionWasSet) {
 				totalLength += prependNonNegativeIntegerBlock(encoder,
 						tlv::FuturePositionY, m_location_Y_Coord);
 			}
 
-	if (!m_bool_position_is_empty) {
+	if (m_futurePositionWasSet) {
 		totalLength += prependNonNegativeIntegerBlock(encoder,
 				tlv::FuturePositionX, m_location_X_Coord);
 	}
 
+	if (m_futurePositionWasSet) {
+		totalLength += prependNonNegativeIntegerBlock(encoder,
+				tlv::FuturePositionZ, m_location_Z_Coord_Velocity);
+	}
+
+	if (m_futurePositionWasSet) {
+		totalLength += prependNonNegativeIntegerBlock(encoder,
+				tlv::IsFuturePositionSet, m_futurePositionWasSet);
+	}
 
 	totalLength += encoder.prependVarNumber(totalLength);
 	totalLength += encoder.prependVarNumber(tlv::FuturePositionInfo);
@@ -151,6 +160,13 @@ FuturePositionInfo::wireDecode(const Block& wire) {
 		++val;
 	}
 
+	val = m_mWire_futurePositionInfo.find(tlv::IsFuturePositionSet);
+	//IsFuturePositionSet
+	if (val != m_mWire_futurePositionInfo.elements_end()) {
+		m_futurePositionWasSet = readNonNegativeInteger(*val);
+		++val;
+	}
+
 	 // AppFuturePositionInfo (if any)
 	 // for (; val != m_mWire_futurePositionInfo.elements().end(); ++val) {
 	//    m_appFuturePositionInfo.push_back(*val);
@@ -171,6 +187,8 @@ operator<<(std::ostream& os, const FuturePositionInfo& info)
 
   // TimeAtFuturePosition
   os << ", TimeAtFuturePosition: " << info.getTimeAtFutureLocation();
+
+  os << ", FuturePositionWasSet: " << info.isfuturePositionSet();
 
   return os;
 }
@@ -304,6 +322,19 @@ double
 FuturePositionInfo::getFutureLocation_Z() const
 {
   return m_location_Z_Coord_Velocity;
+}
+
+int
+FuturePositionInfo::isfuturePositionSet() const
+{
+	return m_futurePositionWasSet;
+}
+
+FuturePositionInfo&
+FuturePositionInfo::setFuturePositionWasSet(int wasItSet){
+	m_mWire_futurePositionInfo.reset();
+	m_futurePositionWasSet = wasItSet;
+	return *this;
 }
 
 }

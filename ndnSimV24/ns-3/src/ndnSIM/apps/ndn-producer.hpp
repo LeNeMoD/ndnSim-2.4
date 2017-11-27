@@ -27,7 +27,6 @@
 
 #include "ns3/nstime.h"
 #include "ns3/ptr.h"
-#include "../ndn-cxx/src/futurePositionInfo.hpp"
 
 
 namespace ns3 {

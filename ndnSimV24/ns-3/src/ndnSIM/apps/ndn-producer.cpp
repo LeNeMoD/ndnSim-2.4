@@ -30,9 +30,8 @@
 #include <memory>
 
 //Dome
-//#include "ndn-cxx/src/futurePositionInfo.hpp"
-//#include "../ndn-cxx/src/futurePositionInfo.hpp"
-#include "ns3/ndnSIM/ndn-cxx/futurePositionInfo.hpp"
+
+#include "ns3/ndnSIM/ndn-cxx/future-position-info.hpp"
 #include "ns3/ns2-mobility-helper.h"
 #include "ns3/parabolic-antenna-model.h"
 
@@ -140,7 +139,7 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
   std::cout<<"node: " << GetNode()->GetId() << " responding with Data: "<< data->getName() <<std::endl;
 
   ns3::Ptr<ns3::Node> node = GetNode();
-  std::cout<<"node has number of applications running : "<<   node->GetNApplications()<<std::endl;
+//  std::cout<<"node has number of applications running : "<<   node->GetNApplications()<<std::endl;
 
 //  Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
 // 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
@@ -148,7 +147,7 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
 
   Time time = (ns3::Simulator::Now());
-  double at = time.GetSeconds();
+  double at = std::ceil(time.GetSeconds());
   std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
 
 
@@ -166,18 +165,20 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
   futurePositionInfo.setFutureLocationY(posY);
   futurePositionInfo.setFutureLocationZ(posZ);
   futurePositionInfo.setTimeAtFutureLocation(at+1);
+  int wasSet = 1;
+  futurePositionInfo.setFuturePositionWasSet(wasSet);
 
   std::cout<<"futpos set x,y,z :"<<posX<<" , "<<posY<<" , "<<posZ<<" , "<<" at time: "<< at<<std::endl;
 
   data->setFuturePositionInfo(futurePositionInfo);
 
-//  std::cout<<"data futurPos in producer contains: "<< data->getFuturePositionInfo().m_location_X_Coord <<std::endl;
-//  std::cout<<"data futurPos in producer contains: "<< data->getFuturePositionInfo().m_location_Y_Coord <<std::endl;
+  std::cout<<"data futurPos in producer contains: "<< data->getFuturePositionInfo().m_location_X_Coord <<std::endl;
+  std::cout<<"data futurPos in producer contains: "<< data->getFuturePositionInfo().m_location_Y_Coord <<std::endl;
 
   // to create real wire encoding
   data->wireEncode();
 
-  std::cout<<"producer this :"<< this->GetId()<<" this producer node: "<< this->GetNode()->GetId()<< at<<std::endl;
+//  std::cout<<"producer this :"<< this->GetId()<<" this producer node: "<< this->GetNode()->GetId()<< at<<std::endl;
 
   m_transmittedDatas(data, this, m_face);
   m_appLink->onReceiveData(*data);

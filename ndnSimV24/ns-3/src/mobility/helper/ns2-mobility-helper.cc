@@ -251,16 +251,9 @@ Ns2MobilityHelper::GetPositionFromTCLFileForNodeAtTime(std::string caller, int N
 					futurePosition.x = pr.dvals[5];
 					futurePosition.y = pr.dvals[6];
 					futurePosition.z = pr.dvals[7];
-//	            	std::cout<< "futurePosition from nsHelper"<< futurePosition <<std::endl;
-					std::cout
-							<< "----------------------Requestet Future Position--------------------------------------"
-							<< std::endl;
-					std::cout << "Requestet from " << caller
-							<< ": requestet NodeID: " << NodeId << " = "
-							<< pr.ivals[3] << " at req time: " << atTimeDouble
-							<< " = " << pr.dvals[2]
-							<< " has Future Position X Y Z" << pr.tokens[5]
-							<< pr.tokens[6] << std::endl;
+					std::cout << "----------------------Requestet Future Position--------------------------------------"<< std::endl;
+					std::cout << "Requestet from " << caller << ": requestet NodeID: " << NodeId << " = " << pr.ivals[3] << " at req time: "
+							<< atTimeDouble << " = " << pr.dvals[2] << " has Future Position X Y Z" << pr.tokens[5] << pr.tokens[6] << pr.tokens[7]<< std::endl;
 					std::cout << "" << std::endl;
 					entryFound = true;
 				}

@@ -48,6 +48,7 @@ enum {
   	FuturePositionY			= 123,
   	FuturePositionZ			= 124,
   	TimeAtFuturePosition	= 125,
+	FuturePositionWasSet	= 126,
   Flags               = 108,
   Mask                = 112,
   Strategy            = 107,

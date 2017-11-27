@@ -106,6 +106,11 @@ size_t ControlParameters::wireEncode(EncodingImpl<TAG>& encoder) const {
 				tlv::nfd::TimeAtFuturePosition, m_timeAtFuturePosition);
 	}
 
+	if (this->hasFuturePositionSettedInfo()) {
+			totalLength += prependNonNegativeIntegerBlock(encoder,
+					tlv::nfd::FuturePositionWasSet, m_futurePositionWasSet);
+		}
+
 	if (this->hasCost()) {
 		totalLength += prependNonNegativeIntegerBlock(encoder, tlv::nfd::Cost,
 				m_cost);
@@ -246,6 +251,16 @@ void ControlParameters::wireDecode(const Block& block) {
 		m_timeAtFuturePosition = static_cast<uint64_t>(readNonNegativeInteger(
 				*val));
 	}
+
+
+	val = m_wire.find(tlv::nfd::FuturePositionWasSet);
+	m_hasFields[CONTROL_PARAMETER_FUTURE_POSITION_WAS_SET] = val
+			!= m_wire.elements_end();
+	if (this->hasTimeAtFuturePosition()) {
+		m_futurePositionWasSet = static_cast<uint64_t>(readNonNegativeInteger(
+				*val));
+	}
+
 
 	val = m_wire.find(tlv::nfd::Flags);
 	m_hasFields[CONTROL_PARAMETER_FLAGS] = val != m_wire.elements_end();
@@ -410,6 +425,11 @@ operator<<(std::ostream& os, const ControlParameters& parameters) {
 	if (parameters.hasTimeAtFuturePosition()) {
 		os << "timeAtFuturePosition: " << parameters.getTimeAtFuturePosition()
 				<< ", ";
+	}
+
+	if (parameters.hasTimeAtFuturePosition()) {
+			os << "FuturePositionWasSet: " << parameters.getFuturePositionSettedInfo()
+					<< ", ";
 	}
 
 	if (parameters.hasFlags()) {

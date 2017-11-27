@@ -48,6 +48,7 @@ enum ControlParameterField {
 	CONTROL_PARAMETER_FUTURE_POSITION_Y,
 	CONTROL_PARAMETER_FUTURE_POSITION_Z,
 	CONTROL_PARAMETER_TIME_AT_FUTUREPOSITION,
+	CONTROL_PARAMETER_FUTURE_POSITION_WAS_SET,
   CONTROL_PARAMETER_FLAGS,
   CONTROL_PARAMETER_MASK,
   CONTROL_PARAMETER_STRATEGY,
@@ -71,6 +72,7 @@ const std::string CONTROL_PARAMETER_FIELD[CONTROL_PARAMETER_UBOUND] = {
   "FuturePositionY",
   "FuturePositionZ ",
   "TimeAtFuturePosition",
+  "FuturePositionWasSet",
   "Flags",
   "Mask",
   "Strategy",
@@ -492,6 +494,30 @@ public: // getters & setters
  		return *this;
  	}
 
+
+	bool hasFuturePositionSettedInfo() const {
+		return m_futurePositionWasSet[CONTROL_PARAMETER_FUTURE_POSITION_WAS_SET];
+	}
+
+	int getFuturePositionSettedInfo() const {
+		BOOST_ASSERT(this->hasFuturePositionSettedInfo());
+		return m_futurePositionWasSet;
+	}
+
+	ControlParameters&
+	setFuturePositionSettedInfo(int futurePositionWasSet) {
+		m_wire.reset();
+		m_futurePositionWasSet = futurePositionWasSet;
+		m_hasFields[CONTROL_PARAMETER_FUTURE_POSITION_WAS_SET] = true;
+		return *this;
+	}
+
+	ControlParameters&
+	unsetFuturePositionSettedInfo() {
+		m_wire.reset();
+		m_hasFields[CONTROL_PARAMETER_FUTURE_POSITION_WAS_SET] = false;
+		return *this;
+	}
   bool
   hasFlags() const
   {
@@ -695,6 +721,7 @@ private: // fields
 	double m_futurePositionY;
 	double m_futurePositionZ;
 	double m_timeAtFuturePosition;
+	int m_futurePositionWasSet;
   RouteOrigin         m_origin;
   uint64_t            m_cost;
   uint64_t            m_flags;

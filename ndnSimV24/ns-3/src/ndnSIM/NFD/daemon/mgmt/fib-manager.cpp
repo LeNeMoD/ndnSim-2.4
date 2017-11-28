@@ -64,6 +64,7 @@ void FibManager::addNextHop(const Name& topPrefix, const Interest& interest,
 	double futurePisitionX = parameters.getFuturePositionX();
 	double futurePositionY = parameters.getFuturePositionY();
 	double timeAtFuturePosition = parameters.getTimeAtFuturePosition();
+	double isFuturePositionSet = parameters.getFuturePositionSettedInfo();
 
 	NFD_LOG_TRACE(
 			"add-nexthop prefix: " << prefix << " faceid: " << faceId << " cost: " << cost);
@@ -74,7 +75,7 @@ void FibManager::addNextHop(const Name& topPrefix, const Interest& interest,
 //    entry->addNextHop(*face, cost, mac);
 		//Dome
 		entry->addNextHop(*face, cost, mac, positionX, positionY, positionZ,
-				futurePisitionX, futurePositionY, timeAtFuturePosition);
+				futurePisitionX, futurePositionY, timeAtFuturePosition, isFuturePositionSet);
 
 		//Dome error !
 //		NFD_LOG_DEBUG("add-nexthop result: OK"

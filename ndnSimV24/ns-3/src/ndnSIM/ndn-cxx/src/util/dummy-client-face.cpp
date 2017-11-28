@@ -196,6 +196,7 @@ DummyClientFace::enableRegistrationReply()
       params.setFuturePositionY(0);
       params.setFuturePositionZ(0);
       params.setTimeAtFuturePosition(0);
+      params.setFuturePositionSettedInfo(999);
     }
 
     nfd::ControlResponse resp;

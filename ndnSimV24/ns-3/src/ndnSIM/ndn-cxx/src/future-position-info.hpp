@@ -97,11 +97,11 @@ public:
 //
 //  FuturePositionInfo&
 //  setFuturePositionWasSet(bool wasItSet);
-  int
+  double
   isfuturePositionSet() const;
 
   FuturePositionInfo&
-  setFuturePositionWasSet(int wasItSet);
+  setFuturePositionWasSet(double wasItSet);
 
   /*const std::list<Block>&
   getAppFuturePositionInfo() const ;
@@ -125,7 +125,7 @@ public:
   	  double m_location_Y_Coord;
   	  double m_location_Z_Coord_Velocity;
   	  double m_timeAtFuturePosition;
-  	  int m_futurePositionWasSet;
+  	  double m_futurePositionWasSet;
   	  ns3::Vector m_futurePositionVector;
 
 

@@ -89,7 +89,7 @@ public:
 
   //Dome
   void
-    addNextHop(Face& face, uint64_t cost,std::string mac, double positionX, double positionY, double positionZ, double futurePositionX, double futurePositionY, double timeAtFuturePosition);
+    addNextHop(Face& face, uint64_t cost,std::string mac, double positionX, double positionY, double positionZ, double futurePositionX, double futurePositionY, double timeAtFuturePosition, int isFuturePositionSet);
 
 
   /** \brief removes a NextHop record

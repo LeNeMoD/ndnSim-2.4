@@ -496,16 +496,16 @@ public: // getters & setters
 
 
 	bool hasFuturePositionSettedInfo() const {
-		return m_futurePositionWasSet[CONTROL_PARAMETER_FUTURE_POSITION_WAS_SET];
+		return m_hasFields[CONTROL_PARAMETER_FUTURE_POSITION_WAS_SET];
 	}
 
-	int getFuturePositionSettedInfo() const {
+	double getFuturePositionSettedInfo() const {
 		BOOST_ASSERT(this->hasFuturePositionSettedInfo());
 		return m_futurePositionWasSet;
 	}
 
 	ControlParameters&
-	setFuturePositionSettedInfo(int futurePositionWasSet) {
+	setFuturePositionSettedInfo(double futurePositionWasSet) {
 		m_wire.reset();
 		m_futurePositionWasSet = futurePositionWasSet;
 		m_hasFields[CONTROL_PARAMETER_FUTURE_POSITION_WAS_SET] = true;
@@ -721,7 +721,7 @@ private: // fields
 	double m_futurePositionY;
 	double m_futurePositionZ;
 	double m_timeAtFuturePosition;
-	int m_futurePositionWasSet;
+	double m_futurePositionWasSet;
   RouteOrigin         m_origin;
   uint64_t            m_cost;
   uint64_t            m_flags;

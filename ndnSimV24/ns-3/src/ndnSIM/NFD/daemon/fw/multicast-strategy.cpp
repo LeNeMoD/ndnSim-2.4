@@ -98,7 +98,7 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
 				<< " mac : " << it->getMac() << std::endl
 				<< " position-X : "<< it->getPositionX() << " position-Y : " << it->getPositionY() << " position-Z : "<< it->getPositionZ() <<std::endl
 				<< " Future-position-X : " << it->getFuturePositionX() << " Future-position-Y : " << it->getFuturePositionY() << std::endl
-				<< " Time-At-FuturePos : "<< it->getTimeAtFuturePosition()<< std::endl
+				<< " Time-At-FuturePos : "<< it->getTimeAtFuturePosition()<<"is it a walid position n/y->0/1: "<<it->getFuturePositonWasSet()<< std::endl
 				<< std::endl;
 
   		if(it->getFuturePositionX()!=0 || it->getFuturePositionX()!=0){

@@ -109,6 +109,14 @@ public:
 		return m_timeAtFuturePosition;
 	}
 
+	void setFuturePositonWasSet(int isFuturePositionSet) {
+		m_futurePositionWasSet = isFuturePositionSet;
+	}
+
+	int getFuturePositonWasSet() const {
+		return m_futurePositionWasSet;
+	}
+
 private:
 	Face* m_face;
 	uint64_t m_cost;
@@ -119,6 +127,7 @@ private:
 	double m_futurePositionX;
 	double m_futurePositionY;
 	double m_timeAtFuturePosition;
+	int m_futurePositionWasSet;
 };
 
 } // namespace fib

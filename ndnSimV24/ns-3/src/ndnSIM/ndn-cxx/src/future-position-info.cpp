@@ -26,7 +26,7 @@ FuturePositionInfo::FuturePositionInfo() {
 	m_location_Y_Coord = 3215;
 	m_location_Z_Coord_Velocity = 3215;
 	m_timeAtFuturePosition = 3215;
-	m_futurePositionWasSet = 0;
+	m_futurePositionWasSet = 3215;
 
 }
 /*bool
@@ -63,13 +63,13 @@ FuturePositionInfo::wireEncode(EncodingImpl<TAG>& encoder) const {
 	    totalLength += encoder.prependBlock(*appFuturePositionInfoItem);
 	  }*/
 
-	// time
+	// if futurePositions were set the encode time
 	if (m_futurePositionWasSet) {
 				totalLength += prependNonNegativeIntegerBlock(encoder,
 						tlv::FuturePositionZ, m_location_Z_Coord_Velocity);
 			}
 
-	// if positions are not emptiy encode them
+	// if futurePositions were set then encode them
 	if (m_futurePositionWasSet) {
 
 			totalLength += prependNonNegativeIntegerBlock(encoder,
@@ -93,7 +93,7 @@ FuturePositionInfo::wireEncode(EncodingImpl<TAG>& encoder) const {
 
 	if (m_futurePositionWasSet) {
 		totalLength += prependNonNegativeIntegerBlock(encoder,
-				tlv::IsFuturePositionSet, m_futurePositionWasSet);
+				tlv::FuturePositionWasSet, m_futurePositionWasSet);
 	}
 
 	totalLength += encoder.prependVarNumber(totalLength);
@@ -160,7 +160,7 @@ FuturePositionInfo::wireDecode(const Block& wire) {
 		++val;
 	}
 
-	val = m_mWire_futurePositionInfo.find(tlv::IsFuturePositionSet);
+	val = m_mWire_futurePositionInfo.find(tlv::FuturePositionWasSet);
 	//IsFuturePositionSet
 	if (val != m_mWire_futurePositionInfo.elements_end()) {
 		m_futurePositionWasSet = readNonNegativeInteger(*val);
@@ -188,6 +188,7 @@ operator<<(std::ostream& os, const FuturePositionInfo& info)
   // TimeAtFuturePosition
   os << ", TimeAtFuturePosition: " << info.getTimeAtFutureLocation();
 
+  // Position Was setted
   os << ", FuturePositionWasSet: " << info.isfuturePositionSet();
 
   return os;
@@ -324,14 +325,14 @@ FuturePositionInfo::getFutureLocation_Z() const
   return m_location_Z_Coord_Velocity;
 }
 
-int
+double
 FuturePositionInfo::isfuturePositionSet() const
 {
 	return m_futurePositionWasSet;
 }
 
 FuturePositionInfo&
-FuturePositionInfo::setFuturePositionWasSet(int wasItSet){
+FuturePositionInfo::setFuturePositionWasSet(double wasItSet){
 	m_mWire_futurePositionInfo.reset();
 	m_futurePositionWasSet = wasItSet;
 	return *this;

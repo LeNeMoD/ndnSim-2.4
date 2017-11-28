@@ -37,7 +37,8 @@ NextHop::NextHop(Face& face) :
 		m_positionZ(0),
 		m_futurePositionX(0),
 		m_futurePositionY(0),
-		m_timeAtFuturePosition(0)
+		m_timeAtFuturePosition(0),
+		m_futurePositionWasSet(999)
 {
 }
 

@@ -62,6 +62,8 @@
 #include "ns3/wifi-module.h"
 #include "ns3/wifi-phy.h"
 #include "ns3/ptr.h"
+#include <math.h>
+#include "../../../../antenna/model/angles.h"
 
 
 
@@ -185,7 +187,7 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
   		  }
   	  }
   	  //Dome
-  	  //std::cout<< " on incoming interest node: " << node->GetId() << " comes from mac add: " << a<< " interest name: "<< interest.getName()<<std::endl;
+  	  std::cout<< " on incoming interest node: " << node->GetId() << " comes from mac : " << a<< " interest name: "<< interest.getName()<<std::endl;
 
     }
   const pit::InRecordCollection& inRecords = pitEntry->getInRecords();
@@ -250,6 +252,8 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
   NFD_LOG_DEBUG("onContentStoreMiss interest=" << interest.getName());
   ++m_counters.nCsMisses;
 
+  //Dome
+  std::cout<< "onContentStrorMiss interest= " << interest.getName()<<std::endl;
   // insert in-record
   pitEntry->insertOrUpdateInRecord(const_cast<Face&>(inFace), interest);
 
@@ -279,6 +283,9 @@ Forwarder::onContentStoreMiss2(const Face& inFace, const shared_ptr<pit::Entry>&
                               const Interest& interest, std::string mac)
 {
   NFD_LOG_DEBUG("onContentStoreMiss interest=" << interest.getName());
+
+  //Dome
+  std::cout<< "onContentStrorMiss2 interest= " << interest.getName()<<std::endl;
 
   // insert in-record
   pitEntry->insertOrUpdateInRecord(const_cast<Face&>(inFace), mac, interest);
@@ -310,6 +317,9 @@ Forwarder::onContentStoreHit(const Face& inFace, const shared_ptr<pit::Entry>& p
 {
   NFD_LOG_DEBUG("onContentStoreHit interest=" << interest.getName());
   ++m_counters.nCsHits;
+
+  //Dome
+  std::cout<< "onContentStrorHit interest= " << interest.getName()<<std::endl;
 
   beforeSatisfyInterest(*pitEntry, *m_csFace, data);
   this->dispatchToStrategy(*pitEntry,
@@ -353,7 +363,7 @@ Forwarder::onOutgoingInterest(const shared_ptr<pit::Entry>& pitEntry, Face& outF
 
   //Dome
   ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
-   std::cout<< " on outgoing interest: " << mac << " node : " << node->GetId() << " Interest name " << interest.getName() << std::endl;
+  std::cout<< " on outgoing interest to: " << mac << " from node : " << node->GetId() << " Interest name " << interest.getName() << std::endl;
 
   // send Interest
   outFace.sendInterest(interest);
@@ -445,7 +455,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 
   //Dome
   ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
-  std::cout<<"node : "<< node->GetId()<< " forwarder, on incomming Data : "<<std::endl;
+  std::cout<<"forwarder node : "<< node->GetId()<< " , on incomming Data : "<< data.getName()<<std::endl;
 
     for(int i = 0 ; i<node->GetNDevices() ;i++){
     	ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(i);
@@ -455,9 +465,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
     	std::cout<<"parabolicAntenna NetDev"<< i << " orientation is is: "<< parab->GetOrientation() <<std::endl;
     }
 
-//  std::cout << " on Incoming Data node : " << node->GetId() << " name " << data.getName() << std::endl;
 //  std::cout << " on Incoming Data node : " << node->GetId() << "at time : " << ns3::Simulator::Now() << std::endl;
-  	std::cout << " on Incoming Data node : " << node->GetId() << std::endl;
 
 
   shared_ptr<Data> dataCopyWithoutTag = make_shared<Data>(data);
@@ -475,6 +483,8 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
   auto now = time::steady_clock::now();
   for (const shared_ptr<pit::Entry>& pitEntry : pitMatches) {
     NFD_LOG_DEBUG("onIncomingData matching=" << pitEntry->getName());
+    //Dome
+    std::cout<<"node: "<< node->GetId()<<" ,forwarder incoming data match in pit"<<std::endl;
 
     // cancel unsatisfy & straggler timer
     this->cancelUnsatisfyAndStragglerTimer(*pitEntry);
@@ -517,6 +527,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 
        	ndn::FuturePositionInfo futurePositionInfo = data.getFuturePositionInfo();
 
+       	std::cout<<"addRoute in forwarder on incomming data node: "<<node->GetId()<<std::endl;
        	ns3::ndn::FibHelper::AddRoute(node, "/beacon", inFace.getId(), 111, a,pos.x,pos.y,pos.z,futurePositionInfo.getFutureLocation_X(),futurePositionInfo.getFutureLocation_Y(),futurePositionInfo.getTimeAtFutureLocation(), futurePositionInfo.isfuturePositionSet());
 
 //     	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-test2-n3.txt");
@@ -589,6 +600,10 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
   }
   NFD_LOG_DEBUG("onOutgoingData face=" << outFace.getId() << " data=" << data.getName());
 
+  //Dome
+  ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
+  std::cout<<"outgoing Data: "<< data.getName()<<" on node: " <<node->GetId()<<std::endl;
+  std::cout<<"future Position unpacked from data"<<std::endl;
   ndn::FuturePositionInfo futurePositionInfoObject = data.getFuturePositionInfo();
   double futureX = futurePositionInfoObject.getFutureLocation_X();
   double futureY = futurePositionInfoObject.getFutureLocation_Y();
@@ -607,22 +622,19 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
 
   // TODO traffic manager
 
-  //Dome
-//  std::cout<<"forwarder onOutgoingData simulator time is : " << ns3::Simulator::Now() <<std::endl;
-//  if(ns3::Simulator::Now()/1000000000!=0 ){
-//  std::cout<< "in erster schlaufe "<<ns3::Simulator::Now()/1000000000 <<std::endl;
-  ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
-//  std::cout<<"node: "<<node->GetId()<<" hat net devices: "<<node->GetNDevices()<<std::endl;
-	std::cout<< "forwarder, on outgoing data : will turning Antenna to futureNodePosition: "<< std::endl;
-	std::cout<< "forwarder, net Dev number = " <<node->GetNDevices()<< std::endl;
-	std::ostringstream addr[node->GetNDevices()];
-	std::string currentMacAddresses[node->GetNDevices()];
 
-	for (int index = 0; index < node->GetNDevices(); index++) {
-		addr[index] << node->GetDevice(index)->GetAddress();
-		currentMacAddresses[index] = addr[index].str().substr(6);
-	}
-	auto transport = dynamic_cast<ns3::ndn::NetDeviceTransport*>(outFace.getTransport());
+  //Dome
+  std::cout<<"forwarder onOutgoingData simulator time is : " << ns3::Simulator::Now() <<std::endl;
+  std::cout<<"node: "<<node->GetId()<<" has # of net devices: "<<node->GetNDevices()<<std::endl;
+  std::ostringstream addr[node->GetNDevices()];
+  std::string currentMacAddresses[node->GetNDevices()];
+
+  //check welche device den input erhält und drehe diese ...
+//	for (int index = 0; index < node->GetNDevices(); index++) {
+//		addr[index] << node->GetDevice(index)->GetAddress();
+//		currentMacAddresses[index] = addr[index].str().substr(6);
+//	}
+//	auto transport = dynamic_cast<ns3::ndn::NetDeviceTransport*>(outFace.getTransport());
 //	std::cout<< "forwarder, on outgoing data : netDevTransport is: "<< transport->GetNetDevice()->GetAddress()<< std::endl;
 
 //  cout <<"device 0 pf node "<< node->GetId()<< " is: " <<typeid(node->GetDevice(0)).name() << endl;
@@ -631,34 +643,50 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
 ////  for(int i = 1 ;  i == node->GetNDevices(); i++){
 ////	  if(node->GetDevice(i))
 ////  }
-//  ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(0);
-//  ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
-//  ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy> (spectWPhy);
+
+  ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(0);
+//  std::cout<< "forwarder, net Dev number = " <<node->GetDevice(0) <<" is used"<< std::endl;
+
+  ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
+  ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy> (spectWPhy);
 //  std::cout<<"parabolicAntenna is: "<< swp0->GetRxAntenna() <<std::endl;
-//  ns3::Ptr<ns3::ParabolicAntennaModel> parab = ns3::DynamicCast<ns3::ParabolicAntennaModel> (swp0->GetRxAntenna());
-//  double degrees = 90;
-//  parab->SetOrientation(degrees);
-//  }
-//  if(ns3::Simulator::Now()/1000000000==26){
-//	  std::cout<< "in zweiter schlaufe "<<ns3::Simulator::Now()/1000000000 <<std::endl;
-//    ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
-//    std::cout<<"node: "<<node->GetId()<<" hat net devices: "<<node->GetNDevices()<<std::endl;
-//    std::cout<<"forwarder, on outgoing data : will turning Antenna to futureNodePosition: "<<std::endl;
-//    ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(0);
-//    ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
-//    ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy> (spectWPhy);
-//    std::cout<<"parabolicAntenna is: "<< swp0->GetRxAntenna() <<std::endl;
-//    ns3::Ptr<ns3::ParabolicAntennaModel> parab = ns3::DynamicCast<ns3::ParabolicAntennaModel> (swp0->GetRxAntenna());
-//    double degrees = 0;
-//    parab->SetOrientation(degrees);
-//    }
+  ns3::Ptr<ns3::ParabolicAntennaModel> parab = ns3::DynamicCast<ns3::ParabolicAntennaModel> (swp0->GetRxAntenna());
+  ns3::Ptr<ns3::MobilityModel> model = node->GetObject<ns3::MobilityModel>();
+    std::cout<<" outgoing data node: " << node->GetId() << " target mac: " << targetmac << " name of data: " << data.getName()
+    		<<" outgoing node position : "<< model->GetPosition() << "FuturePosition Contains: x, y, z :"<< futureX<<" ,"<<futureY
+			<<" position is valid: "<< futurePositionInfoObject.isfuturePositionSet()<< std::endl;
+
+  bool parabHasToTurn = false;
+  if(futurePositionInfoObject.isfuturePositionSet()==1 && targetmac== ""){
+		std::cout<< "forwarder, on outgoing data : will turning Antenna to futureNodePosition: "<< std::endl;
+		double degrees = calculateAngleBtw2Nodes(futureY, model->GetPosition().y, futureX, model->GetPosition().x);
+		parabHasToTurn = true;
+		parab->SetBeamwidth(20);
+		parab->SetOrientation(degrees);
+		std::cout<<"parab turned to: "<<degrees<<" degrees and set to beam "<< 20<<std::endl;
+  }
   //Dome
 //  std::cout<< " outgoing data node: " << node->GetId() << " target mac: " << targetmac << " name of data: " << data.getName() << std::endl;
 
+//  }
 
   // send Data
   outFace.sendData(data);
+  std::cout<<"data send and beam would be reset to 360"<<std::endl;
+  parab->SetBeamwidth(360);
   ++m_counters.nOutData;
+}
+
+//Helper Methode to calculate the Angle
+double
+Forwarder::calculateAngleBtw2Nodes(double x1, double y1, double x2, double y2){
+//	double q=(y2-y1)/(x2-x1);
+//	double angle = ((atan(q))*180)/3.14;
+	double deltaX = (x2-x1);
+	double deltaY = (y2-y1);
+	double angleRad = atan2(deltaY,deltaX);
+	double angle = ns3::RadiansToDegrees(angleRad);
+	return angle;
 }
 
 void

@@ -67,6 +67,11 @@ public:
     return m_counters;
   }
 
+  //
+public: //helper
+  double
+  calculateAngleBtw2Nodes(double x1, double y1, double x2, double y2);
+
 public: // faces and policies
   FaceTable&
   getFaceTable()

@@ -93,12 +93,12 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
   	for (fib::NextHopList::const_iterator it = nexthops.begin();
   			it != nexthops.end(); ++it) {
 
-  		std::cout << " FIB is containing : NODE: " << node->GetId() << " name: "
+  		std::cout << " FIB of NODE: " << node->GetId() << "contains interest name: "
   				<< interest.getName() << " face " << it->getFace()
 				<< " mac : " << it->getMac() << std::endl
 				<< " position-X : "<< it->getPositionX() << " position-Y : " << it->getPositionY() << " position-Z : "<< it->getPositionZ() <<std::endl
 				<< " Future-position-X : " << it->getFuturePositionX() << " Future-position-Y : " << it->getFuturePositionY() << std::endl
-				<< " Time-At-FuturePos : "<< it->getTimeAtFuturePosition()<<"is it a walid position n/y->0/1: "<<it->getFuturePositonWasSet()<< std::endl
+				<< " Time-At-FuturePos : "<< it->getTimeAtFuturePosition()<<" , is it a walid position n/y->0/1: "<<it->getFuturePositonWasSet()<< std::endl
 				<< std::endl;
 
   		if(it->getFuturePositionX()!=0 || it->getFuturePositionX()!=0){

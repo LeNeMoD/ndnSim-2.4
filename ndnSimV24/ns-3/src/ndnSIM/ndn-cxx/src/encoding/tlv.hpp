@@ -103,7 +103,8 @@ enum {
   	FuturePositionZ = 39,
   	TimeAtFuturePosition = 40,
 	FuturePositionWasSet = 41,
-  	FuturePositionInfo = 42,
+  	FuturePositionInfoData = 42,
+	FuturePositionInfoInterest = 43,
 
   AppPrivateBlock1 = 128,
   AppPrivateBlock2 = 32767

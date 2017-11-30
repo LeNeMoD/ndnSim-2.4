@@ -28,6 +28,9 @@
 #include "selectors.hpp"
 #include "util/time.hpp"
 
+//Dome
+#include "future-position-info.hpp"
+
 namespace ndn {
 
 class Data;
@@ -135,6 +138,19 @@ public: // matching
   matchesInterest(const Interest& other) const;
 
 public: // Name, Nonce, and Guiders
+
+
+	//  //Dome
+	const FuturePositionInfo&
+	getFuturePositionInfo() const {
+		return m_futurePositonInfoInterest;
+	}
+
+	Interest&
+	setFuturePositionInfo(const FuturePositionInfo& futurePositionInfo);
+
+
+
   const Name&
   getName() const
   {
@@ -335,6 +351,7 @@ private:
   time::milliseconds m_interestLifetime;
   DelegationList m_forwardingHint;
 
+  FuturePositionInfo m_futurePositonInfoInterest;
   mutable Block m_wire;
 };
 

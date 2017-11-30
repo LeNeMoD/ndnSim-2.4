@@ -136,21 +136,31 @@ public: // in-record
   InRecordCollection::iterator
   getInRecord(const Face& face);
   InRecordCollection::iterator
-    getInRecord(const std::string mac);
+  getInRecord(const std::string mac);
+  //Dome
+  InRecordCollection::iterator
+  getInRecord(const ndn::FuturePositionInfo futurePositionInfo);
   /** \brief insert or update an in-record
    *  \return an iterator to the new or updated in-record
    */
   InRecordCollection::iterator
   insertOrUpdateInRecord(Face& face, const Interest& interest);
   InRecordCollection::iterator
-    insertOrUpdateInRecord(Face& face, std::string mac, const Interest& interest);
+  insertOrUpdateInRecord(Face& face, std::string mac, const Interest& interest);
+  //Dome ev nach position statt infoObjekt
+  InRecordCollection::iterator
+  insertOrUpdateInRecord(Face& face, std::string mac,ndn::FuturePositionInfo futurePositionInfo, const Interest& interest);
+
 
   /** \brief delete the in-record for \p face if it exists
    */
   void
   deleteInRecord(const Face& face);
   void
-    deleteInRecord(const std::string mac);
+  deleteInRecord(const std::string mac);
+  //Dome
+  void
+  deleteInRecord(const ndn::FuturePositionInfo futurePositionInfo);
 
   /** \brief delete all in-records
    */
@@ -219,7 +229,10 @@ public: // out-record
   void
   deleteOutRecord(const Face& face);
   void
-    deleteOutRecord(std::string mac);
+  deleteOutRecord(std::string mac);
+  //Dome
+  void
+  deleteOutRecord(ndn::FuturePositionInfo futurePositionInfo);
 
 public:
   /** \brief unsatisfy timer

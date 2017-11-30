@@ -92,6 +92,10 @@ Interest::wireEncode(EncodingImpl<TAG>& encoder) const
   // Name
   totalLength += getName().wireEncode(encoder);
 
+  //FuturePositionInfo
+  totalLength += getFuturePositionInfo().wireEncode(encoder);
+
+
   totalLength += encoder.prependVarNumber(totalLength);
   totalLength += encoder.prependVarNumber(tlv::Interest);
   return totalLength;
@@ -164,6 +168,14 @@ Interest::wireDecode(const Block& wire)
   else {
     m_forwardingHint = DelegationList();
   }
+
+  //Dome
+    // FuturePositionInfo
+    val = m_wire.find(tlv::FuturePositionInfoInterest);
+    if (val != m_wire.elements_end()) {
+  	m_futurePositonInfoInterest.wireDecode(m_wire.get(tlv::FuturePositionInfoInterest));
+  	std::cout<<"check content futurePosInfo after decode in interest: x: "<< m_futurePositonInfoInterest.getFutureLocation_X()<<" y: "<< m_futurePositonInfoInterest.getFutureLocation_Y()<<std::endl;
+  	}
 }
 
 std::string

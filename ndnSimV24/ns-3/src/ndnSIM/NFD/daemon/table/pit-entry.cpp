@@ -59,6 +59,14 @@ Entry::getInRecord(const std::string mac)
   return std::find_if(m_inRecords.begin(), m_inRecords.end(),
     [&mac] (const InRecord& inRecord) { return inRecord.getMac() == mac; });
 }
+//Dome
+InRecordCollection::iterator
+Entry::getInRecord(const ndn::FuturePositionInfo futurePositionInfo)
+{
+  return std::find_if(m_inRecords.begin(), m_inRecords.end(),
+    [&futurePositionInfo] (const InRecord& inRecord) { return inRecord.getFuturePositionInfo() == futurePositionInfo; });
+}
+
 InRecordCollection::iterator
 Entry::insertOrUpdateInRecord(Face& face, const Interest& interest)
 {
@@ -89,6 +97,22 @@ Entry::insertOrUpdateInRecord(Face& face, std::string mac, const Interest& inter
   it->update(interest);
   return it;
 }
+//Dome ev auch andere paramater statt nur futurePosInfo
+InRecordCollection::iterator
+Entry::insertOrUpdateInRecord(Face& face, std::string mac,ndn::FuturePositionInfo futurePositionInfo, const Interest& interest)
+{
+  BOOST_ASSERT(this->canMatch(interest));
+
+  auto it = std::find_if(m_inRecords.begin(), m_inRecords.end(),
+	[&futurePositionInfo] (const InRecord& inRecord) { return inRecord.getFuturePositionInfo() == futurePositionInfo; });
+  if (it == m_inRecords.end()) {
+    m_inRecords.emplace_front(face, futurePositionInfo);
+    it = m_inRecords.begin();
+  }
+
+  it->update(interest);
+  return it;
+}
 void
 Entry::deleteInRecord(const Face& face)
 {
@@ -103,6 +127,16 @@ Entry::deleteInRecord(const std::string mac)
 {
   auto it = std::find_if(m_inRecords.begin(), m_inRecords.end(),
     [&mac] (const InRecord& inRecord) { return inRecord.getMac() == mac; });
+  if (it != m_inRecords.end()) {
+    m_inRecords.erase(it);
+  }
+}
+//Dome
+void
+Entry::deleteInRecord(const ndn::FuturePositionInfo futurePositionInfo)
+{
+  auto it = std::find_if(m_inRecords.begin(), m_inRecords.end(),
+    [&futurePositionInfo] (const InRecord& inRecord) { return inRecord.getFuturePositionInfo() == futurePositionInfo; });
   if (it != m_inRecords.end()) {
     m_inRecords.erase(it);
   }
@@ -150,6 +184,16 @@ Entry::deleteOutRecord( std::string mac)
 {
   auto it = std::find_if(m_outRecords.begin(), m_outRecords.end(),
     [&mac] (const OutRecord& outRecord) { return outRecord.getMac() == mac; });
+  if (it != m_outRecords.end()) {
+    m_outRecords.erase(it);
+  }
+}
+//Dome
+void
+Entry::deleteOutRecord(ndn::FuturePositionInfo futurePositionInfo)
+{
+  auto it = std::find_if(m_outRecords.begin(), m_outRecords.end(),
+    [&futurePositionInfo] (const OutRecord& outRecord) { return outRecord.getFuturePositionInfo() == futurePositionInfo; });
   if (it != m_outRecords.end()) {
     m_outRecords.erase(it);
   }

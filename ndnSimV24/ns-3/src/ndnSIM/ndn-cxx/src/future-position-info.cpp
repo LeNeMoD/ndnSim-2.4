@@ -26,7 +26,7 @@ FuturePositionInfo::FuturePositionInfo() {
 	m_location_Y_Coord = 3215;
 	m_location_Z_Coord_Velocity = 3215;
 	m_timeAtFuturePosition = 3215;
-	m_futurePositionWasSet = 3215;
+	m_futurePositionWasSet = 0;
 
 }
 /*bool

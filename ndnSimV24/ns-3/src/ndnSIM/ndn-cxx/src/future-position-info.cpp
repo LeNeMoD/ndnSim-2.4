@@ -97,7 +97,7 @@ FuturePositionInfo::wireEncode(EncodingImpl<TAG>& encoder) const {
 	}
 
 	totalLength += encoder.prependVarNumber(totalLength);
-	totalLength += encoder.prependVarNumber(tlv::FuturePositionInfo);
+	totalLength += encoder.prependVarNumber(tlv::FuturePositionInfoData);
 	return totalLength;
 
 }

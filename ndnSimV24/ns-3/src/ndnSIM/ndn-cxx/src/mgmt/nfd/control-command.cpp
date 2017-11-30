@@ -264,7 +264,7 @@ FibAddNextHopCommand::applyDefaultsToRequest(ControlParameters& parameters) cons
 	  parameters.setTimeAtFuturePosition(0);
   }
   if (!parameters.hasFuturePositionSettedInfo()) {
-	  parameters.setFuturePositionSettedInfo(999);
+	  parameters.setFuturePositionSettedInfo(0);
   }
 
 }
@@ -405,7 +405,7 @@ RibRegisterCommand::applyDefaultsToRequest(ControlParameters& parameters) const
           parameters.setTimeAtFuturePosition(0);
     }
   if (!parameters.hasFuturePositionSettedInfo()) {
-          parameters.setFuturePositionSettedInfo(999);
+          parameters.setFuturePositionSettedInfo(0);
     }
   if (!parameters.hasFlags()) {
     parameters.setFlags(ROUTE_FLAG_CHILD_INHERIT);

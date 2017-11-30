@@ -28,6 +28,8 @@
 
 #include "face/face.hpp"
 #include "strategy-info-host.hpp"
+#include "ns3/ndnSIM/ndn-cxx/future-position-info.hpp"
+
 
 namespace nfd {
 namespace pit {
@@ -43,11 +45,20 @@ public:
   explicit
   FaceRecord(Face& face);
   explicit
-    FaceRecord(Face& face, std::string mac);
+  FaceRecord(Face& face, std::string mac);
+  //Dome
+  explicit
+  FaceRecord(Face& face, std::string mac, ndn::FuturePositionInfo futurePosInfo);
+
   Face&
   getFace() const;
   std::string
    getMac() const;
+
+  //Dome
+  ndn::FuturePositionInfo
+  getFuturePositionInfo() const;
+
   uint32_t
   getLastNonce() const;
 
@@ -69,6 +80,8 @@ private:
   Face& m_face;
   uint32_t m_lastNonce;
   std::string m_mac;
+  //Dome
+  ndn::FuturePositionInfo m_futurePosition;
   time::steady_clock::TimePoint m_lastRenewed;
   time::steady_clock::TimePoint m_expiry;
 };
@@ -100,6 +113,11 @@ inline std::string
 FaceRecord::getMac() const
 {
 	return m_mac;
+}
+//Dome
+inline ndn::FuturePositionInfo
+FaceRecord::getFuturePositionInfo() const{
+	return m_futurePosition;
 }
 } // namespace pit
 } // namespace nfd

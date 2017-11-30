@@ -24,6 +24,9 @@
  */
 
 #include "pit-face-record.hpp"
+//Dome
+#include "ns3/ndnSIM/ndn-cxx/future-position-info.hpp"
+
 
 namespace nfd {
 namespace pit {
@@ -32,6 +35,7 @@ FaceRecord::FaceRecord(Face& face)
   : m_face(face)
   , m_lastNonce(0)
   , m_mac()
+  ,	m_futurePosition()
   , m_lastRenewed(time::steady_clock::TimePoint::min())
   , m_expiry(time::steady_clock::TimePoint::min())
 {
@@ -40,6 +44,15 @@ FaceRecord::FaceRecord(Face& face,std::string mac)
   : m_face(face)
   , m_lastNonce(0)
   , m_mac(mac)
+  , m_lastRenewed(time::steady_clock::TimePoint::min())
+  , m_expiry(time::steady_clock::TimePoint::min())
+{
+}
+FaceRecord::FaceRecord(Face& face,std::string mac, ndn::FuturePositionInfo futurePosInfo)
+  : m_face(face)
+  , m_lastNonce(0)
+  , m_mac(mac)
+  , m_futurePosition(futurePosInfo)
   , m_lastRenewed(time::steady_clock::TimePoint::min())
   , m_expiry(time::steady_clock::TimePoint::min())
 {

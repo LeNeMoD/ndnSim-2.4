@@ -137,14 +137,15 @@ void FibHelper::AddRoute(Ptr<Node> node, const Name& prefix,
 	NS_LOG_LOGIC(
 			"[" << node->GetId() << "]$ route add " << prefix << " via " << face->getLocalUri() << " metric " << metric);
 
-	std::cout << "fibhelper is called" << std::endl;
+//	std::cout << "fibhelper is called" << std::endl;
 	// Get L3Protocol object
 	Ptr<L3Protocol> L3protocol = node->GetObject<L3Protocol>();
 	// Get the forwarder instance
 	shared_ptr<nfd::Forwarder> m_forwarder = L3protocol->getForwarder();
 
-	std::cout<<"ndn-Fib-Helper- addRoute (my method) :for Node "<<node->GetId()<<" positionX: "<< positionX <<std::endl;
-	std::cout<<"ndn-Fib-Helper- addRoute (my method) :for Node "<<node->GetId()<<" positionY: "<< positionY <<std::endl;
+//	// has position in int ot caller node
+//	std::cout<<"ndn-Fib-Helper- addRoute (my method) :for Caller Node "<<node->GetId()<<" positionX: "<< positionX <<std::endl;
+//	std::cout<<"ndn-Fib-Helper- addRoute (my method) :for Caller Node "<<node->GetId()<<" positionY: "<< positionY <<std::endl;
 
 	ControlParameters parameters;
 	parameters.setName(prefix);

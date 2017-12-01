@@ -94,7 +94,7 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
   shared_ptr<Interest> interest2= make_shared<Interest>(interest);
 
 	std::cout<< "time in multicastStrategy: " << ns3::Simulator::Now() << std::endl;
-	int aa=0;
+	int flagFibNotEmptyFuturePosition=0;
   	for (fib::NextHopList::const_iterator it = nexthops.begin();
   			it != nexthops.end(); ++it) {
 
@@ -107,11 +107,10 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
 				<< std::endl;
 
   		if(it->getPositionX()==3215){
-  			aa=1;
-  			std::cout<< "FuturePosition was Set!"<<std::endl<<std::endl;
+  			flagFibNotEmptyFuturePosition=1;
   		}
   	}
-  	if(aa==1){
+  	if(flagFibNotEmptyFuturePosition==1){
   	  //Dome add NodeFuturePosition to the interest
   	//  Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
   	// 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
@@ -123,15 +122,9 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
   	  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
 
 
-  	  double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).x;
-  	  double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).y ;
-  	  double posZ = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).z ;
-
-
-  	//  std::cout<< "check position-X +5s pass in producer  :" << posX << " node id: " << node->GetId() <<std::endl;
-  	//  std::cout<< "check position-Y +5s pass in producer  :" << posY << " node id: " << node->GetId() <<std::endl;
-
-
+  	  double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("in Strategy requesting ",node->GetId(),at).x;
+  	  double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("in Strategy requesting ",node->GetId(),at).y ;
+  	  double posZ = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("in Strategy requesting ",node->GetId(),at).z ;
 
   	  ndn::FuturePositionInfo futPos = interest2->getFuturePositionInfo();
   	  futPos.setFutureLocationX(posX);
@@ -140,14 +133,12 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
   	  int wasSet = 1;
   	  futPos.setFuturePositionWasSet(wasSet);
   	  interest2->setFuturePositionInfo(futPos);
+  	  std::cout<<"FuturePosition was set from the TLC-File to the interest in strategy"<<std::endl;
   	}
 
- // for (const auto& nexthop : nexthops) {
-  for (fib::NextHopList::const_iterator it = nexthops.begin(); it != nexthops.end(); ++it) {
-
-    Face& outFace = it->getFace();
-
-    RetxSuppressionResult suppressResult = m_retxSuppression.decidePerUpstream(*pitEntry, outFace);
+  	for (fib::NextHopList::const_iterator it = nexthops.begin(); it != nexthops.end(); ++it) {
+  		Face& outFace = it->getFace();
+  		RetxSuppressionResult suppressResult = m_retxSuppression.decidePerUpstream(*pitEntry, outFace);
 
     if (suppressResult == RetxSuppressionResult::SUPPRESS) {
       NFD_LOG_DEBUG(interest << " from=" << inFace.getId()
@@ -169,12 +160,15 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
     		}
     	}
     	if (a==0){
+
     		ndn::FuturePositionInfo futPos;
     		futPos.setFutureLocationX(it->getFuturePositionX());
     		futPos.setFutureLocationY(it->getFuturePositionY());
     		futPos.setFuturePositionWasSet(1);
 
     		interest2->setFuturePositionInfo(futPos);
+    	  	std::cout<<"FuturePosition was set from the FIB to the interest in strategy"<<std::endl;
+
 
       this->sendInterest(pitEntry, outFace, *interest2, it->getMac());
       break;

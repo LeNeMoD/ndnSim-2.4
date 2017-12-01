@@ -648,7 +648,7 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
 
 
 
-  //Dome
+  //Dome  FuturePosition to the data
   ns3::Ptr<ns3::Node> node2 = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
 
 
@@ -664,16 +664,12 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
 
   ns3::Time time = (ns3::Simulator::Now());
   double at = std::ceil(time.GetSeconds())+1;
-  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
+  std::cout<< "time from simulator to take futurePosition is in Forwarder outGoingData :" << at <<std::endl;
 
 
   double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node2->GetId(),at).x;
   double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node2->GetId(),at).y ;
   double posZ = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node2->GetId(),at).z ;
-
-
-//  std::cout<< "check position-X +5s pass in producer  :" << posX << " node id: " << node->GetId() <<std::endl;
-//  std::cout<< "check position-Y +5s pass in producer  :" << posY << " node id: " << node->GetId() <<std::endl;
 
   ndn::FuturePositionInfo futPos;
 
@@ -689,26 +685,20 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
   shared_ptr<Data> data2= make_shared<Data>(data);
 
   data2->setFuturePositionInfo(futPos);
+  std::cout<<"FuturePosition was set from the TLC-File to the DATA in forwarder"<<std::endl;
 
-  std::cout<<"data futurPos in producer contains: "<< data2->getFuturePositionInfo().m_location_X_Coord <<std::endl;
-  std::cout<<"data futurPos in producer contains: "<< data2->getFuturePositionInfo().m_location_Y_Coord <<std::endl;
-
-
-
+  std::cout<<"data futurPos in forwarder contains: "<< data2->getFuturePositionInfo().m_location_X_Coord <<std::endl;
+  std::cout<<"data futurPos in forwarder contains: "<< data2->getFuturePositionInfo().m_location_Y_Coord <<std::endl;
 
 
-
-
-
-
-  //Dome
+  //Dome Antenna Part
   ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
   std::cout<<"outgoing Data: "<< data.getName()<<" on node: " <<node->GetId()<<std::endl;
-  std::cout<<"future Position unpacked from data"<<std::endl;
   ndn::FuturePositionInfo futurePositionInfoObject = data.getFuturePositionInfo();
   double futureX = futurePositionInfoObject.getFutureLocation_X();
   double futureY = futurePositionInfoObject.getFutureLocation_Y();
   double futureZ = futurePositionInfoObject.getFutureLocation_Z();
+  std::cout<<"future Position unpacked from data in forwarder on outgoing data"<<std::endl;
 
 
   // /localhost scope control
@@ -753,9 +743,9 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
 //  std::cout<<"parabolicAntenna is: "<< swp0->GetRxAntenna() <<std::endl;
   ns3::Ptr<ns3::ParabolicAntennaModel> parab = ns3::DynamicCast<ns3::ParabolicAntennaModel> (swp0->GetRxAntenna());
   ns3::Ptr<ns3::MobilityModel> model = node->GetObject<ns3::MobilityModel>();
-    std::cout<<" outgoing data node: " << node->GetId() << " target mac: " << targetmac << " name of data: " << data.getName()
-    		<<" outgoing node position : "<< model->GetPosition() << "FuturePosition Contains: x, y, z :"<< futureX<<" ,"<<futureY
-			<<" position is valid: "<< futurePositionInfoObject.isfuturePositionSet()<< std::endl;
+  std::cout<<" outgoing data node: " << node->GetId() << " target mac: " << targetmac << " name of data: " << data.getName()
+		  <<" outgoing node position : "<< model->GetPosition() << "FuturePosition Contains: x, y, z :"<< futureX<<" ,"<<futureY
+		  <<" position is valid: "<< futurePositionInfoObject.isfuturePositionSet()<< std::endl;
 
   bool parabHasToTurn = false;
   if(futurePositionInfoObject.isfuturePositionSet()==1 && targetmac== ""){

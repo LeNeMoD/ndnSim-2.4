@@ -135,8 +135,8 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
 
 //  //Dome
 //
-//  std::cout<<"node: " << GetNode()->GetId() << " Has incomming interest " <<std::endl;
-//  std::cout<<"node: " << GetNode()->GetId() << " responding with Data: "<< data->getName() <<std::endl;
+  std::cout<<"node: " << GetNode()->GetId() << "ndnProducer Has incomming interest " <<std::endl;
+  std::cout<<"node: " << GetNode()->GetId() << "ndnProducer responding with Data: "<< data->getName() <<std::endl;
 //
 //  ns3::Ptr<ns3::Node> node = GetNode();
 ////  std::cout<<"node has number of applications running : "<<   node->GetNApplications()<<std::endl;

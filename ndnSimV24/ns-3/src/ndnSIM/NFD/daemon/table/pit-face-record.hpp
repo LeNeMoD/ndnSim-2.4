@@ -85,8 +85,6 @@ private:
   std::string m_mac;
   //Dome
   ndn::FuturePositionInfo m_futurePosition;
-//  double m_futurePosX;
-//  double m_futurePosY;
 
   time::steady_clock::TimePoint m_lastRenewed;
   time::steady_clock::TimePoint m_expiry;

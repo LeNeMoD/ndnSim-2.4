@@ -187,12 +187,12 @@ Consumer::SendPacket()
 	// 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
 	//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
 		Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
-
-	  Time time = (ns3::Simulator::Now());
-	  double at = std::ceil(time.GetSeconds())+1;
-	  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
-
-
+//
+//	  Time time = (ns3::Simulator::Now());
+//	  double at = std::ceil(time.GetSeconds())+1;
+//	  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
+//
+//
 //	  double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).x;
 //	  double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).y ;
 //	  double posZ = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).z ;
@@ -236,8 +236,9 @@ Consumer::SendPacket()
 		  nameWithSequence[i]->appendSequenceNumber(seq2[i]);
 		  interest2[i]->setNonce(m_rand->GetValue(0, std::numeric_limits<uint32_t>::max()));
 		  interest2[i]->setName(*nameWithSequence[i]);
+		  //Dome
 		  //Set FuturePositionInfo
-		  interest2[i]->setFuturePositionInfo(futurePositionInfoConsumer);
+//		  interest2[i]->setFuturePositionInfo(futurePositionInfoConsumer);
 		  //std::cout<<"futpos set x,y,z :"<<posX<<" , "<<posY<<" , "<<posZ<<" , "<<" at time: "<< at<<std::endl;
 		  //std::cout<<"interest futurPos in ndn-consumer contains: "<< interest2[i]->getFuturePositionInfo().m_location_X_Coord <<std::endl;
 		  //std::cout<<"interest futurPos in ndn-consumer contains: "<< interest2[i]->getFuturePositionInfo().m_location_Y_Coord <<std::endl;

@@ -41,10 +41,7 @@ InRecord::InRecord(Face& face, std::string mac, ndn::FuturePositionInfo futurePo
   : FaceRecord(face, mac, futurePositionInfo)
 {
 }
-//InRecord::InRecord(Face& face, std::string mac, double futurePosX, double futurePosY)
-//  : FaceRecord(face, mac, futurePosX, futurePosY)
-//{
-//}
+
 void
 InRecord::update(const Interest& interest)
 {

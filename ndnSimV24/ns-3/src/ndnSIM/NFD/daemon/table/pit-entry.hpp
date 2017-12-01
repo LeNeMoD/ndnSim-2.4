@@ -158,9 +158,6 @@ public: // in-record
   deleteInRecord(const Face& face);
   void
   deleteInRecord(const std::string mac);
-  //Dome
-  void
-  deleteInRecord(const ndn::FuturePositionInfo futurePositionInfo);
 
   /** \brief delete all in-records
    */
@@ -230,9 +227,6 @@ public: // out-record
   deleteOutRecord(const Face& face);
   void
   deleteOutRecord(std::string mac);
-  //Dome
-  void
-  deleteOutRecord(ndn::FuturePositionInfo futurePositionInfo);
 
 public:
   /** \brief unsatisfy timer

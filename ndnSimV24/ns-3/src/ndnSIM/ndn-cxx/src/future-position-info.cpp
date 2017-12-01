@@ -29,16 +29,6 @@ FuturePositionInfo::FuturePositionInfo() {
 	m_futurePositionWasSet = 0;
 
 }
-/*bool
-FuturePositionInfo::empty() const
-{
-  return m_location_X_Coord <0 &&
-		  m_location_Y_Coord = 0 &&
-		  m_location_Z_Coord_Velocity = 0 &&
-		  m_timeAtFuturePosition = 0;
-		 m_bool_position_is_empty = true;;
-
-}*/
 FuturePositionInfo::FuturePositionInfo(const Block& block)
 {
 	wireDecode(block);
@@ -57,11 +47,6 @@ template<encoding::Tag TAG>
 size_t
 FuturePositionInfo::wireEncode(EncodingImpl<TAG>& encoder) const {
 	size_t totalLength = 0;
-
-	/*for (std::list<Block>::const_reverse_iterator appFuturePositionInfoItem = m_appFuturePositionInfo.rbegin();
-			appFuturePositionInfoItem != m_appFuturePositionInfo.rend(); ++appFuturePositionInfoItem) {
-	    totalLength += encoder.prependBlock(*appFuturePositionInfoItem);
-	  }*/
 
 	// if futurePositions were set the encode time
 	if (m_futurePositionWasSet) {
@@ -132,9 +117,7 @@ FuturePositionInfo::wireDecode(const Block& wire) {
 	m_mWire_futurePositionInfo = wire;
 	m_mWire_futurePositionInfo.parse();
 
-	//Block::element_const_iterator val = m_mWire_futurePositionInfo.elements_begin();
-
-	//Dome !!! missing else statements if decoding false
+	//Dome !!! missing else statements if decoding fails
 	//FuturePosistion
 	Block::element_const_iterator val= m_mWire_futurePositionInfo.find(tlv::FuturePositionX);
 	if (val != m_mWire_futurePositionInfo.elements_end()) {
@@ -167,10 +150,6 @@ FuturePositionInfo::wireDecode(const Block& wire) {
 		++val;
 	}
 
-	 // AppFuturePositionInfo (if any)
-	 // for (; val != m_mWire_futurePositionInfo.elements().end(); ++val) {
-	//    m_appFuturePositionInfo.push_back(*val);
-	//  }
 }
 
 std::ostream&
@@ -198,65 +177,6 @@ bool
 FuturePositionInfo::operator ==(const FuturePositionInfo& other) const{
 	return wireEncode() == other.wireEncode();
 }
-
-
-/*const std::list<Block>&
-FuturePositionInfo::getAppFuturePositionInfo() const
-{
-  return m_appFuturePositionInfo;
-}
-
-FuturePositionInfo&
-FuturePositionInfo::setAppFuturePositionInfo(const std::list<Block>& info)
-{
-  for (std::list<Block>::const_iterator i = info.begin(); i != info.end(); ++i) {
-    if (!(128 <= i->type() && i->type() <= 252))
-      BOOST_THROW_EXCEPTION(Error("AppFuturePositionInfo block has type outside the application range "
-                                  "[128, 252]"));
-  }
-
-  m_mWire_futurePositionInfo.reset();
-  m_appFuturePositionInfo = info;
-  return *this;
-}
-
-FuturePositionInfo&
-FuturePositionInfo::addAppFuturePositionInfo(const Block& block)
-{
-  if (!(128 <= block.type() && block.type() <= 252))
-    BOOST_THROW_EXCEPTION(Error("AppMetaInfo block has type outside the application range "
-                                "[128, 252]"));
-
-  m_mWire_futurePositionInfo.reset();
-  m_appFuturePositionInfo.push_back(block);
-  return *this;
-}
-
-bool
-FuturePositionInfo::removeAppFuturePositionInfo(uint32_t tlvType)
-{
-  for (std::list<Block>::iterator iter = m_appFuturePositionInfo.begin();
-       iter != m_appFuturePositionInfo.end(); ++iter) {
-    if (iter->type() == tlvType) {
-    	m_mWire_futurePositionInfo.reset();
-    	m_appFuturePositionInfo.erase(iter);
-      return true;
-    }
-  }
-  return false;
-}
-
-const Block*
-FuturePositionInfo::findAppFuturePositionInfo(uint32_t tlvType) const
-{
-  for (std::list<Block>::const_iterator iter = m_appFuturePositionInfo.begin();
-       iter != m_appFuturePositionInfo.end(); ++iter) {
-    if (iter->type() == tlvType) {
-      return &*iter;
-    }
-  }
-  return 0;
-}*/
 
 double
 FuturePositionInfo::getTimeAtFutureLocation() const{

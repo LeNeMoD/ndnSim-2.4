@@ -35,10 +35,6 @@ FaceRecord::FaceRecord(Face& face)
   : m_face(face)
   , m_lastNonce(0)
   , m_mac()
-//Dome
-//  ,m_futurePosition()
-//,m_futurePosX(0)
-//,m_futurePosY(0)
   , m_lastRenewed(time::steady_clock::TimePoint::min())
   , m_expiry(time::steady_clock::TimePoint::min())
 {
@@ -47,22 +43,17 @@ FaceRecord::FaceRecord(Face& face,std::string mac)
   : m_face(face)
   , m_lastNonce(0)
   , m_mac(mac)
-//Dome
-//,m_futurePosX(0)
-//,m_futurePosY(0)
   , m_lastRenewed(time::steady_clock::TimePoint::min())
   , m_expiry(time::steady_clock::TimePoint::min())
 {
 }
 //Dome
 FaceRecord::FaceRecord(Face& face,std::string mac, ndn::FuturePositionInfo futurePosInfo)
-//FaceRecord::FaceRecord(Face& face,std::string mac, double futurePosX, double futurePosY)
   : m_face(face)
   , m_lastNonce(0)
   , m_mac(mac)
+//Dome
   , m_futurePosition(futurePosInfo)
-//	,m_futurePosX(futurePosX)
-//	,m_futurePosY(futurePosY)
   , m_lastRenewed(time::steady_clock::TimePoint::min())
   , m_expiry(time::steady_clock::TimePoint::min())
 {

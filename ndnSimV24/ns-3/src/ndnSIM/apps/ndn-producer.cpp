@@ -39,7 +39,7 @@
 
 NS_LOG_COMPONENT_DEFINE("ndn.Producer");
 
-ndn::FuturePositionInfo futurePositionInfo;
+ndn::FuturePositionInfo futurePositionInfoProducer;
 
 namespace ns3 {
 namespace ndn {
@@ -133,47 +133,47 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
 
   NS_LOG_INFO("node(" << GetNode()->GetId() << ") responding with Data: " << data->getName());
 
-  //Dome
-
-  std::cout<<"node: " << GetNode()->GetId() << " Has incomming interest " <<std::endl;
-  std::cout<<"node: " << GetNode()->GetId() << " responding with Data: "<< data->getName() <<std::endl;
-
-  ns3::Ptr<ns3::Node> node = GetNode();
-//  std::cout<<"node has number of applications running : "<<   node->GetNApplications()<<std::endl;
-
-//  Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
-// 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
-//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
-	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
-
-  Time time = (ns3::Simulator::Now());
-  double at = std::ceil(time.GetSeconds());
-  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
-
-
-  double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node->GetId(),at).x;
-  double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node->GetId(),at).y ;
-  double posZ = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node->GetId(),at).z ;
-
-
-//  std::cout<< "check position-X +5s pass in producer  :" << posX << " node id: " << node->GetId() <<std::endl;
-//  std::cout<< "check position-Y +5s pass in producer  :" << posY << " node id: " << node->GetId() <<std::endl;
-
-
-
-  futurePositionInfo.setFutureLocationX(posX);
-  futurePositionInfo.setFutureLocationY(posY);
-  futurePositionInfo.setFutureLocationZ(posZ);
-  futurePositionInfo.setTimeAtFutureLocation(at+1);
-  int wasSet = 1;
-  futurePositionInfo.setFuturePositionWasSet(wasSet);
-
-  std::cout<<"futpos set x,y,z :"<<posX<<" , "<<posY<<" , "<<posZ<<" , "<<" at time: "<< at<<std::endl;
-
-  data->setFuturePositionInfo(futurePositionInfo);
-
-  std::cout<<"data futurPos in producer contains: "<< data->getFuturePositionInfo().m_location_X_Coord <<std::endl;
-  std::cout<<"data futurPos in producer contains: "<< data->getFuturePositionInfo().m_location_Y_Coord <<std::endl;
+//  //Dome
+//
+//  std::cout<<"node: " << GetNode()->GetId() << " Has incomming interest " <<std::endl;
+//  std::cout<<"node: " << GetNode()->GetId() << " responding with Data: "<< data->getName() <<std::endl;
+//
+//  ns3::Ptr<ns3::Node> node = GetNode();
+////  std::cout<<"node has number of applications running : "<<   node->GetNApplications()<<std::endl;
+//
+////  Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
+//// 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
+////	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
+//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
+//
+//  Time time = (ns3::Simulator::Now());
+//  double at = std::ceil(time.GetSeconds())+1;
+//  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
+//
+//
+//  double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node->GetId(),at).x;
+//  double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node->GetId(),at).y ;
+//  double posZ = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node->GetId(),at).z ;
+//
+//
+////  std::cout<< "check position-X +5s pass in producer  :" << posX << " node id: " << node->GetId() <<std::endl;
+////  std::cout<< "check position-Y +5s pass in producer  :" << posY << " node id: " << node->GetId() <<std::endl;
+//
+//
+//
+//  futurePositionInfoProducer.setFutureLocationX(posX);
+//  futurePositionInfoProducer.setFutureLocationY(posY);
+//  futurePositionInfoProducer.setFutureLocationZ(posZ);
+//  futurePositionInfoProducer.setTimeAtFutureLocation(at);
+//  int wasSet = 1;
+//  futurePositionInfoProducer.setFuturePositionWasSet(wasSet);
+//
+//  std::cout<<"futpos set x,y,z :"<<posX<<" , "<<posY<<" , "<<posZ<<" , "<<" at time: "<< at<<std::endl;
+//
+//  data->setFuturePositionInfo(futurePositionInfoProducer);
+//
+//  std::cout<<"data futurPos in producer contains: "<< data->getFuturePositionInfo().m_location_X_Coord <<std::endl;
+//  std::cout<<"data futurPos in producer contains: "<< data->getFuturePositionInfo().m_location_Y_Coord <<std::endl;
 
   // to create real wire encoding
   data->wireEncode();

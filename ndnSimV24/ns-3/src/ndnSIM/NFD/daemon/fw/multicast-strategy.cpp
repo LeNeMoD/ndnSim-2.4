@@ -29,6 +29,8 @@
 #include "ns3/node-list.h"
 #include "ns3/node.h"
 
+
+
 namespace nfd {
 namespace fw {
 
@@ -89,7 +91,10 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
 //  ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-test2-n3.txt");
 //	std::cout<< ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("Multicast-Strategy",node->GetId(),5) << "  is scheduled position for node "<< node->GetId() << "at time 5 " <<std::endl;
 
+  shared_ptr<Interest> interest2= make_shared<Interest>(interest);
+
 	std::cout<< "time in multicastStrategy: " << ns3::Simulator::Now() << std::endl;
+	int aa=0;
   	for (fib::NextHopList::const_iterator it = nexthops.begin();
   			it != nexthops.end(); ++it) {
 
@@ -98,12 +103,43 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
 				<< " mac : " << it->getMac() << std::endl
 				<< " position-X : "<< it->getPositionX() << " position-Y : " << it->getPositionY() << " position-Z : "<< it->getPositionZ() <<std::endl
 				<< " Future-position-X : " << it->getFuturePositionX() << " Future-position-Y : " << it->getFuturePositionY() << std::endl
-				<< " Time-At-FuturePos : "<< it->getTimeAtFuturePosition()<<" , is it a walid position n/y->0/1: "<<it->getFuturePositonWasSet()<< std::endl
+				<< " Time-At-FuturePos : "<< it->getTimeAtFuturePosition()<<" , is it a valid position n/y->0/1: "<<it->getFuturePositonWasSet()<< std::endl
 				<< std::endl;
 
-  		if(it->getFuturePositionX()!=0 || it->getFuturePositionX()!=0){
+  		if(it->getPositionX()==3215){
+  			aa=1;
   			std::cout<< "FuturePosition was Set!"<<std::endl<<std::endl;
   		}
+  	}
+  	if(aa==1){
+  	  //Dome add NodeFuturePosition to the interest
+  	//  Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
+  	// 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
+  	//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
+  		ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
+
+  	  ns3::Time time = (ns3::Simulator::Now());
+  	  double at = std::ceil(time.GetSeconds())+1;
+  	  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
+
+
+  	  double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).x;
+  	  double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).y ;
+  	  double posZ = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).z ;
+
+
+  	//  std::cout<< "check position-X +5s pass in producer  :" << posX << " node id: " << node->GetId() <<std::endl;
+  	//  std::cout<< "check position-Y +5s pass in producer  :" << posY << " node id: " << node->GetId() <<std::endl;
+
+
+
+  	  ndn::FuturePositionInfo futPos = interest2->getFuturePositionInfo();
+  	  futPos.setFutureLocationX(posX);
+  	  futPos.setFutureLocationY(posY);
+  	  futPos.setFutureLocationZ(posZ);
+  	  int wasSet = 1;
+  	  futPos.setFuturePositionWasSet(wasSet);
+  	  interest2->setFuturePositionInfo(futPos);
   	}
 
  // for (const auto& nexthop : nexthops) {
@@ -133,7 +169,14 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
     		}
     	}
     	if (a==0){
-      this->sendInterest(pitEntry, outFace, interest, it->getMac());
+    		ndn::FuturePositionInfo futPos;
+    		futPos.setFutureLocationX(it->getFuturePositionX());
+    		futPos.setFutureLocationY(it->getFuturePositionY());
+    		futPos.setFuturePositionWasSet(1);
+
+    		interest2->setFuturePositionInfo(futPos);
+
+      this->sendInterest(pitEntry, outFace, *interest2, it->getMac());
       break;
     	}
 

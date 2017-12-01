@@ -36,7 +36,15 @@ InRecord::InRecord(Face& face, std::string mac)
   : FaceRecord(face, mac)
 {
 }
-
+//Dome
+InRecord::InRecord(Face& face, std::string mac, ndn::FuturePositionInfo futurePositionInfo)
+  : FaceRecord(face, mac, futurePositionInfo)
+{
+}
+//InRecord::InRecord(Face& face, std::string mac, double futurePosX, double futurePosY)
+//  : FaceRecord(face, mac, futurePosX, futurePosY)
+//{
+//}
 void
 InRecord::update(const Interest& interest)
 {

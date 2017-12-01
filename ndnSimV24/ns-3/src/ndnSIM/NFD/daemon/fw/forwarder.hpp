@@ -188,6 +188,10 @@ public: // forwarding entrypoints and tables
     return m_networkRegionTable;
   }
 std::string targetmac;
+//Dome
+double targetInterestPositionX;
+double targetInterestPositionY;
+
 public: // allow enabling ndnSIM content store (will be removed in the future)
   void
   setCsFromNdnSim(ns3::Ptr<ns3::ndn::ContentStore> cs)
@@ -222,7 +226,11 @@ PUBLIC_WITH_TESTS_ELSE_PRIVATE: // pipelines
   VIRTUAL_WITH_TESTS void
   onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& pitEntry, const Interest& interest);
   VIRTUAL_WITH_TESTS void
-    onContentStoreMiss2(const Face& inFace, const shared_ptr<pit::Entry>& pitEntry, const Interest& interest, std::string mac);
+  onContentStoreMiss2(const Face& inFace, const shared_ptr<pit::Entry>& pitEntry, const Interest& interest, std::string mac);
+  //Dome
+  VIRTUAL_WITH_TESTS void
+  onContentStoreMiss2(const Face& inFace, const shared_ptr<pit::Entry>& pitEntry, const Interest& interest, std::string mac, ndn::FuturePositionInfo futurePositionInfo);
+
 
   /** \brief Content Store hit pipeline
   */
@@ -236,6 +244,10 @@ PUBLIC_WITH_TESTS_ELSE_PRIVATE: // pipelines
   onOutgoingInterest(const shared_ptr<pit::Entry>& pitEntry, Face& outFace, const Interest& interest);
   VIRTUAL_WITH_TESTS void
   onOutgoingInterest(const shared_ptr<pit::Entry>& pitEntry, Face& outFace, const Interest& interest, std::string mac);
+  //Dome
+  VIRTUAL_WITH_TESTS void
+  onOutgoingInterest(const shared_ptr<pit::Entry>& pitEntry, Face& outFace, const Interest& interest, std::string mac, ndn::FuturePositionInfo futurePositionInfo);
+
   /** \brief Interest reject pipeline
    */
   VIRTUAL_WITH_TESTS void

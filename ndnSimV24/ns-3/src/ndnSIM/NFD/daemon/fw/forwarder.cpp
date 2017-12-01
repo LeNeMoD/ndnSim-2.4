@@ -152,6 +152,7 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
   // PIT insert
   shared_ptr<pit::Entry> pitEntry = m_pit.insert(interest).first;
 
+
   // detect duplicate Nonce in PIT entry
   int dnw = fw::findDuplicateNonce(*pitEntry, interest.getNonce(), inFace);
   bool hasDuplicateNonceInPit = dnw != fw::DUPLICATE_NONCE_NONE;
@@ -191,6 +192,8 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
 
     }
   const pit::InRecordCollection& inRecords = pitEntry->getInRecords();
+
+
   bool isPending = inRecords.begin() != inRecords.end();
   if (!isPending) {
     if (m_csFromNdnSim == nullptr) {
@@ -288,7 +291,47 @@ Forwarder::onContentStoreMiss2(const Face& inFace, const shared_ptr<pit::Entry>&
   std::cout<< "onContentStrorMiss2 interest= " << interest.getName()<<std::endl;
 
   // insert in-record
-  pitEntry->insertOrUpdateInRecord(const_cast<Face&>(inFace), mac, interest);
+  pitEntry->insertOrUpdateInRecord(const_cast<Face&>(inFace), mac, interest.getFuturePositionInfo(), interest);
+  std::cout<<"iRecord2 futurePosX forwarder: "<<pitEntry->getInRecords().size()<<std::endl;
+   for (const pit::InRecord& inRecord : pitEntry->getInRecords()) {
+ 	  std::cout<<"iRecord futurePosX forwarder: "<<inRecord.getFuturePositionInfo().m_location_X_Coord<<std::endl;
+ 	  std::cout<<"iRecord futurePosY forwarder: "<<inRecord.getFuturePositionInfo().m_location_Y_Coord<<std::endl;
+
+   }
+
+  // set PIT unsatisfy timer
+  this->setUnsatisfyTimer(pitEntry);
+
+  // has NextHopFaceId?
+  shared_ptr<lp::NextHopFaceIdTag> nextHopTag = interest.getTag<lp::NextHopFaceIdTag>();
+  if (nextHopTag != nullptr) {
+    // chosen NextHop face exists?
+    Face* nextHopFace = m_faceTable.get(*nextHopTag);
+    if (nextHopFace != nullptr) {
+      NFD_LOG_DEBUG("onContentStoreMiss interest=" << interest.getName() << " nexthop-faceid=" << nextHopFace->getId());
+      // go to outgoing Interest pipeline
+      // scope control is unnecessary, because privileged app explicitly wants to forward
+      this->onOutgoingInterest(pitEntry, *nextHopFace, interest);
+    }
+    return;
+  }
+
+  // dispatch to strategy: after incoming Interest
+  this->dispatchToStrategy(*pitEntry,
+    [&] (fw::Strategy& strategy) { strategy.afterReceiveInterest(inFace, interest, pitEntry); });
+}
+//Dome
+void
+Forwarder::onContentStoreMiss2(const Face& inFace, const shared_ptr<pit::Entry>& pitEntry,
+                              const Interest& interest, std::string mac, ndn::FuturePositionInfo futurePositionInfo)
+{
+  NFD_LOG_DEBUG("onContentStoreMiss interest=" << interest.getName());
+
+  //Dome
+  std::cout<< "onContentStrorMiss2 mine interest= " << interest.getName()<<std::endl;
+
+  // insert in-record
+  pitEntry->insertOrUpdateInRecord(const_cast<Face&>(inFace), mac,futurePositionInfo, interest);
 
   // set PIT unsatisfy timer
   this->setUnsatisfyTimer(pitEntry);
@@ -360,15 +403,16 @@ Forwarder::onOutgoingInterest(const shared_ptr<pit::Entry>& pitEntry, Face& outF
   // insert out-record
   pitEntry->insertOrUpdateOutRecord(outFace, interest);
   targetmac= mac;
-
   //Dome
   ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
-  std::cout<< " on outgoing interest to: " << mac << " from node : " << node->GetId() << " Interest name " << interest.getName() << std::endl;
+  std::cout<< " on outgoing interest to: " << mac << " from node : " << node->GetId() << " Interest name " << interest.getName() << "in the interest setted: "<< interest.getFuturePositionInfo().getFutureLocation_X()<<std::endl;
 
   // send Interest
   outFace.sendInterest(interest);
   ++m_counters.nOutInterests;
 }
+
+
 void
 Forwarder::onOutgoingInterest(const shared_ptr<pit::Entry>& pitEntry, Face& outFace, const Interest& interest)
 {
@@ -494,6 +538,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
       if (inRecord.getExpiry() > now) {
         pendingDownstreams.push_back(&inRecord.getFace());
         macs.push_back(inRecord.getMac());
+
       }
     }
 
@@ -600,6 +645,62 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
   }
   NFD_LOG_DEBUG("onOutgoingData face=" << outFace.getId() << " data=" << data.getName());
 
+
+
+
+  //Dome
+  ns3::Ptr<ns3::Node> node2 = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
+
+
+  std::cout<<"node: " << node2->GetId() << " Has incomming interest " <<std::endl;
+  std::cout<<"node: " << node2->GetId() << " responding with Data: "<< data.getName() <<std::endl;
+
+//  std::cout<<"node has number of applications running : "<<   node->GetNApplications()<<std::endl;
+
+//  Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
+// 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
+//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
+	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
+
+  ns3::Time time = (ns3::Simulator::Now());
+  double at = std::ceil(time.GetSeconds())+1;
+  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
+
+
+  double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node2->GetId(),at).x;
+  double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node2->GetId(),at).y ;
+  double posZ = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node2->GetId(),at).z ;
+
+
+//  std::cout<< "check position-X +5s pass in producer  :" << posX << " node id: " << node->GetId() <<std::endl;
+//  std::cout<< "check position-Y +5s pass in producer  :" << posY << " node id: " << node->GetId() <<std::endl;
+
+  ndn::FuturePositionInfo futPos;
+
+  futPos.setFutureLocationX(posX);
+  futPos.setFutureLocationY(posY);
+  futPos.setFutureLocationZ(posZ);
+  futPos.setTimeAtFutureLocation(at);
+  int wasSet = 1;
+  futPos.setFuturePositionWasSet(wasSet);
+
+  std::cout<<"futpos set x,y,z :"<<posX<<" , "<<posY<<" , "<<posZ<<" , "<<" at time: "<< at<<std::endl;
+
+  shared_ptr<Data> data2= make_shared<Data>(data);
+
+  data2->setFuturePositionInfo(futPos);
+
+  std::cout<<"data futurPos in producer contains: "<< data2->getFuturePositionInfo().m_location_X_Coord <<std::endl;
+  std::cout<<"data futurPos in producer contains: "<< data2->getFuturePositionInfo().m_location_Y_Coord <<std::endl;
+
+
+
+
+
+
+
+
+
   //Dome
   ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
   std::cout<<"outgoing Data: "<< data.getName()<<" on node: " <<node->GetId()<<std::endl;
@@ -671,7 +772,7 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
 //  }
 
   // send Data
-  outFace.sendData(data);
+  outFace.sendData(*data2);
   std::cout<<"data send and beam would be reset to 360"<<std::endl;
   parab->SetBeamwidth(360);
   ++m_counters.nOutData;

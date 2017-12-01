@@ -92,6 +92,7 @@ Interest::wireEncode(EncodingImpl<TAG>& encoder) const
   // Name
   totalLength += getName().wireEncode(encoder);
 
+  //Dome
   //FuturePositionInfo
   totalLength += getFuturePositionInfo().wireEncode(encoder);
 
@@ -357,6 +358,18 @@ Interest::setForwardingHint(const DelegationList& value)
   m_forwardingHint = value;
   m_wire.reset();
   return *this;
+}
+
+//Dome
+
+Interest&
+Interest::setFuturePositionInfo(const FuturePositionInfo& futurePositionInfoObject)
+{
+	//2.3 was onChanged Dome
+
+	m_futurePositonInfoInterest = futurePositionInfoObject;
+	m_wire.reset();
+	return *this;
 }
 
 // ---- operators ----

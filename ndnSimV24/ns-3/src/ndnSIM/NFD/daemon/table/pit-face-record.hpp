@@ -28,7 +28,8 @@
 
 #include "face/face.hpp"
 #include "strategy-info-host.hpp"
-#include "ns3/ndnSIM/ndn-cxx/future-position-info.hpp"
+//Dome
+//#include "ns3/ndnSIM/ndn-cxx/future-position-info.hpp"
 
 
 namespace nfd {
@@ -49,11 +50,13 @@ public:
   //Dome
   explicit
   FaceRecord(Face& face, std::string mac, ndn::FuturePositionInfo futurePosInfo);
+//  FaceRecord(Face& face, std::string mac, double futurePosX, double futurePosY);
+
 
   Face&
   getFace() const;
   std::string
-   getMac() const;
+  getMac() const;
 
   //Dome
   ndn::FuturePositionInfo
@@ -82,6 +85,9 @@ private:
   std::string m_mac;
   //Dome
   ndn::FuturePositionInfo m_futurePosition;
+//  double m_futurePosX;
+//  double m_futurePosY;
+
   time::steady_clock::TimePoint m_lastRenewed;
   time::steady_clock::TimePoint m_expiry;
 };

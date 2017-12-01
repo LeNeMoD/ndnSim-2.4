@@ -39,7 +39,11 @@ public:
   explicit
   InRecord(Face& face);
   explicit
-    InRecord(Face& face, std::string mac);
+  InRecord(Face& face, std::string mac);
+  //Dome
+  explicit
+  InRecord(Face& face, std::string mac, ndn::FuturePositionInfo futurePositionInfo);
+//  InRecord(Face& face, std::string mac, double futurePosX, double futurePosY);
 
   void
   update(const Interest& interest);

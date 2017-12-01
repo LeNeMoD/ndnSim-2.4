@@ -350,7 +350,7 @@ private:
   mutable optional<uint32_t> m_nonce;
   time::milliseconds m_interestLifetime;
   DelegationList m_forwardingHint;
-
+//Dome
   FuturePositionInfo m_futurePositonInfoInterest;
   mutable Block m_wire;
 };

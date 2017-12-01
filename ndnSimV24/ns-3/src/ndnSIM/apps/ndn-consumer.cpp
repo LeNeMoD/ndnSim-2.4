@@ -40,7 +40,14 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/ref.hpp>
 
+//Dome
+#include "ns3/ns2-mobility-helper.h"
+
+
 NS_LOG_COMPONENT_DEFINE("ndn.Consumer");
+
+//Dome
+ndn::FuturePositionInfo futurePositionInfoConsumer;
 
 namespace ns3 {
 namespace ndn {
@@ -175,6 +182,35 @@ Consumer::SendPacket()
 	  ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
 	  int nofinterfaces= node->GetNDevices();
 	  shared_ptr<Interest> interest2[nofinterfaces] = make_shared<Interest>();
+	  //Dome add NodeFuturePosition to the interest
+	//  Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
+	// 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
+	//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
+		Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
+
+	  Time time = (ns3::Simulator::Now());
+	  double at = std::ceil(time.GetSeconds())+1;
+	  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
+
+
+//	  double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).x;
+//	  double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).y ;
+//	  double posZ = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).z ;
+//
+//
+//	//  std::cout<< "check position-X +5s pass in producer  :" << posX << " node id: " << node->GetId() <<std::endl;
+//	//  std::cout<< "check position-Y +5s pass in producer  :" << posY << " node id: " << node->GetId() <<std::endl;
+//
+//
+//
+//	  futurePositionInfoConsumer.setFutureLocationX(posX);
+//	  futurePositionInfoConsumer.setFutureLocationY(posY);
+//	  futurePositionInfoConsumer.setFutureLocationZ(posZ);
+//	  futurePositionInfoConsumer.setTimeAtFutureLocation(at);
+//	  int wasSet = 1;
+//	  futurePositionInfoConsumer.setFuturePositionWasSet(wasSet);
+
+
 	  uint32_t seq2[nofinterfaces];
 	  shared_ptr<Name> nameWithSequence[nofinterfaces];// = make_shared<Name>(m_interestName);
 	  //send as many interests as a nodes interface, at the same time
@@ -200,6 +236,12 @@ Consumer::SendPacket()
 		  nameWithSequence[i]->appendSequenceNumber(seq2[i]);
 		  interest2[i]->setNonce(m_rand->GetValue(0, std::numeric_limits<uint32_t>::max()));
 		  interest2[i]->setName(*nameWithSequence[i]);
+		  //Set FuturePositionInfo
+		  interest2[i]->setFuturePositionInfo(futurePositionInfoConsumer);
+		  //std::cout<<"futpos set x,y,z :"<<posX<<" , "<<posY<<" , "<<posZ<<" , "<<" at time: "<< at<<std::endl;
+		  //std::cout<<"interest futurPos in ndn-consumer contains: "<< interest2[i]->getFuturePositionInfo().m_location_X_Coord <<std::endl;
+		  //std::cout<<"interest futurPos in ndn-consumer contains: "<< interest2[i]->getFuturePositionInfo().m_location_Y_Coord <<std::endl;
+
 		  WillSendOutInterest(seq2[i]);
 		  m_transmittedInterests(interest2[i], this, m_face);
 		  m_appLink->onReceiveInterest(*interest2[i]);}

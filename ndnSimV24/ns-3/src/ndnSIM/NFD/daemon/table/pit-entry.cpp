@@ -59,13 +59,6 @@ Entry::getInRecord(const std::string mac)
   return std::find_if(m_inRecords.begin(), m_inRecords.end(),
     [&mac] (const InRecord& inRecord) { return inRecord.getMac() == mac; });
 }
-//Dome
-InRecordCollection::iterator
-Entry::getInRecord(const ndn::FuturePositionInfo futurePositionInfo)
-{
-  return std::find_if(m_inRecords.begin(), m_inRecords.end(),
-    [&futurePositionInfo] (const InRecord& inRecord) { return inRecord.getFuturePositionInfo() == futurePositionInfo; });
-}
 
 InRecordCollection::iterator
 Entry::insertOrUpdateInRecord(Face& face, const Interest& interest)
@@ -99,14 +92,14 @@ Entry::insertOrUpdateInRecord(Face& face, std::string mac, const Interest& inter
 }
 //Dome ev auch andere paramater statt nur futurePosInfo
 InRecordCollection::iterator
-Entry::insertOrUpdateInRecord(Face& face, std::string mac,ndn::FuturePositionInfo futurePositionInfo, const Interest& interest)
+Entry::insertOrUpdateInRecord(Face& face, std::string mac, ndn::FuturePositionInfo futurePositionInfo, const Interest& interest)
 {
   BOOST_ASSERT(this->canMatch(interest));
 
   auto it = std::find_if(m_inRecords.begin(), m_inRecords.end(),
-	[&futurePositionInfo] (const InRecord& inRecord) { return inRecord.getFuturePositionInfo() == futurePositionInfo; });
+	[&mac] (const InRecord& inRecord) { return inRecord.getMac() == mac; });
   if (it == m_inRecords.end()) {
-    m_inRecords.emplace_front(face, futurePositionInfo);
+    m_inRecords.emplace_front(face, mac, futurePositionInfo);
     it = m_inRecords.begin();
   }
 
@@ -131,16 +124,7 @@ Entry::deleteInRecord(const std::string mac)
     m_inRecords.erase(it);
   }
 }
-//Dome
-void
-Entry::deleteInRecord(const ndn::FuturePositionInfo futurePositionInfo)
-{
-  auto it = std::find_if(m_inRecords.begin(), m_inRecords.end(),
-    [&futurePositionInfo] (const InRecord& inRecord) { return inRecord.getFuturePositionInfo() == futurePositionInfo; });
-  if (it != m_inRecords.end()) {
-    m_inRecords.erase(it);
-  }
-}
+
 void
 Entry::clearInRecords()
 {
@@ -188,15 +172,6 @@ Entry::deleteOutRecord( std::string mac)
     m_outRecords.erase(it);
   }
 }
-//Dome
-void
-Entry::deleteOutRecord(ndn::FuturePositionInfo futurePositionInfo)
-{
-  auto it = std::find_if(m_outRecords.begin(), m_outRecords.end(),
-    [&futurePositionInfo] (const OutRecord& outRecord) { return outRecord.getFuturePositionInfo() == futurePositionInfo; });
-  if (it != m_outRecords.end()) {
-    m_outRecords.erase(it);
-  }
-}
+
 } // namespace pit
 } // namespace nfd

@@ -302,8 +302,17 @@ public:
    */
   static NodeContainer GetGlobal (void);
 
+//  //Dome
+//  void setTraceFileString(std::string traceFileString);
+//
+//  std::string
+//  getTraceFileString();
+
+
 private:
   std::vector<Ptr<Node> > m_nodes; //!< Nodes smart pointers
+  //Dome
+//  std::string m_traceFileString;
 };
 
 } // namespace ns3

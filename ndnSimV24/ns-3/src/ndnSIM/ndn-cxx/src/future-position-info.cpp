@@ -90,8 +90,8 @@ FuturePositionInfo::wireEncode(EncodingImpl<TAG>& encoder) const {
 const Block&
 FuturePositionInfo::wireEncode() const {
 	{
-		if (m_mWire_futurePositionInfo.hasWire())
-			return m_mWire_futurePositionInfo;
+		if (m_Wire_futurePositionInfo.hasWire())
+			return m_Wire_futurePositionInfo;
 
 		EncodingEstimator estimator;
 		size_t estimatedSize = wireEncode(estimator);
@@ -99,8 +99,8 @@ FuturePositionInfo::wireEncode() const {
 		EncodingBuffer buffer(estimatedSize, 0);
 		wireEncode(buffer);
 
-		m_mWire_futurePositionInfo = buffer.block();
-		return m_mWire_futurePositionInfo;
+		m_Wire_futurePositionInfo = buffer.block();
+		return m_Wire_futurePositionInfo;
 	}
 
 }
@@ -114,38 +114,38 @@ FuturePositionInfo::wireEncode<encoding::EstimatorTag>(EncodingImpl<encoding::Es
 void
 FuturePositionInfo::wireDecode(const Block& wire) {
 
-	m_mWire_futurePositionInfo = wire;
-	m_mWire_futurePositionInfo.parse();
+	m_Wire_futurePositionInfo = wire;
+	m_Wire_futurePositionInfo.parse();
 
 	//Dome !!! missing else statements if decoding fails
 	//FuturePosistion
-	Block::element_const_iterator val= m_mWire_futurePositionInfo.find(tlv::FuturePositionX);
-	if (val != m_mWire_futurePositionInfo.elements_end()) {
+	Block::element_const_iterator val= m_Wire_futurePositionInfo.find(tlv::FuturePositionX);
+	if (val != m_Wire_futurePositionInfo.elements_end()) {
 		m_location_X_Coord = readNonNegativeInteger(*val);
 		++val;
 	}
-	val= m_mWire_futurePositionInfo.find(tlv::FuturePositionY);
-	if (val != m_mWire_futurePositionInfo.elements_end()) {
+	val= m_Wire_futurePositionInfo.find(tlv::FuturePositionY);
+	if (val != m_Wire_futurePositionInfo.elements_end()) {
 		m_location_Y_Coord = readNonNegativeInteger(*val);
 
 		++val;
 	}
-	val= m_mWire_futurePositionInfo.find(tlv::FuturePositionZ);
-	if (val != m_mWire_futurePositionInfo.elements_end()) {
+	val= m_Wire_futurePositionInfo.find(tlv::FuturePositionZ);
+	if (val != m_Wire_futurePositionInfo.elements_end()) {
 		m_location_Z_Coord_Velocity = readNonNegativeInteger(*val);
 		++val;
 	}
-	val= m_mWire_futurePositionInfo.find(tlv::TimeAtFuturePosition);
+	val= m_Wire_futurePositionInfo.find(tlv::TimeAtFuturePosition);
 	//TimeAtFuturePosition
-	if (val != m_mWire_futurePositionInfo.elements_end())
+	if (val != m_Wire_futurePositionInfo.elements_end())
 		{
 		m_timeAtFuturePosition = readNonNegativeInteger(*val);
 		++val;
 	}
 
-	val = m_mWire_futurePositionInfo.find(tlv::FuturePositionWasSet);
+	val = m_Wire_futurePositionInfo.find(tlv::FuturePositionWasSet);
 	//IsFuturePositionSet
-	if (val != m_mWire_futurePositionInfo.elements_end()) {
+	if (val != m_Wire_futurePositionInfo.elements_end()) {
 		m_futurePositionWasSet = readNonNegativeInteger(*val);
 		++val;
 	}
@@ -185,7 +185,7 @@ FuturePositionInfo::getTimeAtFutureLocation() const{
 
 FuturePositionInfo&
 FuturePositionInfo::setTimeAtFutureLocation(double timeAtFutureLocation){
-	m_mWire_futurePositionInfo.reset();
+	m_Wire_futurePositionInfo.reset();
 	m_timeAtFuturePosition = timeAtFutureLocation;
 	return *this;
 }
@@ -201,28 +201,28 @@ FuturePositionInfo::getFuturePositionVector() {
 
 FuturePositionInfo&
 FuturePositionInfo::setFuturePositionVector(ns3::Vector positionVector){
-	m_mWire_futurePositionInfo.reset();
+	m_Wire_futurePositionInfo.reset();
 	m_futurePositionVector = positionVector;
 	return *this;
 }
 
 FuturePositionInfo&
 FuturePositionInfo::setFutureLocationX(double futureLocation_X){
-	m_mWire_futurePositionInfo.reset();
+	m_Wire_futurePositionInfo.reset();
 	m_location_X_Coord = futureLocation_X;
 	return *this;
 }
 
 FuturePositionInfo&
 FuturePositionInfo::setFutureLocationY(double futureLocation_Y){
-	m_mWire_futurePositionInfo.reset();
+	m_Wire_futurePositionInfo.reset();
 	m_location_Y_Coord = futureLocation_Y;
 	return *this;
 }
 
 FuturePositionInfo&
 FuturePositionInfo::setFutureLocationZ(double futureLocation_Z){
-	m_mWire_futurePositionInfo.reset();
+	m_Wire_futurePositionInfo.reset();
 	m_location_Z_Coord_Velocity = futureLocation_Z;
 	return *this;
 }
@@ -253,7 +253,7 @@ FuturePositionInfo::isfuturePositionSet() const
 
 FuturePositionInfo&
 FuturePositionInfo::setFuturePositionWasSet(double wasItSet){
-	m_mWire_futurePositionInfo.reset();
+	m_Wire_futurePositionInfo.reset();
 	m_futurePositionWasSet = wasItSet;
 	return *this;
 }

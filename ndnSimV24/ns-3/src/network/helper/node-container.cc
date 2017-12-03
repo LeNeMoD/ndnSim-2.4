@@ -176,4 +176,14 @@ NodeContainer::GetGlobal (void)
   return c;
 }
 
+////Dome
+//NodeContainer::setTraceFileString(std::string traceFileString){
+//	m_traceFileString = traceFileString;
+//}
+//
+//std::string
+//NodeContainer::getTraceFileString(){
+//	return m_traceFileString;
+//}
+
 } // namespace ns3

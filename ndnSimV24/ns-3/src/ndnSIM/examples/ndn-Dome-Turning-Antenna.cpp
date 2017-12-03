@@ -75,6 +75,7 @@ int main(int argc, char* argv[]) {
 
 	// Create Mobile nodes.
 	NodeContainer mobileNodes;
+//	mobileNodes.setTraceFileString(traceFileString);
 	int nodeNr = 2;
 	mobileNodes.Create(nodeNr);
 
@@ -89,8 +90,8 @@ int main(int argc, char* argv[]) {
 	//Set Parabolic Antenna1 to node 0
 	Ptr<ParabolicAntennaModel> prodParabolicAntenna1 = CreateObject<ParabolicAntennaModel>();
 
-	prodParabolicAntenna1->SetBeamwidth(359);
-	prodParabolicAntenna1->SetOrientation(0);
+	prodParabolicAntenna1->SetBeamwidth(20);
+	prodParabolicAntenna1->SetOrientation(90);
 	swpN0A1->SetAntenna(prodParabolicAntenna1);
 
 
@@ -189,8 +190,8 @@ int main(int argc, char* argv[]) {
 	//Set Parabolic Antennas to node 1
 	Ptr<ParabolicAntennaModel> consParabolicAntenna1 = CreateObject<ParabolicAntennaModel>();
 
-	consParabolicAntenna1->SetBeamwidth(359);
-	consParabolicAntenna1->SetOrientation(0);
+	consParabolicAntenna1->SetBeamwidth(20);
+	consParabolicAntenna1->SetOrientation(90);
 	swpN1A1->SetAntenna(consParabolicAntenna1);
 
 
@@ -235,7 +236,7 @@ int main(int argc, char* argv[]) {
 //			WifiNetDevice>()->GetPhy();
 //	Ptr<SpectrumWifiPhy> swpN1A1 = DynamicCast<SpectrumWifiPhy>(wpN1A1);
 //
-//	//Set Parabolic Antenna to node 1
+//	//Set Parabolic Antenna1 to node 1
 //	Ptr<ParabolicAntennaModel> parabolicAntenna1 = CreateObject<
 //			ParabolicAntennaModel>();
 //	parabolicAntenna1->SetBeamwidth(90);
@@ -250,7 +251,7 @@ int main(int argc, char* argv[]) {
 //			WifiNetDevice>()->GetPhy();
 //	Ptr<SpectrumWifiPhy> swpN1A2 = DynamicCast<SpectrumWifiPhy>(wpN1A2);
 //
-//	//Set Parabolic Antenna to node 1
+//	//Set Parabolic Antenna2 to node 1
 //	Ptr<ParabolicAntennaModel> parabolicAntenna2 = CreateObject<
 //			ParabolicAntennaModel>();
 //	parabolicAntenna2->SetBeamwidth(90);
@@ -265,7 +266,7 @@ int main(int argc, char* argv[]) {
 //			WifiNetDevice>()->GetPhy();
 //	Ptr<SpectrumWifiPhy> swpN1A3 = DynamicCast<SpectrumWifiPhy>(wpN1A3);
 //
-//	//Set Parabolic Antenna to node 1
+//	//Set Parabolic Antenna3 to node 1
 //	Ptr<ParabolicAntennaModel> parabolicAntenna3 = CreateObject<
 //			ParabolicAntennaModel>();
 //	parabolicAntenna3->SetBeamwidth(90);
@@ -280,7 +281,7 @@ int main(int argc, char* argv[]) {
 //			WifiNetDevice>()->GetPhy();
 //	Ptr<SpectrumWifiPhy> swpN1A4 = DynamicCast<SpectrumWifiPhy>(wpN1A4);
 //
-//	//Set Parabolic Antenna to node 1
+//	//Set Parabolic Antenna4 to node 1
 //	Ptr<ParabolicAntennaModel> parabolicAntenna4 = CreateObject<
 //			ParabolicAntennaModel>();
 //	parabolicAntenna4->SetBeamwidth(90);

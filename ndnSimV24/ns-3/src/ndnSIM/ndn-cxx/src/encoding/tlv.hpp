@@ -104,6 +104,7 @@ enum {
   	TimeAtFuturePosition = 40,
 	FuturePositionWasSet = 41,
   	FuturePositionInfoData = 42,
+	//Wirklich notwendig? glaube nicht ...
 	FuturePositionInfoInterest = 43,
 
   AppPrivateBlock1 = 128,

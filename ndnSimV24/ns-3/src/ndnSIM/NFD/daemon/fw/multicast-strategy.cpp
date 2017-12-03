@@ -86,11 +86,6 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
 
   //Dome
   //print to check what the FIB contains
-
-
-//  ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-test2-n3.txt");
-//	std::cout<< ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("Multicast-Strategy",node->GetId(),5) << "  is scheduled position for node "<< node->GetId() << "at time 5 " <<std::endl;
-
   shared_ptr<Interest> interest2= make_shared<Interest>(interest);
 
 	std::cout<< "time in multicastStrategy: " << ns3::Simulator::Now() << std::endl;
@@ -130,8 +125,7 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
   	  futPos.setFutureLocationX(posX);
   	  futPos.setFutureLocationY(posY);
   	  futPos.setFutureLocationZ(posZ);
-  	  int wasSet = 1;
-  	  futPos.setFuturePositionWasSet(wasSet);
+  	  futPos.setFuturePositionWasSet(1);
   	  interest2->setFuturePositionInfo(futPos);
   	  std::cout<<"FuturePosition was set from the TLC-File to the interest in strategy"<<std::endl;
   	}

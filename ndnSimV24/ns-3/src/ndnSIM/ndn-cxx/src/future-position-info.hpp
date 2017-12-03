@@ -138,7 +138,7 @@ public:
 
 private:
   	  std::list<Block> m_appFuturePositionInfo;
-  	  mutable Block m_mWire_futurePositionInfo;
+  	  mutable Block m_Wire_futurePositionInfo;
 };
 
 std::ostream&

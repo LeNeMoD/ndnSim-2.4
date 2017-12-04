@@ -67,11 +67,6 @@ public:
     return m_counters;
   }
 
-  //
-public: //helper
-  double
-  calculateAngleBtw2Nodes(double x1, double y1, double x2, double y2);
-
 public: // faces and policies
   FaceTable&
   getFaceTable()
@@ -188,9 +183,7 @@ public: // forwarding entrypoints and tables
     return m_networkRegionTable;
   }
 std::string targetmac;
-//Dome
-double targetInterestPositionX;
-double targetInterestPositionY;
+
 
 public: // allow enabling ndnSIM content store (will be removed in the future)
   void

@@ -150,7 +150,8 @@ public: // in-record
   //Dome ev nach position statt infoObjekt
   InRecordCollection::iterator
   insertOrUpdateInRecord(Face& face, std::string mac,ndn::FuturePositionInfo futurePositionInfo, const Interest& interest);
-
+  InRecordCollection::iterator
+  insertOrUpdateInRecord(Face& face, std::string mac, double x, double y, const Interest& interest);
 
   /** \brief delete the in-record for \p face if it exists
    */

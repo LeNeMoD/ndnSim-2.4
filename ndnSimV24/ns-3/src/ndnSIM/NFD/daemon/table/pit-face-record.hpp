@@ -50,8 +50,7 @@ public:
   //Dome
   explicit
   FaceRecord(Face& face, std::string mac, ndn::FuturePositionInfo futurePosInfo);
-//  FaceRecord(Face& face, std::string mac, double futurePosX, double futurePosY);
-
+  FaceRecord(Face& face,std::string mac, double futureLocation_X, double futureLocation_Y);
 
   Face&
   getFace() const;
@@ -61,6 +60,15 @@ public:
   //Dome
   ndn::FuturePositionInfo
   getFuturePositionInfo() const;
+
+  double
+  getFuturePositionX() const;
+
+  double
+  getFuturePositionY() const;
+
+  double
+  isFuturePositionSet() const;
 
   uint32_t
   getLastNonce() const;
@@ -85,7 +93,9 @@ private:
   std::string m_mac;
   //Dome
   ndn::FuturePositionInfo m_futurePosition;
-
+  double m_futurePositionX;
+  double m_futurePositionY;
+  double m_futurePositionWasSet;
   time::steady_clock::TimePoint m_lastRenewed;
   time::steady_clock::TimePoint m_expiry;
 };
@@ -123,6 +133,19 @@ inline ndn::FuturePositionInfo
 FaceRecord::getFuturePositionInfo() const{
 	return m_futurePosition;
 }
+inline double
+FaceRecord::getFuturePositionX() const{
+	return m_futurePositionX;
+}
+inline double
+FaceRecord::getFuturePositionY() const{
+	return m_futurePositionY;
+}
+inline double
+FaceRecord::isFuturePositionSet() const{
+	return m_futurePositionWasSet;
+}
+
 } // namespace pit
 } // namespace nfd
 

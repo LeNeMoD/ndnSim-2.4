@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
 	//Set Parabolic Antenna1 to node 0
 	Ptr<ParabolicAntennaModel> prodParabolicAntenna1 = CreateObject<ParabolicAntennaModel>();
 
-	prodParabolicAntenna1->SetBeamwidth(20);
+	prodParabolicAntenna1->SetBeamwidth(359);
 	prodParabolicAntenna1->SetOrientation(90);
 	swpN0A1->SetAntenna(prodParabolicAntenna1);
 
@@ -190,8 +190,8 @@ int main(int argc, char* argv[]) {
 	//Set Parabolic Antennas to node 1
 	Ptr<ParabolicAntennaModel> consParabolicAntenna1 = CreateObject<ParabolicAntennaModel>();
 
-	consParabolicAntenna1->SetBeamwidth(20);
-	consParabolicAntenna1->SetOrientation(90);
+	consParabolicAntenna1->SetBeamwidth(90);
+	consParabolicAntenna1->SetOrientation(270);
 	swpN1A1->SetAntenna(consParabolicAntenna1);
 
 
@@ -323,7 +323,7 @@ int main(int argc, char* argv[]) {
 //	consumerHelper1.SetTraceFile(traceFileString);
 
 
-	Simulator::Stop(Seconds(20.0));
+	Simulator::Stop(Seconds(100.0));
 
 	Simulator::Run();
 	Simulator::Destroy();

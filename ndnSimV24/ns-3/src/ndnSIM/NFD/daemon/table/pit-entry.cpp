@@ -90,7 +90,7 @@ Entry::insertOrUpdateInRecord(Face& face, std::string mac, const Interest& inter
   it->update(interest);
   return it;
 }
-//Dome ev auch andere paramater statt nur futurePosInfo
+//Dome
 InRecordCollection::iterator
 Entry::insertOrUpdateInRecord(Face& face, std::string mac, ndn::FuturePositionInfo futurePositionInfo, const Interest& interest)
 {
@@ -100,12 +100,32 @@ Entry::insertOrUpdateInRecord(Face& face, std::string mac, ndn::FuturePositionIn
 	[&mac] (const InRecord& inRecord) { return inRecord.getMac() == mac; });
   if (it == m_inRecords.end()) {
     m_inRecords.emplace_front(face, mac, futurePositionInfo);
+    std::cout<<"insertUpdateInrecords futurePosition " << futurePositionInfo.getFuturePositionVector()<<" ... "<<futurePositionInfo.m_location_X_Coord<<futurePositionInfo.m_location_Y_Coord<<std::endl;
     it = m_inRecords.begin();
   }
 
   it->update(interest);
   return it;
 }
+
+//Dome
+InRecordCollection::iterator
+Entry::insertOrUpdateInRecord(Face& face, std::string mac, double x, double y, const Interest& interest)
+{
+  BOOST_ASSERT(this->canMatch(interest));
+
+  auto it = std::find_if(m_inRecords.begin(), m_inRecords.end(),
+	[&mac] (const InRecord& inRecord) { return inRecord.getMac() == mac; });
+  if (it == m_inRecords.end()) {
+    m_inRecords.emplace_front(face, mac, x, y);
+    std::cout<<"insertUpdateInrecords futurePosition " << x<<" ... "<<y<<std::endl;
+    it = m_inRecords.begin();
+  }
+
+  it->update(interest);
+  return it;
+}
+
 void
 Entry::deleteInRecord(const Face& face)
 {

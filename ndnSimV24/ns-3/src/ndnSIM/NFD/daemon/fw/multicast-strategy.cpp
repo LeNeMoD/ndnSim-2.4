@@ -132,7 +132,7 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
   	  double posY = futurePositionVector.y ;
   	  double posZ = futurePositionVector.z ;
 
-  	  ndn::FuturePositionInfo futPos = interest2->getFuturePositionInfo();
+  	  ndn::FuturePositionInfo futPos(interest2->getFuturePositionInfo());
   	  futPos.setFutureLocationX(posX);
   	  futPos.setFutureLocationY(posY);
   	  futPos.setFutureLocationZ(posZ);
@@ -166,12 +166,12 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
     	}
     	if (isItInternalMac==0){
 
-    		ndn::FuturePositionInfo futPos;
-    		futPos.setFutureLocationX(it->getFuturePositionX());
-    		futPos.setFutureLocationY(it->getFuturePositionY());
-    		futPos.setFuturePositionWasSet(1);
-    		interest2->setFuturePositionInfo(futPos);
-    	  	std::cout<<"FuturePosition was set from the FIB to the interest in strategy: "<<futPos <<std::endl;
+    		ndn::FuturePositionInfo futPos2;
+    		futPos2.setFutureLocationX(it->getFuturePositionX());
+    		futPos2.setFutureLocationY(it->getFuturePositionY());
+    		futPos2.setFuturePositionWasSet(1);
+    		interest2->setFuturePositionInfo(futPos2);
+    	  	std::cout<<"FuturePosition was set from the FIB to the interest in strategy: "<<futPos2 <<std::endl;
 
     	  	if (it->getMac() != "eirini") {
 				ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(0);

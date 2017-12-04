@@ -45,6 +45,9 @@ public:
   FuturePositionInfo(const Block& block);
 
   explicit
+  FuturePositionInfo(const ndn::FuturePositionInfo& futurePositionInfo);
+
+  explicit
   FuturePositionInfo(const ns3::Vector futurePositionVector, double timeAtFuturePosition);
 
   template<encoding::Tag TAG>
@@ -103,22 +106,6 @@ public:
   FuturePositionInfo&
   setFuturePositionWasSet(double wasItSet);
 
-  /*const std::list<Block>&
-  getAppFuturePositionInfo() const ;
-
-  FuturePositionInfo&
-  setAppFuturePositionInfo(const std::list<Block>& info);
-
-  FuturePositionInfo&
-  addAppFuturePositionInfo(const Block& block);
-
-  bool
-  removeAppFuturePositionInfo(uint32_t tlvType);
-
-  const Block*
-  findAppFuturePositionInfo(uint32_t tlvType) const;
-  */
-
 
   public:
   	  double m_location_X_Coord;
@@ -143,11 +130,7 @@ private:
 
 std::ostream&
 operator<<(std::ostream& os, const FuturePositionInfo& info);
-//inline bool
-//FuturePositionInfo::hasWire() const
-//{
-//  return m_mWire_futurePositionInfo.hasWire();
-//}
+
 
 } //end Namespace ndn
 

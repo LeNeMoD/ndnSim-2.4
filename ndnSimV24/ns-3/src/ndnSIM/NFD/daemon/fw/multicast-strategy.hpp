@@ -53,6 +53,7 @@ public:
   afterReceiveNack(const Face& inFace, const lp::Nack& nack,
                    const shared_ptr<pit::Entry>& pitEntry) override;
 
+
 private:
   friend ProcessNackTraits<MulticastStrategy>;
   RetxSuppressionExponential m_retxSuppression;

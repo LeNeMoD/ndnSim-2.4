@@ -192,7 +192,21 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
 
     }
   const pit::InRecordCollection& inRecords = pitEntry->getInRecords();
+  ns3::Time time = (ns3::Simulator::Now());
+    	  double at = std::ceil(time.GetSeconds())+1;
+    	  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
 
+    	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
+    	  ns3::Vector3D futurePositionVector = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("in Strategy requesting ",node->GetId(),at);
+    	  double posX = futurePositionVector.x;
+    	  double posY = futurePositionVector.y ;
+    	  double posZ = futurePositionVector.z ;
+
+    	  ndn::FuturePositionInfo futPos;
+    	  futPos.setFutureLocationX(posX);
+    	  futPos.setFutureLocationY(posY);
+    	  futPos.setFutureLocationZ(posZ);
+    	  futPos.setFuturePositionWasSet(1);
 
   bool isPending = inRecords.begin() != inRecords.end();
   if (!isPending) {
@@ -209,10 +223,10 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
           else {
         	  if (transport!=NULL){
         	    std::string a = transport->m_receivednetDevice;
-            this->onContentStoreMiss2(inFace, pitEntry, interest, a);
+            this->onContentStoreMiss2(inFace, pitEntry, interest, a,futPos);
         	  }
         	  else
-        	  {this->onContentStoreMiss2(inFace, pitEntry, interest,"");}
+        	  {this->onContentStoreMiss2(inFace, pitEntry, interest,"",futPos);}
           }
         }
       }
@@ -222,7 +236,7 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
     	          this->onContentStoreMiss2(inFace, pitEntry, interest, a);
     	      	  }
     	      	  else
-    	      	  {this->onContentStoreMiss2(inFace, pitEntry, interest,"");}
+    	      	  {this->onContentStoreMiss2(inFace, pitEntry, interest,"",futPos);}
       }
     }
 
@@ -335,7 +349,6 @@ Forwarder::onContentStoreMiss2(const Face& inFace, const shared_ptr<pit::Entry>&
 
   //Dome
   std::cout<< "onContentStrorMiss2 mine interest= " << interest.getName()<<std::endl;
-
   // insert in-record
   pitEntry->insertOrUpdateInRecord(const_cast<Face&>(inFace), mac,futurePositionInfo, interest);
 
@@ -381,7 +394,7 @@ Forwarder::onContentStoreHit(const Face& inFace, const shared_ptr<pit::Entry>& p
   // XXX should we lookup PIT for other Interests that also match csMatch?
 
   //Dome
-  std::cout<<"pitEntry->getInRecords().size() futurePosX forwarder: "<<pitEntry->getInRecords().size()<<std::endl;
+  std::cout<<"pitEntry->getInRecords().size() on contentStoreHit futurePosX forwarder: "<<pitEntry->getInRecords().size()<<std::endl;
     for (const pit::InRecord& inRecord : pitEntry->getInRecords()) {
   	  std::cout<<"iRecord contStore-HIT futurePosX forwarder: "<<inRecord.getFuturePositionInfo().m_location_X_Coord<<std::endl;
   	  std::cout<<"iRecord contStore-HIT futurePosY forwarder: "<<inRecord.getFuturePositionInfo().m_location_Y_Coord<<std::endl;
@@ -420,7 +433,7 @@ Forwarder::onOutgoingInterest(const shared_ptr<pit::Entry>& pitEntry, Face& outF
 
 	// insert out-record
 	pitEntry->insertOrUpdateOutRecord(outFace, interest);
-	 std::cout<<"insertOrUpdateInRecord interest OutgoingInterest futurePosX forwarder: "<<interest.getFuturePositionInfo().m_location_X_Coord<<std::endl;
+	 std::cout<<"insertOrUpdateInRecord interest OutgoingInterest futurePosX forwarder: "<<interest.getFuturePositionInfo().m_location_X_Coord<<" mac " << mac<< std::endl;
 	 std::cout<<"insertOrUpdateInRecord interest OutgoingInterest futurePosY forwarder: "<<interest.getFuturePositionInfo().m_location_Y_Coord<<std::endl;
 
 	targetmac = mac;
@@ -674,6 +687,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
     //for (Face* pendingDownstream : pendingDownstreams) {
    	  //ENTER TARGET MAC FOR SENDING IN A SPECIFIC NODE
   	  targetmac=macs[it];
+  	  ndn::FuturePositionInfo targetFuturePosition = futPosss[it];
       if (pendingDownstream == &inFace) {
         continue;
       }
@@ -682,7 +696,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 //      ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
 //      ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy>(spectWPhy);
 //      ns3::Ptr<ns3::ParabolicAntennaModel> parab = ns3::DynamicCast<ns3::ParabolicAntennaModel>(swp0->GetRxAntenna());
-//      std::cout<< "forwarder, on before send date : will turning Antenna for outgoing data to PitInRecord position: "<< std::endl;
+      std::cout<< "forwarder, on before send date : will turning Antenna for outgoing data to PitInRecord position: "<< targetFuturePosition.getFutureLocation_X()<< std::endl;
 //      //				double inRecordSize = pEntry->getInRecords().size();
 //      //				std::cout << "inRecord size in forwarder: " << inRecordSize<< std::endl;
 ////      				for (const pit::InRecord& inRecord : pitEntry->getInRecords()) {
@@ -703,6 +717,10 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 ////      				}
 //      			}
       // goto outgoing Data pipeline
+      ns3::Ptr<ns3::Node> node2 = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
+
+      std::cout<<"node " << node2->GetId()<< "onOutgoingData to mac: "<< targetmac<<std::endl;
+      std::cout<<"targetFuturePos is " << targetFuturePosition<<std::endl;
       this->onOutgoingData(data, *pendingDownstream);
     }
   }
@@ -754,7 +772,8 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
   double at = std::ceil(time.GetSeconds())+1;
   std::cout<< "time from simulator to take futurePosition is in Forwarder outGoingData :" << at <<std::endl;
 
-  ns3::Vector3D futurePositionVector = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-producer",node2->GetId(),at);
+  std::cout<<"forwarder node on outData would request data"<<node2->GetId()<<std::endl;
+  ns3::Vector3D futurePositionVector = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("forwarder node  on outData",node2->GetId(),at);
   double posX = futurePositionVector.x;
   double posY = futurePositionVector.y ;
   double posZ = futurePositionVector.z ;
@@ -837,6 +856,7 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
 //  }
 
   // send Data
+
 	outFace.sendData(*data2);
 	++m_counters.nOutData;
 }

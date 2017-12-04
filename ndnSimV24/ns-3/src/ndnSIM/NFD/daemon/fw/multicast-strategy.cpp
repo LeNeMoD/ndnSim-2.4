@@ -112,11 +112,15 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
 				<< " Time-At-FuturePos : "<< it->getTimeAtFuturePosition()<<" , is it a valid position n/y->0/1: "<<it->getFuturePositonWasSet()<< std::endl
 				<< std::endl;
 
-  		if(it->getPositionX()==3215){
+//  		if(it->getFuturePositonWasSet()==0){
+//  		  			flagFibContainsEmptyPosition=1;
+//  		  		}
+
+  		if(it->getFuturePositionX()==3215){
   			flagFibContainsEmptyPosition=1;
   		}
   	}
-  	if(flagFibContainsEmptyPosition==1){
+  //	if(flagFibContainsEmptyPosition==1){
   	  //Dome add NodeFuturePosition to the interest
   	//  Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
   	// 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
@@ -139,7 +143,7 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
   	  futPos.setFuturePositionWasSet(1);
   	  interest2->setFuturePositionInfo(futPos);
   	  std::cout<<"FuturePosition was set from the TLC-File to the interest in strategy: "<<futPos <<std::endl;
-  	}
+  //	}
 
   	for (fib::NextHopList::const_iterator it = nexthops.begin(); it != nexthops.end(); ++it) {
   		Face& outFace = it->getFace();
@@ -166,14 +170,15 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
     	}
     	if (isItInternalMac==0){
 
-    		ndn::FuturePositionInfo futPos2;
-    		futPos2.setFutureLocationX(it->getFuturePositionX());
-    		futPos2.setFutureLocationY(it->getFuturePositionY());
-    		futPos2.setFuturePositionWasSet(1);
-    		interest2->setFuturePositionInfo(futPos2);
-    	  	std::cout<<"FuturePosition was set from the FIB to the interest in strategy: "<<futPos2 <<std::endl;
 
     	  	if (it->getMac() != "eirini") {
+//    	  		ndn::FuturePositionInfo futPos2;
+//    	  		    		futPos2.setFutureLocationX(it->getFuturePositionX());
+//    	  		    		futPos2.setFutureLocationY(it->getFuturePositionY());
+//    	  		    		futPos2.setFuturePositionWasSet(1);
+//    	  		    		interest2->setFuturePositionInfo(futPos2);
+//    	  		    	  	std::cout<<"FuturePosition was set from the FIB to the interest in strategy: "<<futPos2 <<std::endl;
+
 				ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(0);
 				ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
 				ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy>(spectWPhy);

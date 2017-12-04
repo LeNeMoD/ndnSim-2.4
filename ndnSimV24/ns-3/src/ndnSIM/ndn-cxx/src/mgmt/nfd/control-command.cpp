@@ -255,10 +255,10 @@ FibAddNextHopCommand::applyDefaultsToRequest(ControlParameters& parameters) cons
 		parameters.setPositionZ(0);
   }
   if (!parameters.hasFuturePositionX()) {
-		parameters.setFuturePositionX(0);
+		parameters.setFuturePositionX(3215);
   }
   if (!parameters.hasFuturePositionY()) {
-	  parameters.setFuturePositionY(0);
+	  parameters.setFuturePositionY(3215);
   }
   if (!parameters.hasTimeAtFuturePosition()) {
 	  parameters.setTimeAtFuturePosition(0);
@@ -401,6 +401,12 @@ RibRegisterCommand::applyDefaultsToRequest(ControlParameters& parameters) const
   if (!parameters.hasPositionY()) {
           parameters.setPositionY(0);
     }
+  if (!parameters.hasFuturePositionX()) {
+                parameters.setFuturePositionX(3215);
+          }
+  if (!parameters.hasFuturePositionY()) {
+                parameters.setFuturePositionY(3215);
+          }
   if (!parameters.hasTimeAtFuturePosition()) {
           parameters.setTimeAtFuturePosition(0);
     }

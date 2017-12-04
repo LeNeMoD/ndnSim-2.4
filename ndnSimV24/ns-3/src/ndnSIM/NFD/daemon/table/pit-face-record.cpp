@@ -54,8 +54,8 @@ FaceRecord::FaceRecord(Face& face,std::string mac, ndn::FuturePositionInfo futur
   , m_mac(mac)
 //Dome
   , m_futurePosition(futurePosInfo)
-,m_futurePositionX(futurePosInfo.getFutureLocation_X())
-,m_futurePositionY(futurePosInfo.getFutureLocation_Y())
+  ,m_futurePositionX(futurePosInfo.getFutureLocation_X())
+  ,m_futurePositionY(futurePosInfo.getFutureLocation_Y())
   , m_lastRenewed(time::steady_clock::TimePoint::min())
   , m_expiry(time::steady_clock::TimePoint::min())
 {

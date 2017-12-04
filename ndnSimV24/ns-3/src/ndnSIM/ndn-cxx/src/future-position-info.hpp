@@ -44,8 +44,8 @@ public:
   explicit
   FuturePositionInfo(const Block& block);
 
-  explicit
-  FuturePositionInfo(const ndn::FuturePositionInfo& futurePositionInfo);
+  //explicit
+  //FuturePositionInfo(FuturePositionInfo& futurePositionInfo);
 
   explicit
   FuturePositionInfo(const ns3::Vector futurePositionVector, double timeAtFuturePosition);

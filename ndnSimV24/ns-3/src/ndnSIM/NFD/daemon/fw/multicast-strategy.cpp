@@ -132,7 +132,7 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
   	  double posY = futurePositionVector.y ;
   	  double posZ = futurePositionVector.z ;
 
-  	  ndn::FuturePositionInfo futPos(interest2->getFuturePositionInfo());
+  	  ndn::FuturePositionInfo futPos = interest2->getFuturePositionInfo();
   	  futPos.setFutureLocationX(posX);
   	  futPos.setFutureLocationY(posY);
   	  futPos.setFutureLocationZ(posZ);

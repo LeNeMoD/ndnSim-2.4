@@ -35,7 +35,7 @@ FuturePositionInfo::FuturePositionInfo(const Block& block)
 	wireDecode(block);
 }
 
-FuturePositionInfo::FuturePositionInfo(const ndn::FuturePositionInfo& futurePositionInfo) {
+FuturePositionInfo::FuturePositionInfo(FuturePositionInfo& futurePositionInfo) {
 	m_location_X_Coord = futurePositionInfo.getFutureLocation_X();
 	m_location_Y_Coord = futurePositionInfo.getFutureLocation_Y();
 	m_location_Z_Coord_Velocity = futurePositionInfo.getFutureLocation_Z();

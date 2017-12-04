@@ -109,7 +109,7 @@ Entry::insertOrUpdateInRecord(Face& face, std::string mac, ndn::FuturePositionIn
 }
 
 //Dome
-InRecordCollection::iterator
+/*InRecordCollection::iterator
 Entry::insertOrUpdateInRecord(Face& face, std::string mac, double x, double y, const Interest& interest)
 {
   BOOST_ASSERT(this->canMatch(interest));
@@ -124,7 +124,7 @@ Entry::insertOrUpdateInRecord(Face& face, std::string mac, double x, double y, c
 
   it->update(interest);
   return it;
-}
+}*/
 
 void
 Entry::deleteInRecord(const Face& face)

@@ -371,8 +371,6 @@ Forwarder::onContentStoreHit(const Face& inFace, const shared_ptr<pit::Entry>& p
   ++m_counters.nCsHits;
 
   //Dome
-  shared_ptr<Face> inFace123 = make_shared<Face>(inFace);
-  pitEntry->insertOrUpdateInRecord(*inFace123,"empty",interest.getFuturePositionInfo().getFutureLocation_X(),interest.getFuturePositionInfo().getFutureLocation_Y(),interest);
   std::cout<< "onContentStrorHit interest= " << interest.getName()<<std::endl;
 
   beforeSatisfyInterest(*pitEntry, *m_csFace, data);

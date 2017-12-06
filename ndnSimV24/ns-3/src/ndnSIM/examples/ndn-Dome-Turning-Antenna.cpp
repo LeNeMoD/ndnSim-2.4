@@ -79,20 +79,20 @@ int main(int argc, char* argv[]) {
 	int nodeNr = 2;
 	mobileNodes.Create(nodeNr);
 
-
-	//Producer node 0 -------------------- 1netDev -1 antenna at first 360
-	NetDeviceContainer netDeviceContainerParabolicN0Dev1 = wifi.Install(spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
-
-	//Set SpectrumPhy from WifiPhy
-	Ptr<WifiPhy> wpN0A1 = netDeviceContainerParabolicN0Dev1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
-	Ptr<SpectrumWifiPhy> swpN0A1 = DynamicCast<SpectrumWifiPhy>(wpN0A1);
-
-	//Set Parabolic Antenna1 to node 0
-	Ptr<ParabolicAntennaModel> prodParabolicAntenna1 = CreateObject<ParabolicAntennaModel>();
-
-	prodParabolicAntenna1->SetBeamwidth(359);
-	prodParabolicAntenna1->SetOrientation(90);
-	swpN0A1->SetAntenna(prodParabolicAntenna1);
+//
+//	//Producer node 0 -------------------- 1netDev -1 antenna at first 360
+//	NetDeviceContainer netDeviceContainerParabolicN0Dev1 = wifi.Install(spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
+//
+//	//Set SpectrumPhy from WifiPhy
+//	Ptr<WifiPhy> wpN0A1 = netDeviceContainerParabolicN0Dev1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+//	Ptr<SpectrumWifiPhy> swpN0A1 = DynamicCast<SpectrumWifiPhy>(wpN0A1);
+//
+//	//Set Parabolic Antenna1 to node 0
+//	Ptr<ParabolicAntennaModel> prodParabolicAntenna1 = CreateObject<ParabolicAntennaModel>();
+//
+//	prodParabolicAntenna1->SetBeamwidth(20);
+//	prodParabolicAntenna1->SetOrientation(90);
+//	swpN0A1->SetAntenna(prodParabolicAntenna1);
 
 
 //	//Producer node 0 -------------------- 1netDev -4 antennas
@@ -124,75 +124,75 @@ int main(int argc, char* argv[]) {
 //	prodParabolicAntenna4->SetOrientation(270);
 //	swpN0AX->SetAntenna(prodParabolicAntenna4);
 
-
-//	//Producer------------------- 4 Net dev 4 Antennas
-//	//NDev node 0 Parabolic 1
-//	NetDeviceContainer netDeviceContainerParabolicN0Dev1 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
 //
-//	//Set SpectrumPhy from WifiPhy
-//	Ptr<WifiPhy> wpN0A1 = netDeviceContainerParabolicN0Dev1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
-//	Ptr<SpectrumWifiPhy> swpN0A1 = DynamicCast<SpectrumWifiPhy> (wpN0A1);
-//
-//	//Set Parabolic Antenna1 to node 0
-//	Ptr<ParabolicAntennaModel> parabolicAntenna0 = CreateObject<ParabolicAntennaModel>();
-//	parabolicAntenna0->SetBeamwidth(90);
-//	parabolicAntenna0->SetOrientation(0);
-//	swpN0A1->SetAntenna(parabolicAntenna0);
-//
-//	//NDev node 0 Parabolic 2
-//	NetDeviceContainer netDeviceContainerParabolicN0Dev2 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
-//
-//	//Set SpectrumPhy from WifiPhy
-//	Ptr<WifiPhy> wpN0A2 = netDeviceContainerParabolicN0Dev2.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
-//	Ptr<SpectrumWifiPhy> swpN0A2 = DynamicCast<SpectrumWifiPhy> (wpN0A2);
-//
-//	//Set Parabolic Antenna2 to node 0
-//	Ptr<ParabolicAntennaModel> parabolicAntennaN0A2 = CreateObject<ParabolicAntennaModel>();
-//	parabolicAntennaN0A2->SetBeamwidth(90);
-//	parabolicAntennaN0A2->SetOrientation(90);
-//	swpN0A2->SetAntenna(parabolicAntennaN0A2);
-//
-//	//NDev node 0 Parabolic 3
-//	NetDeviceContainer netDeviceContainerParabolicN0Dev3 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
-//
-//	//Set SpectrumPhy from WifiPhy
-//	Ptr<WifiPhy> wpN0A3 = netDeviceContainerParabolicN0Dev3.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
-//	Ptr<SpectrumWifiPhy> swpN0A3 = DynamicCast<SpectrumWifiPhy> (wpN0A3);
-//
-//	//Set Parabolic Antenna3 to node 0
-//	Ptr<ParabolicAntennaModel> parabolicAntennaN0A3 = CreateObject<ParabolicAntennaModel>();
-//	parabolicAntennaN0A3->SetBeamwidth(90);
-//	parabolicAntennaN0A3->SetOrientation(180);
-//	swpN0A3->SetAntenna(parabolicAntennaN0A3);
-//
-//	//NDev node 0 Parabolic 4
-//	NetDeviceContainer netDeviceContainerParabolicN0Dev4 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
-//
-//	//Set SpectrumPhy from WifiPhy
-//	Ptr<WifiPhy> wpN0A4 = netDeviceContainerParabolicN0Dev4.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
-//	Ptr<SpectrumWifiPhy> swpN0A4 = DynamicCast<SpectrumWifiPhy> (wpN0A4);
-//
-//	//Set Parabolic Antenna4 to node 0
-//	Ptr<ParabolicAntennaModel> parabolicAntennaN0A4 = CreateObject<ParabolicAntennaModel>();
-//	parabolicAntennaN0A4->SetBeamwidth(90);
-//	parabolicAntennaN0A4->SetOrientation(270);
-//	swpN0A4->SetAntenna(parabolicAntennaN0A4);
-
-
-	//Consumer node: 2 ----------------- 1 net device 1 antenna at first 360
-
-	NetDeviceContainer netDeviceContainerParabolicN1Dev1 = wifi.Install(spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(1));
+	//Producer------------------- 4 Net dev 4 Antennas
+	//NDev node 0 Parabolic 1
+	NetDeviceContainer netDeviceContainerParabolicN0Dev1 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
 
 	//Set SpectrumPhy from WifiPhy
-	Ptr<WifiPhy> wpN1A1 = netDeviceContainerParabolicN1Dev1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
-	Ptr<SpectrumWifiPhy> swpN1A1 = DynamicCast<SpectrumWifiPhy>(wpN1A1);
+	Ptr<WifiPhy> wpN0A1 = netDeviceContainerParabolicN0Dev1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+	Ptr<SpectrumWifiPhy> swpN0A1 = DynamicCast<SpectrumWifiPhy> (wpN0A1);
 
-	//Set Parabolic Antennas to node 1
-	Ptr<ParabolicAntennaModel> consParabolicAntenna1 = CreateObject<ParabolicAntennaModel>();
+	//Set Parabolic Antenna1 to node 0
+	Ptr<ParabolicAntennaModel> parabolicAntenna0 = CreateObject<ParabolicAntennaModel>();
+	parabolicAntenna0->SetBeamwidth(90);
+	parabolicAntenna0->SetOrientation(0);
+	swpN0A1->SetAntenna(parabolicAntenna0);
 
-	consParabolicAntenna1->SetBeamwidth(90);
-	consParabolicAntenna1->SetOrientation(270);
-	swpN1A1->SetAntenna(consParabolicAntenna1);
+	//NDev node 0 Parabolic 2
+	NetDeviceContainer netDeviceContainerParabolicN0Dev2 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
+
+	//Set SpectrumPhy from WifiPhy
+	Ptr<WifiPhy> wpN0A2 = netDeviceContainerParabolicN0Dev2.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+	Ptr<SpectrumWifiPhy> swpN0A2 = DynamicCast<SpectrumWifiPhy> (wpN0A2);
+
+	//Set Parabolic Antenna2 to node 0
+	Ptr<ParabolicAntennaModel> parabolicAntennaN0A2 = CreateObject<ParabolicAntennaModel>();
+	parabolicAntennaN0A2->SetBeamwidth(90);
+	parabolicAntennaN0A2->SetOrientation(90);
+	swpN0A2->SetAntenna(parabolicAntennaN0A2);
+
+	//NDev node 0 Parabolic 3
+	NetDeviceContainer netDeviceContainerParabolicN0Dev3 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
+
+	//Set SpectrumPhy from WifiPhy
+	Ptr<WifiPhy> wpN0A3 = netDeviceContainerParabolicN0Dev3.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+	Ptr<SpectrumWifiPhy> swpN0A3 = DynamicCast<SpectrumWifiPhy> (wpN0A3);
+
+	//Set Parabolic Antenna3 to node 0
+	Ptr<ParabolicAntennaModel> parabolicAntennaN0A3 = CreateObject<ParabolicAntennaModel>();
+	parabolicAntennaN0A3->SetBeamwidth(90);
+	parabolicAntennaN0A3->SetOrientation(180);
+	swpN0A3->SetAntenna(parabolicAntennaN0A3);
+
+	//NDev node 0 Parabolic 4
+	NetDeviceContainer netDeviceContainerParabolicN0Dev4 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
+
+	//Set SpectrumPhy from WifiPhy
+	Ptr<WifiPhy> wpN0A4 = netDeviceContainerParabolicN0Dev4.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+	Ptr<SpectrumWifiPhy> swpN0A4 = DynamicCast<SpectrumWifiPhy> (wpN0A4);
+
+	//Set Parabolic Antenna4 to node 0
+	Ptr<ParabolicAntennaModel> parabolicAntennaN0A4 = CreateObject<ParabolicAntennaModel>();
+	parabolicAntennaN0A4->SetBeamwidth(90);
+	parabolicAntennaN0A4->SetOrientation(270);
+	swpN0A4->SetAntenna(parabolicAntennaN0A4);
+
+
+//	//Consumer node: 2 ----------------- 1 net device 1 antenna at first 360
+//
+//	NetDeviceContainer netDeviceContainerParabolicN1Dev1 = wifi.Install(spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(1));
+//
+//	//Set SpectrumPhy from WifiPhy
+//	Ptr<WifiPhy> wpN1A1 = netDeviceContainerParabolicN1Dev1.Get(0)->GetObject<WifiNetDevice>()->GetPhy();
+//	Ptr<SpectrumWifiPhy> swpN1A1 = DynamicCast<SpectrumWifiPhy>(wpN1A1);
+//
+//	//Set Parabolic Antennas to node 1
+//	Ptr<ParabolicAntennaModel> consParabolicAntenna1 = CreateObject<ParabolicAntennaModel>();
+//
+//	consParabolicAntenna1->SetBeamwidth(90);
+//	consParabolicAntenna1->SetOrientation(270);
+//	swpN1A1->SetAntenna(consParabolicAntenna1);
 
 
 //	//Consumer node: 2 ----------------- 1 net device 4 antennas
@@ -226,69 +226,69 @@ int main(int argc, char* argv[]) {
 //	swpN1AX->SetAntenna(consParabolicAntenna4);
 
 
-//	//Consumer node: 2 --------------------- 4 net devices 4 antennas
-//
-//	NetDeviceContainer netDeviceContainerParabolicN1Dev1 = wifi.Install(
-//			spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(1));
-//
-//	//Set SpectrumPhy from WifiPhy
-//	Ptr<WifiPhy> wpN1A1 = netDeviceContainerParabolicN1Dev1.Get(0)->GetObject<
-//			WifiNetDevice>()->GetPhy();
-//	Ptr<SpectrumWifiPhy> swpN1A1 = DynamicCast<SpectrumWifiPhy>(wpN1A1);
-//
-//	//Set Parabolic Antenna1 to node 1
-//	Ptr<ParabolicAntennaModel> parabolicAntenna1 = CreateObject<
-//			ParabolicAntennaModel>();
-//	parabolicAntenna1->SetBeamwidth(90);
-//	parabolicAntenna1->SetOrientation(0);
-//	swpN1A1->SetAntenna(parabolicAntenna1);
-//
-//	NetDeviceContainer netDeviceContainerParabolicN1Dev2 = wifi.Install(
-//			spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(1));
-//
-//	//Set SpectrumPhy from WifiPhy
-//	Ptr<WifiPhy> wpN1A2 = netDeviceContainerParabolicN1Dev2.Get(0)->GetObject<
-//			WifiNetDevice>()->GetPhy();
-//	Ptr<SpectrumWifiPhy> swpN1A2 = DynamicCast<SpectrumWifiPhy>(wpN1A2);
-//
-//	//Set Parabolic Antenna2 to node 1
-//	Ptr<ParabolicAntennaModel> parabolicAntenna2 = CreateObject<
-//			ParabolicAntennaModel>();
-//	parabolicAntenna2->SetBeamwidth(90);
-//	parabolicAntenna2->SetOrientation(90);
-//	swpN1A2->SetAntenna(parabolicAntenna2);
-//
-//	NetDeviceContainer netDeviceContainerParabolicN1Dev3 = wifi.Install(
-//			spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(1));
-//
-//	//Set SpectrumPhy from WifiPhy
-//	Ptr<WifiPhy> wpN1A3 = netDeviceContainerParabolicN1Dev3.Get(0)->GetObject<
-//			WifiNetDevice>()->GetPhy();
-//	Ptr<SpectrumWifiPhy> swpN1A3 = DynamicCast<SpectrumWifiPhy>(wpN1A3);
-//
-//	//Set Parabolic Antenna3 to node 1
-//	Ptr<ParabolicAntennaModel> parabolicAntenna3 = CreateObject<
-//			ParabolicAntennaModel>();
-//	parabolicAntenna3->SetBeamwidth(90);
-//	parabolicAntenna3->SetOrientation(180);
-//	swpN1A3->SetAntenna(parabolicAntenna3);
-//
-//	NetDeviceContainer netDeviceContainerParabolicN1Dev4 = wifi.Install(
-//			spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(1));
-//
-//	//Set SpectrumPhy from WifiPhy
-//	Ptr<WifiPhy> wpN1A4 = netDeviceContainerParabolicN1Dev4.Get(0)->GetObject<
-//			WifiNetDevice>()->GetPhy();
-//	Ptr<SpectrumWifiPhy> swpN1A4 = DynamicCast<SpectrumWifiPhy>(wpN1A4);
-//
-//	//Set Parabolic Antenna4 to node 1
-//	Ptr<ParabolicAntennaModel> parabolicAntenna4 = CreateObject<
-//			ParabolicAntennaModel>();
-//	parabolicAntenna4->SetBeamwidth(90);
-//	parabolicAntenna4->SetOrientation(270);
-//	swpN1A4->SetAntenna(parabolicAntenna4);
+	//Consumer node: 2 --------------------- 4 net devices 4 antennas
 
-	// Yans Devices
+	NetDeviceContainer netDeviceContainerParabolicN1Dev1 = wifi.Install(
+			spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(1));
+
+	//Set SpectrumPhy from WifiPhy
+	Ptr<WifiPhy> wpN1A1 = netDeviceContainerParabolicN1Dev1.Get(0)->GetObject<
+			WifiNetDevice>()->GetPhy();
+	Ptr<SpectrumWifiPhy> swpN1A1 = DynamicCast<SpectrumWifiPhy>(wpN1A1);
+
+	//Set Parabolic Antenna1 to node 1
+	Ptr<ParabolicAntennaModel> parabolicAntenna1 = CreateObject<
+			ParabolicAntennaModel>();
+	parabolicAntenna1->SetBeamwidth(90);
+	parabolicAntenna1->SetOrientation(0);
+	swpN1A1->SetAntenna(parabolicAntenna1);
+
+	NetDeviceContainer netDeviceContainerParabolicN1Dev2 = wifi.Install(
+			spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(1));
+
+	//Set SpectrumPhy from WifiPhy
+	Ptr<WifiPhy> wpN1A2 = netDeviceContainerParabolicN1Dev2.Get(0)->GetObject<
+			WifiNetDevice>()->GetPhy();
+	Ptr<SpectrumWifiPhy> swpN1A2 = DynamicCast<SpectrumWifiPhy>(wpN1A2);
+
+	//Set Parabolic Antenna2 to node 1
+	Ptr<ParabolicAntennaModel> parabolicAntenna2 = CreateObject<
+			ParabolicAntennaModel>();
+	parabolicAntenna2->SetBeamwidth(90);
+	parabolicAntenna2->SetOrientation(90);
+	swpN1A2->SetAntenna(parabolicAntenna2);
+
+	NetDeviceContainer netDeviceContainerParabolicN1Dev3 = wifi.Install(
+			spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(1));
+
+	//Set SpectrumPhy from WifiPhy
+	Ptr<WifiPhy> wpN1A3 = netDeviceContainerParabolicN1Dev3.Get(0)->GetObject<
+			WifiNetDevice>()->GetPhy();
+	Ptr<SpectrumWifiPhy> swpN1A3 = DynamicCast<SpectrumWifiPhy>(wpN1A3);
+
+	//Set Parabolic Antenna3 to node 1
+	Ptr<ParabolicAntennaModel> parabolicAntenna3 = CreateObject<
+			ParabolicAntennaModel>();
+	parabolicAntenna3->SetBeamwidth(90);
+	parabolicAntenna3->SetOrientation(180);
+	swpN1A3->SetAntenna(parabolicAntenna3);
+
+	NetDeviceContainer netDeviceContainerParabolicN1Dev4 = wifi.Install(
+			spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(1));
+
+	//Set SpectrumPhy from WifiPhy
+	Ptr<WifiPhy> wpN1A4 = netDeviceContainerParabolicN1Dev4.Get(0)->GetObject<
+			WifiNetDevice>()->GetPhy();
+	Ptr<SpectrumWifiPhy> swpN1A4 = DynamicCast<SpectrumWifiPhy>(wpN1A4);
+
+	//Set Parabolic Antenna4 to node 1
+	Ptr<ParabolicAntennaModel> parabolicAntenna4 = CreateObject<
+			ParabolicAntennaModel>();
+	parabolicAntenna4->SetBeamwidth(90);
+	parabolicAntenna4->SetOrientation(270);
+	swpN1A4->SetAntenna(parabolicAntenna4);
+
+//	// Yans Devices
 //	NetDeviceContainer wifiNetDevices = wifi.Install(wifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
 //	NetDeviceContainer wifiNetDevices2 = wifi.Install(wifiPhyHelper, wifiMacHelper, mobileNodes.Get(1));
 

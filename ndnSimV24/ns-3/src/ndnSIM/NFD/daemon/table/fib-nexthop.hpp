@@ -61,51 +61,51 @@ public:
 	}
 
 	//Dome
-	double getPositionX() const {
+	int getPositionX() const {
 		return m_positionX;
 	}
 
-	void setPositionX(double positionX) {
+	void setPositionX(int positionX) {
 		m_positionX = positionX;
 	}
 
-	void setPositionY(double positionY) {
+	void setPositionY(int positionY) {
 		m_positionY = positionY;
 	}
 
-	double getPositionY() const {
+	int getPositionY() const {
 		return m_positionY;
 	}
 
-	void setPositionZ(double positionZ) {
+	void setPositionZ(int positionZ) {
 		m_positionZ = positionZ;
 	}
 
-	double getPositionZ() const {
+	int getPositionZ() const {
 		return m_positionZ;
 	}
 
-	double getFuturePositionX() const {
+	int getFuturePositionX() const {
 		return m_futurePositionX;
 	}
 
-	void setFuturePositionX(double futurePositionX) {
+	void setFuturePositionX(int futurePositionX) {
 		m_futurePositionX = futurePositionX;
 	}
 
-	void setFuturePositionY(double futurePositionY) {
+	void setFuturePositionY(int futurePositionY) {
 		m_futurePositionY = futurePositionY;
 	}
 
-	double getFuturePositionY() const {
+	int getFuturePositionY() const {
 		return m_futurePositionY;
 	}
 
-	void setTimeAtFuturePosition(double timeAtFuturePosition) {
+	void setTimeAtFuturePosition(int timeAtFuturePosition) {
 		m_timeAtFuturePosition = timeAtFuturePosition;
 	}
 
-	double getTimeAtFuturePosition() const {
+	int getTimeAtFuturePosition() const {
 		return m_timeAtFuturePosition;
 	}
 
@@ -121,12 +121,12 @@ private:
 	Face* m_face;
 	uint64_t m_cost;
 	std::string m_mac;
-	double m_positionX;
-	double m_positionY;
-	double m_positionZ;
-	double m_futurePositionX;
-	double m_futurePositionY;
-	double m_timeAtFuturePosition;
+	int m_positionX;
+	int m_positionY;
+	int m_positionZ;
+	int m_futurePositionX;
+	int m_futurePositionY;
+	int m_timeAtFuturePosition;
 	int m_futurePositionWasSet;
 };
 

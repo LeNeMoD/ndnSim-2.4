@@ -72,9 +72,9 @@ Entry::hasNextHop(const Face& face) const
 
 //Dome
 void
-Entry::addNextHop(Face& face, uint64_t cost, std::string mac, double positionX, double positionY, double positionZ,
-		double futurePositionX, double futurePositionY,
-		double timeAtFuturePosition, int isFuturePositionSet)
+Entry::addNextHop(Face& face, uint64_t cost, std::string mac, int positionX, int positionY, int positionZ,
+		int futurePositionX, int futurePositionY,
+		int timeAtFuturePosition, int isFuturePositionSet)
 {
   auto it = this->findNextHop(mac);
   if (it == m_nextHops.end()) {

@@ -101,25 +101,25 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
 
 	std::cout<< "time in multicastStrategy: " << ns3::Simulator::Now() << std::endl;
 	int flagFibContainsEmptyPosition=0;
-  	for (fib::NextHopList::const_iterator it = nexthops.begin();
-  			it != nexthops.end(); ++it) {
-
-  		std::cout << " FIB of NODE: " << node->GetId() << "contains interest name: "
-  				<< interest.getName() << " face " << it->getFace()
-				<< " mac : " << it->getMac() << std::endl
-				<< " position-X : "<< it->getPositionX() << " position-Y : " << it->getPositionY() << " position-Z : "<< it->getPositionZ() <<std::endl
-				<< " Future-position-X : " << it->getFuturePositionX() << " Future-position-Y : " << it->getFuturePositionY() << std::endl
-				<< " Time-At-FuturePos : "<< it->getTimeAtFuturePosition()<<" , is it a valid position n/y->0/1: "<<it->getFuturePositonWasSet()<< std::endl
-				<< std::endl;
-
+//  	for (fib::NextHopList::const_iterator it = nexthops.begin();
+//  			it != nexthops.end(); ++it) {
+//
+//  		std::cout << " FIB of NODE: " << node->GetId() << "contains interest name: "
+//  				<< interest.getName() << " face " << it->getFace()
+//				<< " mac : " << it->getMac() << std::endl
+//				<< " position-X : "<< it->getPositionX() << " position-Y : " << it->getPositionY() << " position-Z : "<< it->getPositionZ() <<std::endl
+//				<< " Future-position-X : " << it->getFuturePositionX() << " Future-position-Y : " << it->getFuturePositionY() << std::endl
+//				<< " Time-At-FuturePos : "<< it->getTimeAtFuturePosition()<<" , is it a valid position n/y->0/1: "<<it->getFuturePositonWasSet()<< std::endl
+//				<< std::endl;
+//
 //  		if(it->getFuturePositonWasSet()==0){
 //  		  			flagFibContainsEmptyPosition=1;
 //  		  		}
-
-  		if(it->getFuturePositionX()==3215){
-  			flagFibContainsEmptyPosition=1;
-  		}
-  	}
+//
+////  		if(it->getFuturePositionX()==3215){
+////  			flagFibContainsEmptyPosition=1;
+////  		}
+//  	}
   //	if(flagFibContainsEmptyPosition==1){
   	  //Dome add NodeFuturePosition to the interest
   	//  Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
@@ -128,13 +128,13 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
   		ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
 
   	  ns3::Time time = (ns3::Simulator::Now());
-  	  double at = std::ceil(time.GetSeconds())+1;
-  	  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
+  	  int at = std::ceil(time.GetSeconds());
+//  	  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
 
   	  ns3::Vector3D futurePositionVector = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("in Strategy requesting ",node->GetId(),at);
-  	  double posX = futurePositionVector.x;
-  	  double posY = futurePositionVector.y ;
-  	  double posZ = futurePositionVector.z ;
+  	  int posX = futurePositionVector.x;
+  	  int posY = futurePositionVector.y ;
+  	  int posZ = futurePositionVector.z ;
 
   	  ndn::FuturePositionInfo futPos = interest2->getFuturePositionInfo();
   	  futPos.setFutureLocationX(posX);
@@ -142,7 +142,7 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
   	  futPos.setFutureLocationZ(posZ);
   	  futPos.setFuturePositionWasSet(1);
   	  interest2->setFuturePositionInfo(futPos);
-  	  std::cout<<"FuturePosition was set from the TLC-File to the interest in strategy: "<<futPos <<std::endl;
+//  	  std::cout<<"FuturePosition was set from the TLC-File to the interest in strategy: "<<futPos <<std::endl;
   //	}
 
   	for (fib::NextHopList::const_iterator it = nexthops.begin(); it != nexthops.end(); ++it) {
@@ -183,26 +183,26 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
 				ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
 				ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy>(spectWPhy);
 				ns3::Ptr<ns3::ParabolicAntennaModel> parab = ns3::DynamicCast<ns3::ParabolicAntennaModel>(swp0->GetRxAntenna());
-				std::cout << " outgoing interest node: " << node->GetId()
-						<< " target mac: " << it->getMac() << std::endl;
-				std::cout
-						<< "multycastStrat, on before send interest : will turning Antenna for outgoing interest to FIB position: "
-						<< std::endl;
 				ns3::Ptr<ns3::MobilityModel> model = node->GetObject<ns3::MobilityModel>();
-				double deltaX = (model->GetPosition().x-(it->getFuturePositionX()));
-				double deltaY = (model->GetPosition().y-(it->getFuturePositionY()));
+//				std::cout << " outgoing interest node: " << node->GetId() << " target mac: " << it->getMac() << std::endl;
+//				std::cout<< "multycastStrat, on before send interest : will turning Antenna for outgoing interest to FIB position: "<< std::endl;
+//				std::cout<< "multycast the Position from model: "<< model->GetPosition()<<std::endl;
+//				std::cout<< "multycast the Position from futurePositionInfo in FIB: "<< it->getFuturePositionX()<<", "<<it->getFuturePositionY()<<std::endl;
+				int deltaX = (model->GetPosition().x-(it->getFuturePositionX()));
+				int deltaY = (model->GetPosition().y-(it->getFuturePositionY()));
 				double angleRad = atan2(deltaY,deltaX);
-				std::cout<<"angle rad multycast: "<<angleRad<<std::endl;
+//				std::cout<<"angle rad multycast: " <<angleRad<<std::endl;
 				double angle = ns3::RadiansToDegrees(((angleRad+3.14)));
 //				double agnle = angle+180;
 //				double angle = ns3::RadiansToDegrees((abs(angleRad)+3.14));
 				parab->SetBeamwidth(20);
 				parab->SetOrientation(angle);
-				std::cout<<"at time : "<< ns3::Simulator::Now() << std::endl;
-				std::cout << "parab turned to: " << angle
-						<< " degrees and set to beam " << 20 << std::endl;
+//				std::cout<<"at time : "<< ns3::Simulator::Now() << std::endl;
+//				std::cout << "parab turned to: " << angle
+//						<< " degrees and set to beam " << 20 << std::endl;
 			}
 
+    	  	std::cout<<"node "<< node->GetId()<<" sends to " << it->getMac()<<" futurePositionInfo is : "<< interest2->getFuturePositionInfo().getFutureLocation_X()<<std::endl;
       this->sendInterest(pitEntry, outFace, *interest2, it->getMac());
       break;
     	}

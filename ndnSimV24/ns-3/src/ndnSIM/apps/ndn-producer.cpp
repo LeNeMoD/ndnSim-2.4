@@ -39,7 +39,7 @@
 
 NS_LOG_COMPONENT_DEFINE("ndn.Producer");
 
-ndn::FuturePositionInfo futurePositionInfoProducer;
+//ndn::FuturePositionInfo futurePositionInfoProducer;
 
 namespace ns3 {
 namespace ndn {

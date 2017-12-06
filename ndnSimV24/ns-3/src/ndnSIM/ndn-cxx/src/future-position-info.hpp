@@ -48,7 +48,7 @@ public:
   //FuturePositionInfo(FuturePositionInfo& futurePositionInfo);
 
   explicit
-  FuturePositionInfo(const ns3::Vector futurePositionVector, double timeAtFuturePosition);
+  FuturePositionInfo(const ns3::Vector futurePositionVector, int timeAtFuturePosition);
 
   template<encoding::Tag TAG>
   size_t
@@ -69,30 +69,30 @@ public:
   FuturePositionInfo&
   setFuturePositionVector(ns3::Vector position);
 
-  double
+  int
   getFutureLocation_X() const;
 
-  double
+  int
   getFutureLocation_Y() const;
 
-  double
+  int
   getFutureLocation_Z() const;
 
   FuturePositionInfo&
-  setFutureLocationX(double futurelocation_X);
+  setFutureLocationX(int futurelocation_X);
 
   FuturePositionInfo&
-  setFutureLocationY(double futureLocation_Y);
+  setFutureLocationY(int futureLocation_Y);
 
   FuturePositionInfo&
-  setFutureLocationZ(double futureLocation_Z);
+  setFutureLocationZ(int futureLocation_Z);
 
 
-  double
+  int
   getTimeAtFutureLocation() const;
 
   FuturePositionInfo&
-  setTimeAtFutureLocation(double time);
+  setTimeAtFutureLocation(int time);
 
 
 //  bool
@@ -100,19 +100,19 @@ public:
 //
 //  FuturePositionInfo&
 //  setFuturePositionWasSet(bool wasItSet);
-  double
+  int
   isfuturePositionSet() const;
 
   FuturePositionInfo&
-  setFuturePositionWasSet(double wasItSet);
+  setFuturePositionWasSet(int wasItSet);
 
 
   public:
-  	  double m_location_X_Coord;
-  	  double m_location_Y_Coord;
-  	  double m_location_Z_Coord_Velocity;
-  	  double m_timeAtFuturePosition;
-  	  double m_futurePositionWasSet;
+  	  int m_location_X_Coord;
+  	  int m_location_Y_Coord;
+  	  int m_location_Z_Coord_Velocity;
+  	  int m_timeAtFuturePosition;
+  	  int m_futurePositionWasSet;
   	  ns3::Vector m_futurePositionVector;
 
 

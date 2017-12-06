@@ -218,8 +218,8 @@ PUBLIC_WITH_TESTS_ELSE_PRIVATE: // pipelines
   */
   VIRTUAL_WITH_TESTS void
   onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& pitEntry, const Interest& interest);
-  VIRTUAL_WITH_TESTS void
-  onContentStoreMiss2(const Face& inFace, const shared_ptr<pit::Entry>& pitEntry, const Interest& interest, std::string mac);
+//  VIRTUAL_WITH_TESTS void
+//  onContentStoreMiss2(const Face& inFace, const shared_ptr<pit::Entry>& pitEntry, const Interest& interest, std::string mac);
   //Dome
   VIRTUAL_WITH_TESTS void
   onContentStoreMiss2(const Face& inFace, const shared_ptr<pit::Entry>& pitEntry, const Interest& interest, std::string mac, ndn::FuturePositionInfo futurePositionInfo);

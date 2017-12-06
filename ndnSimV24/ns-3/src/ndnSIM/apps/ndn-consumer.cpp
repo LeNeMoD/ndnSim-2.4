@@ -34,7 +34,6 @@
 
 #include "utils/ndn-ns3-packet-tag.hpp"
 #include "utils/ndn-rtt-mean-deviation.hpp"
-
 #include <ndn-cxx/lp/tags.hpp>
 
 #include <boost/lexical_cast.hpp>
@@ -187,15 +186,28 @@ Consumer::SendPacket()
 	// 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
 	//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
 		Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
+		ns3::Time time = (ns3::Simulator::Now());
+		      	  int at = std::ceil(time.GetSeconds());
+		      	//  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
+
+		      	  ns3::Vector3D futurePositionVector = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("in Strategy requesting ",node->GetId(),at);
+		      	  int posX = futurePositionVector.x;
+		      	  int posY = futurePositionVector.y ;
+		      	  int posZ = futurePositionVector.z ;
+
+				futurePositionInfoConsumer.setFutureLocationX(posX);
+		      	futurePositionInfoConsumer.setFutureLocationY(posY);
+		      	futurePositionInfoConsumer.setFutureLocationZ(posZ);
+		      	futurePositionInfoConsumer.setFuturePositionWasSet(1);
 //
 //	  Time time = (ns3::Simulator::Now());
-//	  double at = std::ceil(time.GetSeconds())+1;
+//	  int at = std::ceil(time.GetSeconds())+1;
 //	  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
 //
 //
-//	  double posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).x;
-//	  double posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).y ;
-//	  double posZ = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).z ;
+//	  int posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).x;
+//	  int posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).y ;
+//	  int posZ = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).z ;
 //
 //
 //	//  std::cout<< "check position-X +5s pass in producer  :" << posX << " node id: " << node->GetId() <<std::endl;
@@ -238,8 +250,8 @@ Consumer::SendPacket()
 		  interest2[i]->setName(*nameWithSequence[i]);
 		  //Dome
 		  //Set FuturePositionInfo
-//		  interest2[i]->setFuturePositionInfo(futurePositionInfoConsumer);
-		  //std::cout<<"futpos set x,y,z :"<<posX<<" , "<<posY<<" , "<<posZ<<" , "<<" at time: "<< at<<std::endl;
+		  interest2[i]->setFuturePositionInfo(futurePositionInfoConsumer);
+		  std::cout<<"consumer sends :"<<interest2[i]->getName()<<" to position "<<interest2[i]->getFuturePositionInfo().getFutureLocation_X()<<std::endl;
 		  //std::cout<<"interest futurPos in ndn-consumer contains: "<< interest2[i]->getFuturePositionInfo().m_location_X_Coord <<std::endl;
 		  //std::cout<<"interest futurPos in ndn-consumer contains: "<< interest2[i]->getFuturePositionInfo().m_location_Y_Coord <<std::endl;
 
@@ -256,6 +268,7 @@ Consumer::SendPacket()
 	    	//LOGS
 	    	for(int i = 0; i < NUMBER_OF_INTERESTS; i++) {
 	    		if(results[i][0] == interestName) {
+	    			results[i][2] = std::to_string(Simulator::Now().GetNanoSeconds());
 	    			retransmissions++;
 	    			break;
 	    		} else if(results[i][0] == "x") {
@@ -297,9 +310,9 @@ Consumer::OnData(shared_ptr<const Data> data)
   NS_LOG_DEBUG("Hop count: " << hopCount);
   //LOGS
     NS_LOG_DEBUG("Hop count: " << hopCount);
-//    std::cout << "*****************************************************************" << std::endl;
-//    std::cout << "......consumer receiving data for: " << seq << " with hopcount: " << hopCount << " and name " << data->getName() << std::endl;
-//    std::cout << "*****************************************************************" << std::endl;
+    std::cout << "*****************************************************************" << std::endl;
+    std::cout << "......consumer receiving data for: " << seq << " with hopcount: " << hopCount << " and name " << data->getName() << std::endl;
+    std::cout << "*****************************************************************" << std::endl;
     Name name;
     name = data->getName();
     std::ostringstream tmpName;
@@ -321,7 +334,7 @@ Consumer::OnData(shared_ptr<const Data> data)
     int send = 0;
     for(int i = 0; i < NUMBER_OF_INTERESTS; i++) {
   	  if(results[i][0] != "x") {
-//  		  std::cout << results[i][0] << " - " << results[i][1] << " - " << results[i][2] << " - " << results[i][3] << " - "<< results[i][4] << std::endl;
+  		  std::cout << results[i][0] << " - " << results[i][1] << " - " << results[i][2] << " - " << results[i][3] << " - "<< results[i][4] << std::endl;
   		  send++;
   		  if(results[i][1] == "OK") {
   			  arrivedData++;
@@ -331,10 +344,10 @@ Consumer::OnData(shared_ptr<const Data> data)
   			break;
   		}
   	}
-    	std::cout << "-> allSendAndReceivedData: \n\n" << allSendAndReceivedData << "\n"<< std::endl;
+    std::cout << "-> allSendAndReceivedData: \n\n" << allSendAndReceivedData << "\n"<< std::endl;
   	std::cout << "-- -- -->> " << arrivedData << "/" << send << "<<-- -- --" << std::endl;
-      std::cout << "-- -- -->> RETRANSMISSIONS: " << retransmissions << "<<-- -- --" << std::endl;
-      std::cout << "-- -- -->> RETRANSMISSIONS + SENDS: " << retransmissions + send << "<<-- -- --\n" << std::endl;
+    std::cout << "-- -- -->> RETRANSMISSIONS: " << retransmissions << "<<-- -- --" << std::endl;
+    std::cout << "-- -- -->> RETRANSMISSIONS + SENDS: " << retransmissions + send << "<<-- -- --\n" << std::endl;
   	std::cout << "-- -->> average latency: " << totalLatency/arrivedData << " ns <<-- --\n" << std::endl;
   	std::cout << "-- -->> average latency: " << (totalLatency/arrivedData)/1000 << " us <<-- --\n" << std::endl;
   	std::cout << "-- -->> average latency: " << (totalLatency/arrivedData)/1000000 << " ms <<-- --\n" << std::endl;

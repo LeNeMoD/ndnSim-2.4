@@ -62,10 +62,10 @@ public:
   ndn::FuturePositionInfo
   getFuturePositionInfo() const;
 
-  double
+  int
   getFuturePositionX() const;
 
-  double
+  int
   getFuturePositionY() const;
 
   uint32_t
@@ -91,8 +91,8 @@ private:
   std::string m_mac;
   //Dome
   ndn::FuturePositionInfo m_futurePosition;
-  double m_futurePositionX;
-  double m_futurePositionY;
+  int m_futurePositionX;
+  int m_futurePositionY;
   time::steady_clock::TimePoint m_lastRenewed;
   time::steady_clock::TimePoint m_expiry;
 };
@@ -130,11 +130,11 @@ inline ndn::FuturePositionInfo
 FaceRecord::getFuturePositionInfo() const{
 	return m_futurePosition;
 }
-inline double
+inline int
 FaceRecord::getFuturePositionX() const{
 	return m_futurePositionX;
 }
-inline double
+inline int
 FaceRecord::getFuturePositionY() const{
 	return m_futurePositionY;
 }

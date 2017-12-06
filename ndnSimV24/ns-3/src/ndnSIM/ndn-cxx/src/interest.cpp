@@ -130,10 +130,16 @@ Interest::wireDecode(const Block& wire)
     BOOST_THROW_EXCEPTION(Error("Unexpected TLV number when decoding Interest"));
 
   // Name
+
+  Block::element_const_iterator val = m_wire.find(tlv::FuturePositionInfoData);
+   if (val != m_wire.elements_end()) {
+ 	m_futurePositonInfoInterest.wireDecode(m_wire.get(tlv::FuturePositionInfoData));
+ 	std::cout<<"check content futurePosInfo after decode in interest: x: "<< m_futurePositonInfoInterest.getFutureLocation_X()<<" y: "<< m_futurePositonInfoInterest.getFutureLocation_Y()<<std::endl;
+ 	}
   m_name.wireDecode(m_wire.get(tlv::Name));
 
   // Selectors
-  Block::element_const_iterator val = m_wire.find(tlv::Selectors);
+  val = m_wire.find(tlv::Selectors);
   if (val != m_wire.elements_end()) {
     m_selectors.wireDecode(*val);
   }
@@ -172,11 +178,7 @@ Interest::wireDecode(const Block& wire)
 
   //Dome
     // FuturePositionInfo
-    val = m_wire.find(tlv::FuturePositionInfoInterest);
-    if (val != m_wire.elements_end()) {
-  	m_futurePositonInfoInterest.wireDecode(m_wire.get(tlv::FuturePositionInfoInterest));
-  	std::cout<<"check content futurePosInfo after decode in interest: x: "<< m_futurePositonInfoInterest.getFutureLocation_X()<<" y: "<< m_futurePositonInfoInterest.getFutureLocation_Y()<<std::endl;
-  	}
+
 }
 
 std::string

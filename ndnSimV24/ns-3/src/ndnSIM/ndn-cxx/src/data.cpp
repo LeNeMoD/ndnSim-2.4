@@ -74,6 +74,7 @@ Data::wireEncode(EncodingImpl<TAG>& encoder, bool wantUnsignedPortionOnly) const
 
   // MetaInfo
   totalLength += getMetaInfo().wireEncode(encoder);
+  std::cout<<"name Data before encoding: x,y: " <<getName()<<" , "<<std::endl;
 
   // Name
   totalLength += getName().wireEncode(encoder);
@@ -82,6 +83,7 @@ Data::wireEncode(EncodingImpl<TAG>& encoder, bool wantUnsignedPortionOnly) const
   // getFuturePositionInfo
 
   //FuturePositionInfo
+  std::cout<<"futurePosition Data before encoding: x,y: " <<getFuturePositionInfo().getFutureLocation_X()<<" , "<<getFuturePositionInfo().getFutureLocation_Y()<<std::endl;
   totalLength += getFuturePositionInfo().wireEncode(encoder);
 
 

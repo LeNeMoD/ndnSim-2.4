@@ -171,7 +171,7 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
     	if (isItInternalMac==0){
 
 
-    	  	if (it->getMac() != "eirini") {
+    	  	if (it->getMac() != "eirini" && it->getFuturePositonWasSet()==1) {
 //    	  		ndn::FuturePositionInfo futPos2;
 //    	  		    		futPos2.setFutureLocationX(it->getFuturePositionX());
 //    	  		    		futPos2.setFutureLocationY(it->getFuturePositionY());

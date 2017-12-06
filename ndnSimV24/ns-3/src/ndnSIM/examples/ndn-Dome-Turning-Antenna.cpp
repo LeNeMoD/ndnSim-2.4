@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
 	int nodeNr = 2;
 	mobileNodes.Create(nodeNr);
 
-//
+
 //	//Producer node 0 -------------------- 1netDev -1 antenna at first 360
 //	NetDeviceContainer netDeviceContainerParabolicN0Dev1 = wifi.Install(spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));
 //
@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
 //	//Set Parabolic Antenna1 to node 0
 //	Ptr<ParabolicAntennaModel> prodParabolicAntenna1 = CreateObject<ParabolicAntennaModel>();
 //
-//	prodParabolicAntenna1->SetBeamwidth(20);
+//	prodParabolicAntenna1->SetBeamwidth(359);
 //	prodParabolicAntenna1->SetOrientation(90);
 //	swpN0A1->SetAntenna(prodParabolicAntenna1);
 
@@ -124,7 +124,7 @@ int main(int argc, char* argv[]) {
 //	prodParabolicAntenna4->SetOrientation(270);
 //	swpN0AX->SetAntenna(prodParabolicAntenna4);
 
-//
+
 	//Producer------------------- 4 Net dev 4 Antennas
 	//NDev node 0 Parabolic 1
 	NetDeviceContainer netDeviceContainerParabolicN0Dev1 = wifi.Install (spectrumWifiPhyHelper, wifiMacHelper, mobileNodes.Get(0));

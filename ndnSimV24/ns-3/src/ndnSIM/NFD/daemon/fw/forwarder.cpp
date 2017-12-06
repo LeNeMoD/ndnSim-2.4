@@ -680,7 +680,8 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
         continue;
       }
 
-//      if(targetmac == ""){
+      std::cout<<"mac before turning antenna "<< targetmac<< " future position from pit: " << targetFuturePosition.getFutureLocation_X()<<std::endl;
+      if(targetmac != ""){
       ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
       ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(0);
       ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
@@ -700,7 +701,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
       parab->SetOrientation(angle);
  //     std::cout << "at time : " << ns3::Simulator::Now()<< std::endl;
       std::cout << "inf Forwarder onDataIncoming parab turned to: " << angle << std::endl;
-
+      }
 
       // goto outgoing Data pipeline
       ns3::Ptr<ns3::Node> node2 = ns3::NodeList::GetNode(ns3::Simulator::GetContext());

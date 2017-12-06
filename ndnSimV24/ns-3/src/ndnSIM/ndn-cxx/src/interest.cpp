@@ -94,7 +94,9 @@ Interest::wireEncode(EncodingImpl<TAG>& encoder) const
 
   //Dome
   //FuturePositionInfo
+  std::cout<<"futurePosition Interest before encoding: x,y: " <<getFuturePositionInfo().getFutureLocation_X()<<" , "<<getFuturePositionInfo().getFutureLocation_Y()<<std::endl;
   totalLength += getFuturePositionInfo().wireEncode(encoder);
+
 
 
   totalLength += encoder.prependVarNumber(totalLength);

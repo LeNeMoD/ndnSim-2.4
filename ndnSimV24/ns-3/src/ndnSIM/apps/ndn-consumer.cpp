@@ -334,7 +334,7 @@ Consumer::OnData(shared_ptr<const Data> data)
     int send = 0;
     for(int i = 0; i < NUMBER_OF_INTERESTS; i++) {
   	  if(results[i][0] != "x") {
-  		  std::cout << results[i][0] << " - " << results[i][1] << " - " << results[i][2] << " - " << results[i][3] << " - "<< results[i][4] << std::endl;
+//  		  std::cout << results[i][0] << " - " << results[i][1] << " - " << results[i][2] << " - " << results[i][3] << " - "<< results[i][4] << std::endl;
   		  send++;
   		  if(results[i][1] == "OK") {
   			  arrivedData++;

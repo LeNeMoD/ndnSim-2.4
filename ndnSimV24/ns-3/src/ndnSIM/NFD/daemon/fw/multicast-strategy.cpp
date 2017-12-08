@@ -52,6 +52,9 @@ NFD_LOG_INIT("MulticastStrategy");
 const time::milliseconds MulticastStrategy::RETX_SUPPRESSION_INITIAL(10);
 const time::milliseconds MulticastStrategy::RETX_SUPPRESSION_MAX(250);
 
+static int forloopcounter = 0;
+static int counterbla = 0;
+
 MulticastStrategy::MulticastStrategy(Forwarder& forwarder, const Name& name)
   : Strategy(forwarder)
   , ProcessNackTraits(this)
@@ -121,11 +124,17 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
 ////  		}
 //  	}
   //	if(flagFibContainsEmptyPosition==1){
-  	  //Dome add NodeFuturePosition to the interest
-  	//  Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
-  	// 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
+//  	  Dome add NodeFuturePosition to the interest
+//  	  ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-test2-n3.txt");
+//  	 	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
   	//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
-  		ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
+//  		ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
+//	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-stationary-20nodes.txt");
+	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-upmiddledown-3n-40s.txt");
+  	for (fib::NextHopList::const_iterator it = nexthops.begin(); it != nexthops.end(); ++it) {
+std:: cout << " FIB NODE " << node->GetId()<< " mac " << it->getMac() << " face " << it->getFace() << std::endl;
+  	}
+
 
   	  ns3::Time time = (ns3::Simulator::Now());
   	  int at = std::ceil(time.GetSeconds());
@@ -145,21 +154,25 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
 //  	  std::cout<<"FuturePosition was set from the TLC-File to the interest in strategy: "<<futPos <<std::endl;
   //	}
 
+  	  forloopcounter = counterbla%(node->GetNDevices());
+
   	for (fib::NextHopList::const_iterator it = nexthops.begin(); it != nexthops.end(); ++it) {
+
   		Face& outFace = it->getFace();
-  		RetxSuppressionResult suppressResult = m_retxSuppression.decidePerUpstream(*pitEntry, outFace);
+ 		RetxSuppressionResult suppressResult = m_retxSuppression.decidePerUpstream(*pitEntry, outFace);
+//
+//    if (suppressResult == RetxSuppressionResult::SUPPRESS) {
+//      NFD_LOG_DEBUG(interest << " from=" << inFace.getId()
+//                    << "to=" << outFace.getId() << " suppressed");
+//      isSuppressed = true;
+//      continue;
+//    }
+//
+//    if ((outFace.getId() == inFace.getId() && outFace.getLinkType() != ndn::nfd::LINK_TYPE_AD_HOC) ||
+//        wouldViolateScope(inFace, interest, outFace)) {
+//      continue;
+//    }
 
-    if (suppressResult == RetxSuppressionResult::SUPPRESS) {
-      NFD_LOG_DEBUG(interest << " from=" << inFace.getId()
-                    << "to=" << outFace.getId() << " suppressed");
-      isSuppressed = true;
-      continue;
-    }
-
-    if ((outFace.getId() == inFace.getId() && outFace.getLinkType() != ndn::nfd::LINK_TYPE_AD_HOC) ||
-        wouldViolateScope(inFace, interest, outFace)) {
-      continue;
-    }
 
 	int isItInternalMac=0;
     	//Since there are many MAC addresses in each node, we avoid looping between the same node
@@ -179,31 +192,69 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
 //    	  		    		interest2->setFuturePositionInfo(futPos2);
 //    	  		    	  	std::cout<<"FuturePosition was set from the FIB to the interest in strategy: "<<futPos2 <<std::endl;
 
-				ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(0);
-				ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
-				ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy>(spectWPhy);
-				ns3::Ptr<ns3::ParabolicAntennaModel> parab = ns3::DynamicCast<ns3::ParabolicAntennaModel>(swp0->GetRxAntenna());
-				ns3::Ptr<ns3::MobilityModel> model = node->GetObject<ns3::MobilityModel>();
-//				std::cout << " outgoing interest node: " << node->GetId() << " target mac: " << it->getMac() << std::endl;
-//				std::cout<< "multycastStrat, on before send interest : will turning Antenna for outgoing interest to FIB position: "<< std::endl;
-//				std::cout<< "multycast the Position from model: "<< model->GetPosition()<<std::endl;
-//				std::cout<< "multycast the Position from futurePositionInfo in FIB: "<< it->getFuturePositionX()<<", "<<it->getFuturePositionY()<<std::endl;
-				int deltaX = (model->GetPosition().x-(it->getFuturePositionX()));
-				int deltaY = (model->GetPosition().y-(it->getFuturePositionY()));
-				double angleRad = atan2(deltaY,deltaX);
-//				std::cout<<"angle rad multycast: " <<angleRad<<std::endl;
-				double angle = ns3::RadiansToDegrees(((angleRad+3.14)));
-//				double agnle = angle+180;
-//				double angle = ns3::RadiansToDegrees((abs(angleRad)+3.14));
-				parab->SetBeamwidth(20);
-				parab->SetOrientation(angle);
-//				std::cout<<"at time : "<< ns3::Simulator::Now() << std::endl;
+    	  		int searchedNetDev = 0;
+
+
+				for(int i= 0; i<node->GetNDevices();i++){
+	    	  	    std::ostringstream addr2;
+					addr2<< (node->GetDevice(i)->GetAddress());
+	    	  	  std::string one = addr2.str().substr(6);
+
+					//std::string two = (std::string) (outFace);
+					std::string twoo = outFace.getLocalUri().toString().substr(10,17);
+					std::cout<<"i "<<i<<" net dev "<<node->GetDevice(i)<< " one " << one << " twoo " << twoo<<std::endl;
+
+					if ((one).compare(twoo)){
+						searchedNetDev=i;
+					}
+				}
+				          ns3::Ptr<ns3::MobilityModel> model = node->GetObject<ns3::MobilityModel>();
+				          int deltaX = (model->GetPosition().x-(it->getFuturePositionX()));
+				          int deltaY = (model->GetPosition().y-(it->getFuturePositionY()));
+				    	       double angleRad = atan2(deltaY, deltaX);
+				    	       double angle = ns3::RadiansToDegrees(((angleRad + 3.14)));
+
+				    	       for (int i=0; i<node->GetNDevices(); i++){
+				      ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(i);
+				      ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
+				      ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy>(spectWPhy);
+				      ns3::Ptr<ns3::ParabolicAntennaModel> parab = ns3::DynamicCast<ns3::ParabolicAntennaModel>(swp0->GetRxAntenna());
+				//      std::cout<< "forwarder, on before send data : will turning Antenna for outgoing data to PitInRecord position: "<< std::endl;
+				//      std::cout<<"Forwarder Position from model outgoing data: "<<model->GetPosition()<<std::endl;
+				//      std::cout<<"Forwarder the Position from futurePositionInfo in PIT outgoing data: "<<targetFuturePosition.getFuturePositionVector()<<std::endl;
+
+				//      std::cout << "angle rad forwarder: " << angleRad<< std::endl;
+				//      parab->SetBeamwidth(90);
+				      parab->SetOrientation(angle+(i*90));
+				 //     std::cout << "at time : " << ns3::Simulator::Now()<< std::endl;
+				//      std::cout << "inf Forwarder onDataIncoming parab turned to: " << angle << std::endl;
+				      }
+//				ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(searchedNetDev);
+//				ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
+//				ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy>(spectWPhy);
+//				ns3::Ptr<ns3::ParabolicAntennaModel> parab = ns3::DynamicCast<ns3::ParabolicAntennaModel>(swp0->GetRxAntenna());
+//				ns3::Ptr<ns3::MobilityModel> model = node->GetObject<ns3::MobilityModel>();
+////				std::cout << " outgoing interest node: " << node->GetId() << " target mac: " << it->getMac() << std::endl;
+////				std::cout<< "multycastStrat, on before send interest : will turning Antenna for outgoing interest to FIB position: "<< std::endl;
+////				std::cout<< "multycast the Position from model: "<< model->GetPosition()<<std::endl;
+////				std::cout<< "multycast the Position from futurePositionInfo in FIB: "<< it->getFuturePositionX()<<", "<<it->getFuturePositionY()<<std::endl;
+//				int deltaX = (model->GetPosition().x-(it->getFuturePositionX()));
+//				int deltaY = (model->GetPosition().y-(it->getFuturePositionY()));
+//				double angleRad = atan2(deltaY,deltaX);
+////				std::cout<<"angle rad multycast: " <<angleRad<<std::endl;
+//				double angle = ns3::RadiansToDegrees(((angleRad+3.14)));
+////				double agnle = angle+180;
+////				double angle = ns3::RadiansToDegrees((abs(angleRad)+3.14));
+////				parab->SetBeamwidth(90);
+//				parab->SetOrientation(angle);
+////				std::cout<<"at time : "<< ns3::Simulator::Now() << std::endl;
 //				std::cout << "parab turned to: " << angle
 //						<< " degrees and set to beam " << 20 << std::endl;
 			}
 
-    	  	std::cout<<"node "<< node->GetId()<<" sends to " << it->getMac()<<" futurePositionInfo is : "<< interest2->getFuturePositionInfo().getFutureLocation_X()<<std::endl;
-      this->sendInterest(pitEntry, outFace, *interest2, it->getMac());
+    	  	std::cout<<"node "<< node->GetId()<< " sends from " << node->GetDevice(forloopcounter)<< " outfave " << outFace<<" sends to " << it->getMac()<<" futurePositionInfo is : "<< interest2->getFuturePositionInfo().getFutureLocation_X()<<" counter: "<<counterbla<<" forlcounter: "<<forloopcounter<<std::endl;
+      counterbla++;
+    	  	this->sendInterest(pitEntry, outFace, *interest2, it->getMac());
       break;
     	}
 

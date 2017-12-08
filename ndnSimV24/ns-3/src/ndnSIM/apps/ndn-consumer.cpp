@@ -182,10 +182,13 @@ Consumer::SendPacket()
 	  int nofinterfaces= node->GetNDevices();
 	  shared_ptr<Interest> interest2[nofinterfaces] = make_shared<Interest>();
 	  //Dome add NodeFuturePosition to the interest
-	//  Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
-	// 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
+//	  ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-test2-n3.txt");
+//	 	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
 	//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
-		Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
+//		Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
+//		ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-stationary-20nodes.txt");
+		ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-upmiddledown-3n-40s.txt");
+
 		ns3::Time time = (ns3::Simulator::Now());
 		      	  int at = std::ceil(time.GetSeconds());
 		      	//  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
@@ -199,28 +202,6 @@ Consumer::SendPacket()
 		      	futurePositionInfoConsumer.setFutureLocationY(posY);
 		      	futurePositionInfoConsumer.setFutureLocationZ(posZ);
 		      	futurePositionInfoConsumer.setFuturePositionWasSet(1);
-//
-//	  Time time = (ns3::Simulator::Now());
-//	  int at = std::ceil(time.GetSeconds())+1;
-//	  std::cout<< "time from simulator to take futurePosition is  :" << at <<std::endl;
-//
-//
-//	  int posX = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).x;
-//	  int posY = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).y ;
-//	  int posZ = ns2MobHelper.GetPositionFromTCLFileForNodeAtTime("ndn-consumer",node->GetId(),at).z ;
-//
-//
-//	//  std::cout<< "check position-X +5s pass in producer  :" << posX << " node id: " << node->GetId() <<std::endl;
-//	//  std::cout<< "check position-Y +5s pass in producer  :" << posY << " node id: " << node->GetId() <<std::endl;
-//
-//
-//
-//	  futurePositionInfoConsumer.setFutureLocationX(posX);
-//	  futurePositionInfoConsumer.setFutureLocationY(posY);
-//	  futurePositionInfoConsumer.setFutureLocationZ(posZ);
-//	  futurePositionInfoConsumer.setTimeAtFutureLocation(at);
-//	  int wasSet = 1;
-//	  futurePositionInfoConsumer.setFuturePositionWasSet(wasSet);
 
 
 	  uint32_t seq2[nofinterfaces];
@@ -251,7 +232,7 @@ Consumer::SendPacket()
 		  //Dome
 		  //Set FuturePositionInfo
 		  interest2[i]->setFuturePositionInfo(futurePositionInfoConsumer);
-		  std::cout<<"consumer sends :"<<interest2[i]->getName()<<" to position "<<interest2[i]->getFuturePositionInfo().getFutureLocation_X()<<std::endl;
+		  std::cout<<"consumer sends :"<<interest2[i]->getName()<<" position "<<interest2[i]->getFuturePositionInfo().getFutureLocation_X()<<std::endl;
 		  //std::cout<<"interest futurPos in ndn-consumer contains: "<< interest2[i]->getFuturePositionInfo().m_location_X_Coord <<std::endl;
 		  //std::cout<<"interest futurPos in ndn-consumer contains: "<< interest2[i]->getFuturePositionInfo().m_location_Y_Coord <<std::endl;
 

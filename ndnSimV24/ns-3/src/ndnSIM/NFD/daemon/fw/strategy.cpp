@@ -187,7 +187,7 @@ Strategy::sendNacks(const shared_ptr<pit::Entry>& pitEntry, const lp::NackHeader
 
   // send Nacks
   for (const Face* downstream : downstreams) {
-    this->sendNack(pitEntry, *downstream, header);
+  //  this->sendNack(pitEntry, *downstream, header);
   }
   // warning: don't loop on pitEntry->getInRecords(), because in-record is deleted when sending Nack
 }

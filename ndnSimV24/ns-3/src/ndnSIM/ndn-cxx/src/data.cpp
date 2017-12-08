@@ -74,7 +74,7 @@ Data::wireEncode(EncodingImpl<TAG>& encoder, bool wantUnsignedPortionOnly) const
 
   // MetaInfo
   totalLength += getMetaInfo().wireEncode(encoder);
-  std::cout<<"name Data before encoding: x,y: " <<getName()<<" , "<<std::endl;
+//  std::cout<<"name Data before encoding: x,y: " <<getName()<<" , "<<std::endl;
 
   // Name
   totalLength += getName().wireEncode(encoder);
@@ -83,7 +83,7 @@ Data::wireEncode(EncodingImpl<TAG>& encoder, bool wantUnsignedPortionOnly) const
   // getFuturePositionInfo
 
   //FuturePositionInfo
-  std::cout<<"futurePosition Data before encoding: x,y: " <<getFuturePositionInfo().getFutureLocation_X()<<" , "<<getFuturePositionInfo().getFutureLocation_Y()<<std::endl;
+//  std::cout<<"futurePosition Data before encoding: x,y: " <<getFuturePositionInfo().getFutureLocation_X()<<" , "<<getFuturePositionInfo().getFutureLocation_Y()<<std::endl;
   totalLength += getFuturePositionInfo().wireEncode(encoder);
 
 
@@ -158,7 +158,7 @@ Data::wireDecode(const Block& wire)
   val = m_wire.find(tlv::FuturePositionInfoData);
   if (val != m_wire.elements_end()) {
 	m_futurePositonInfo.wireDecode(m_wire.get(tlv::FuturePositionInfoData));
-	std::cout<<"check content futurePosInfo after decode in data: x: "<< m_futurePositonInfo.getFutureLocation_X()<<" y: "<< m_futurePositonInfo.getFutureLocation_Y()<<std::endl;
+//	std::cout<<"check content futurePosInfo after decode in data: x: "<< m_futurePositonInfo.getFutureLocation_X()<<" y: "<< m_futurePositonInfo.getFutureLocation_Y()<<std::endl;
 	}
   }
 }

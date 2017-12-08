@@ -66,7 +66,8 @@
 #include "../../../../antenna/model/angles.h"
 
 
-
+static int forloopcounter = 0;
+static int counterbla = 0;
 
 
 namespace nfd {
@@ -340,7 +341,7 @@ Forwarder::onContentStoreMiss2(const Face& inFace, const shared_ptr<pit::Entry>&
   // insert in-record
   pitEntry->insertOrUpdateInRecord(const_cast<Face&>(inFace), mac,futurePositionInfo, interest);
 
-  std::cout<<"insertOrUpdateInRecord interest contStoreMiss--2 futurePosX forwarder: "<<futurePositionInfo.m_location_X_Coord<<" mac: "<< mac<<std::endl;
+//  std::cout<<"insertOrUpdateInRecord interest contStoreMiss--2 futurePosX forwarder: "<<futurePositionInfo.m_location_X_Coord<<" mac: "<< mac<<std::endl;
 //   std::cout<<"insertOrUpdateInRecord interest contStoreMiss--2 futurePosY forwarder: "<<futurePositionInfo.m_location_Y_Coord<<std::endl;
 
   // set PIT unsatisfy timer
@@ -595,7 +596,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 
        	ndn::FuturePositionInfo futurePositionInfo = data.getFuturePositionInfo();
 
-       	std::cout<<"addRoute in forwarder on incomming data node: "<<node->GetId()<<" name "<< data.getName()<<" mac :"<< a<< " futurePosition info "<< futurePositionInfo.getFuturePositionVector()<< std::endl;
+//       	std::cout<<"addRoute in forwarder on incomming data node: "<<node->GetId()<<" name "<< data.getName()<<" mac :"<< a<< " futurePosition info "<< futurePositionInfo.getFuturePositionVector()<< std::endl;
        	ns3::ndn::FibHelper::AddRoute(node, "/beacon", inFace.getId(), 111, a,pos.x,pos.y,pos.z,futurePositionInfo.getFutureLocation_X(),futurePositionInfo.getFutureLocation_Y(),futurePositionInfo.getTimeAtFutureLocation(), futurePositionInfo.isfuturePositionSet());
 
      }
@@ -668,6 +669,8 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
     // set PIT straggler timer
     this->setStragglerTimer(pitEntry, true, data.getFreshnessPeriod());
   }
+  ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
+	  forloopcounter = counterbla%(node->GetNDevices());
 
   // foreach pending downstream
   for (int it = 0; it < pendingDownstreams.size() ; ++it) {
@@ -680,27 +683,47 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
         continue;
       }
 
-      std::cout<<"mac before turning antenna "<< targetmac<< " future position from pit: " << targetFuturePosition.getFutureLocation_X()<<std::endl;
+      int searchedNetDev = 0;
+
+
+      				for(int i= 0; i<node->GetNDevices();i++){
+      	    	  	    std::ostringstream addr2;
+      					addr2<< (node->GetDevice(i)->GetAddress());
+      	    	  	  std::string one = addr2.str().substr(6);
+
+      					//std::string two = (std::string) (outFace);
+      					std::string twoo = pendingDownstream->getLocalUri().toString().substr(10,17);
+      					std::cout<<"i "<<i<<" net dev "<<node->GetDevice(i)<< " one " << one << " twoo " << twoo<<std::endl;
+
+      					if ((one).compare(twoo)){
+      						searchedNetDev=i;
+      					}
+      				}
+
+//      std::cout<<"mac before turning antenna "<< targetmac<< " future position from pit: " << targetFuturePosition.getFutureLocation_X()<<std::endl;
       if(targetmac != ""){
-      ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
-      ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(0);
+          ns3::Ptr<ns3::MobilityModel> model = node->GetObject<ns3::MobilityModel>();
+    	  int deltaX =(model->GetPosition().x- (targetFuturePosition.getFutureLocation_X()));
+    	       int deltaY =(model->GetPosition().y- (targetFuturePosition.getFutureLocation_Y()));
+    	       double angleRad = atan2(deltaY, deltaX);
+    	       double angle = ns3::RadiansToDegrees(((angleRad + 3.14)));
+
+    	       for (int i=0; i<node->GetNDevices(); i++){
+      ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(i);
       ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
       ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy>(spectWPhy);
       ns3::Ptr<ns3::ParabolicAntennaModel> parab = ns3::DynamicCast<ns3::ParabolicAntennaModel>(swp0->GetRxAntenna());
-//      std::cout << " outgoing data node: " << node->GetId() << " target mac: " << targetmac << std::endl;
+      std::cout << " incoming data node: " << node->GetId() << " target mac: " << targetmac <<" counter: "<<counterbla<<" forlcounter: "<<forloopcounter<<std::endl;
 //      std::cout<< "forwarder, on before send data : will turning Antenna for outgoing data to PitInRecord position: "<< std::endl;
-      ns3::Ptr<ns3::MobilityModel> model = node->GetObject<ns3::MobilityModel>();
 //      std::cout<<"Forwarder Position from model outgoing data: "<<model->GetPosition()<<std::endl;
 //      std::cout<<"Forwarder the Position from futurePositionInfo in PIT outgoing data: "<<targetFuturePosition.getFuturePositionVector()<<std::endl;
-      int deltaX =(model->GetPosition().x- (targetFuturePosition.getFutureLocation_X()));
-      int deltaY =(model->GetPosition().y- (targetFuturePosition.getFutureLocation_Y()));
-      double angleRad = atan2(deltaY, deltaX);
+
 //      std::cout << "angle rad forwarder: " << angleRad<< std::endl;
-      double angle = ns3::RadiansToDegrees(((angleRad + 3.14)));
-//      parab->SetBeamwidth(360);
-      parab->SetOrientation(angle);
+//      parab->SetBeamwidth(90);
+      parab->SetOrientation(angle+(i*90));
  //     std::cout << "at time : " << ns3::Simulator::Now()<< std::endl;
-      std::cout << "inf Forwarder onDataIncoming parab turned to: " << angle << std::endl;
+//      std::cout << "inf Forwarder onDataIncoming parab turned to: " << angle << std::endl;
+      }
       }
 
       // goto outgoing Data pipeline
@@ -708,6 +731,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 
    //   std::cout<<"node " << node2->GetId()<< " onOutgoingData to mac: "<< targetmac<<std::endl;
     //  std::cout<<"targetFuturePos is " << targetFuturePosition<<std::endl;
+
       this->onOutgoingData(data, *pendingDownstream);
     }
   }
@@ -750,10 +774,13 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
 
 //  std::cout<<"node has number of applications running : "<<   node->GetNApplications()<<std::endl;
 
-//  Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-test2-n3.txt");
-// 	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
+//  ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-test2-n3.txt");
+// 	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-Slow-Fast-3n-10s.txt");
 //	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
-	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
+//	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
+//	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-stationary-20nodes.txt");
+	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-upmiddledown-3n-40s.txt");
+
 
   ns3::Time time = (ns3::Simulator::Now());
   int at = std::ceil(time.GetSeconds());
@@ -844,6 +871,7 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
     std::cout<< " outgoing data node: " << node2->GetId() << " target mac: " << targetmac << " name of data: " << data.getName() << " futurePositoin of data: "<< data2->getFuturePositionInfo().getFutureLocation_X()<<std::endl;
   // send Data
 
+    counterbla++;
 	outFace.sendData(*data2);
 	++m_counters.nOutData;
 }
@@ -944,10 +972,10 @@ Forwarder::onOutgoingNack(const shared_ptr<pit::Entry>& pitEntry, const Face& ou
 
   // erase in-record
 
-  pitEntry->deleteInRecord(outFace);
+//  pitEntry->deleteInRecord(outFace);
 
   // send Nack on face
-  const_cast<Face&>(outFace).sendNack(nackPkt);
+ // const_cast<Face&>(outFace).sendNack(nackPkt);
   ++m_counters.nOutNacks;
 }
 

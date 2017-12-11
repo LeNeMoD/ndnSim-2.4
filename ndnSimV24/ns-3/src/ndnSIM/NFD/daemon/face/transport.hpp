@@ -259,6 +259,8 @@ public: // dynamic properties
    */
   TransportState
   getState() const;
+  void
+   setLocalUri(const FaceUri& uri);
 
   /** \brief signals when transport state changes
    */
@@ -271,8 +273,6 @@ public: // dynamic properties
   getExpirationTime() const;
 
 protected: // properties to be set by subclass
-  void
-  setLocalUri(const FaceUri& uri);
 
   void
   setRemoteUri(const FaceUri& uri);
@@ -336,11 +336,12 @@ private: // to be overridden by subclass
    */
   virtual void
   doSend(Packet&& packet) = 0;
+public:
+  FaceUri m_localUri;
 
 private:
   Face* m_face;
   LinkService* m_service;
-  FaceUri m_localUri;
   FaceUri m_remoteUri;
   ndn::nfd::FaceScope m_scope;
   ndn::nfd::FacePersistency m_persistency;

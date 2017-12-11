@@ -447,7 +447,7 @@ int main(int argc, char* argv[]) {
 //	consumerHelper.SetTraceFile("ns-movements-test2-n3.txt");
 	consumerHelper.SetPrefix("/beacon");
 	consumerHelper.SetAttribute("Frequency", DoubleValue(10.0));
-	consumerHelper.Install(mobileNodes.Get(4));
+	consumerHelper.Install(mobileNodes.Get(0));
 
 // 	ndn::AppHelper consumerHelper2("ns3::ndn::ConsumerCbr");
 //	consumerHelper2.SetPrefix("/test/prefix");
@@ -458,11 +458,11 @@ int main(int argc, char* argv[]) {
 //	producerHelper.SetTraceFile("ns-movements-test2-n3.txt");
 	producerHelper.SetPrefix("/beacon");
 	producerHelper.SetAttribute("PayloadSize", StringValue("1200"));
-	producerHelper.Install(mobileNodes.Get(1));
+	producerHelper.Install(mobileNodes.Get(2));
 
 	////////////////
 
-	Simulator::Stop(Seconds(30.0));
+	Simulator::Stop(Seconds(7.0));
 
 	Simulator::Run();
 	Simulator::Destroy();

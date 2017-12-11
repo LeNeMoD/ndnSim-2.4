@@ -218,6 +218,11 @@ StackHelper::Install(Ptr<Node> node) const
     //   continue; // don't create face for a LoopbackNetDevice
 
     faces->Add(this->createAndRegisterFace(node, ndn, device));
+    faces->Add(this->createAndRegisterFace(node, ndn, device));
+    faces->Add(this->createAndRegisterFace(node, ndn, device));
+
+    faces->Add(this->createAndRegisterFace(node, ndn, device));
+
   }
 
   return faces;

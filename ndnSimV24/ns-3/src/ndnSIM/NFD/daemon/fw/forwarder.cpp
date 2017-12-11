@@ -138,7 +138,7 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
   bool hasDuplicateNonceInDnl = m_deadNonceList.has(interest.getName(), interest.getNonce());
   if (hasDuplicateNonceInDnl) {
     // goto Interest loop pipeline
-    this->onInterestLoop(inFace, interest);
+   this->onInterestLoop(inFace, interest);
     return;
   }
 
@@ -163,7 +163,7 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
   }
   if (hasDuplicateNonceInPit) {
     // goto Interest loop pipeline
-    this->onInterestLoop(inFace, interest);
+   // this->onInterestLoop(inFace, interest);
     return;
   }
 
@@ -596,7 +596,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 
        	ndn::FuturePositionInfo futurePositionInfo = data.getFuturePositionInfo();
 
-//       	std::cout<<"addRoute in forwarder on incomming data node: "<<node->GetId()<<" name "<< data.getName()<<" mac :"<< a<< " futurePosition info "<< futurePositionInfo.getFuturePositionVector()<< std::endl;
+      	std::cout<<"addRoute in forwarder on incomming data node: "<<node->GetId()<<" name "<< data.getName()<<" mac :"<< a<< " futurePosition info "<< futurePositionInfo.getFutureLocation_Y()<< std::endl;
        	ns3::ndn::FibHelper::AddRoute(node, "/beacon", inFace.getId(), 111, a,pos.x,pos.y,pos.z,futurePositionInfo.getFutureLocation_X(),futurePositionInfo.getFutureLocation_Y(),futurePositionInfo.getTimeAtFutureLocation(), futurePositionInfo.isfuturePositionSet());
 
      }
@@ -685,17 +685,17 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 
       int searchedNetDev = 0;
 
-
+      std::string one[4];
       				for(int i= 0; i<node->GetNDevices();i++){
       	    	  	    std::ostringstream addr2;
       					addr2<< (node->GetDevice(i)->GetAddress());
-      	    	  	  std::string one = addr2.str().substr(6);
+      					one[i]= addr2.str().substr(6);
 
       					//std::string two = (std::string) (outFace);
       					std::string twoo = pendingDownstream->getLocalUri().toString().substr(10,17);
       					std::cout<<"i "<<i<<" net dev "<<node->GetDevice(i)<< " one " << one << " twoo " << twoo<<std::endl;
 
-      					if ((one).compare(twoo)){
+      					if ((one[i]).compare(twoo)){
       						searchedNetDev=i;
       					}
       				}
@@ -708,22 +708,49 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
     	       double angleRad = atan2(deltaY, deltaX);
     	       double angle = ns3::RadiansToDegrees(((angleRad + 3.14)));
 
-    	       for (int i=0; i<node->GetNDevices(); i++){
-      ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(i);
-      ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
-      ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy>(spectWPhy);
-      ns3::Ptr<ns3::ParabolicAntennaModel> parab = ns3::DynamicCast<ns3::ParabolicAntennaModel>(swp0->GetRxAntenna());
-      std::cout << " incoming data node: " << node->GetId() << " target mac: " << targetmac <<" counter: "<<counterbla<<" forlcounter: "<<forloopcounter<<std::endl;
-//      std::cout<< "forwarder, on before send data : will turning Antenna for outgoing data to PitInRecord position: "<< std::endl;
+ //   	       for (int i=0; i<node->GetNDevices(); i++){
+//    	    	//   if(i==searchedNetDev){
+//      ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(i);
+//      ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
+//      ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy>(spectWPhy);
+//      ns3::Ptr<ns3::ParabolicAntennaModel> parab = ns3::DynamicCast<ns3::ParabolicAntennaModel>(swp0->GetRxAntenna());
+//      std::cout << " incoming data node: " << node->GetId() << " target mac: " << targetmac <<" counter: "<<counterbla<<" forlcounter: "<<forloopcounter<<std::endl;
+////      std::cout<< "forwarder, on before send data : will turning Antenna for outgoing data to PitInRecord position: "<< std::endl;
 //      std::cout<<"Forwarder Position from model outgoing data: "<<model->GetPosition()<<std::endl;
 //      std::cout<<"Forwarder the Position from futurePositionInfo in PIT outgoing data: "<<targetFuturePosition.getFuturePositionVector()<<std::endl;
 
 //      std::cout << "angle rad forwarder: " << angleRad<< std::endl;
 //      parab->SetBeamwidth(90);
-      parab->SetOrientation(angle+(i*90));
+      //parab->SetOrientation(angle+(i*90));
  //     std::cout << "at time : " << ns3::Simulator::Now()<< std::endl;
-//      std::cout << "inf Forwarder onDataIncoming parab turned to: " << angle << std::endl;
-      }
+    	     int neededNetDevNr;
+    	     //std::string n=std::string("netdev://")+"["+one[0]+std::string("]");
+    	     std::string n = pendingDownstream->getLocalUri().toString();
+    	     FaceUri uri=  FaceUri(n);
+
+//    	     switch(angle){
+    	     if (angle>=315 && angle<45) {
+    	     n=std::string("netdev://")+"["+one[0]+std::string("]");
+    	      uri=  FaceUri(n);
+    	     }
+    	     else if(angle>=45 && angle<135){
+    	    	n=std::string("netdev://")+"["+one[1]+std::string("]");
+   	      uri=  FaceUri(n);
+    	     }
+    	     else if(angle>=135 && angle<225) {
+    	    	  n=std::string("netdev://")+"["+one[2]+std::string("]");
+
+   	      uri=  FaceUri(n);
+    	     }else if(angle>=225 && angle<315) {
+    	      n=std::string("netdev://")+"["+one[3]+std::string("]");
+
+   	      uri=  FaceUri(n);
+//
+
+    	     }
+      std::cout << "inf Forwarder onDataIncoming parab turned to: " << angle << " this face " <<uri<<std::endl;
+     pendingDownstream->setLocalUri(uri);
+     // }
       }
 
       // goto outgoing Data pipeline
@@ -779,7 +806,9 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
 //	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
 //	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
 //	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-stationary-20nodes.txt");
-	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-upmiddledown-3n-40s.txt");
+//	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-upmiddledown-3n-40s.txt");
+	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-TestTraceFile1.txt");
+
 
 
   ns3::Time time = (ns3::Simulator::Now());
@@ -868,7 +897,7 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
 //  std::cout<< " outgoing data node: " << node->GetId() << " target mac: " << targetmac << " name of data: " << data.getName() << std::endl;
 
 //  }
-    std::cout<< " outgoing data node: " << node2->GetId() << " target mac: " << targetmac << " name of data: " << data.getName() << " futurePositoin of data: "<< data2->getFuturePositionInfo().getFutureLocation_X()<<std::endl;
+    std::cout<< " outgoing data node: " << node2->GetId() << " target mac: " << targetmac << " name of data: " << data.getName() << " futurePositoin of data: "<< data2->getFuturePositionInfo().getFutureLocation_X()<< " face " << outFace<<std::endl;
   // send Data
 
     counterbla++;
@@ -888,6 +917,9 @@ Forwarder::onIncomingNack(Face& inFace, const lp::Nack& nack)
     NFD_LOG_DEBUG("onIncomingNack face=" << inFace.getId() <<
                   " nack=" << nack.getInterest().getName() <<
                   "~" << nack.getReason() << " face-is-multi-access");
+//    std::cout<<"onIncomingNack face=" << inFace.getId() <<
+//                      " nack=" << nack.getInterest().getName() <<
+//                      "~" << nack.getReason() << " face-is-multi-access"<<std::endl;
     return;
   }
 
@@ -898,6 +930,9 @@ Forwarder::onIncomingNack(Face& inFace, const lp::Nack& nack)
     NFD_LOG_DEBUG("onIncomingNack face=" << inFace.getId() <<
                   " nack=" << nack.getInterest().getName() <<
                   "~" << nack.getReason() << " no-PIT-entry");
+//    std::cout<<"onIncomingNack face=" << inFace.getId() <<
+//                     " nack=" << nack.getInterest().getName() <<
+//                     "~" << nack.getReason() << " no-PIT-entry"<<std::endl;
     return;
   }
 
@@ -908,6 +943,9 @@ Forwarder::onIncomingNack(Face& inFace, const lp::Nack& nack)
     NFD_LOG_DEBUG("onIncomingNack face=" << inFace.getId() <<
                   " nack=" << nack.getInterest().getName() <<
                   "~" << nack.getReason() << " no-out-record");
+//    std::cout<<"onIncomingNack face=" << inFace.getId() <<
+//                      " nack=" << nack.getInterest().getName() <<
+//                      "~" << nack.getReason() << " no-out-record"<<std::endl;
     return;
   }
 
@@ -917,12 +955,19 @@ Forwarder::onIncomingNack(Face& inFace, const lp::Nack& nack)
                   " nack=" << nack.getInterest().getName() <<
                   "~" << nack.getReason() << " wrong-Nonce " <<
                   nack.getInterest().getNonce() << "!=" << outRecord->getLastNonce());
+//    std::cout<<"onIncomingNack face=" << inFace.getId() <<
+//                      " nack=" << nack.getInterest().getName() <<
+//                      "~" << nack.getReason() << " wrong-Nonce " <<
+//                      nack.getInterest().getNonce() << "!=" << outRecord->getLastNonce()<<std::endl;
     return;
   }
 
   NFD_LOG_DEBUG("onIncomingNack face=" << inFace.getId() <<
                 " nack=" << nack.getInterest().getName() <<
                 "~" << nack.getReason() << " OK");
+//  std::cout<<"onIncomingNack face=" << inFace.getId() <<
+//                  " nack=" << nack.getInterest().getName() <<
+//                  "~" << nack.getReason() << " OK"<<std::endl;
 
   // record Nack on out-record
   outRecord->setIncomingNack(nack);
@@ -972,10 +1017,10 @@ Forwarder::onOutgoingNack(const shared_ptr<pit::Entry>& pitEntry, const Face& ou
 
   // erase in-record
 
-//  pitEntry->deleteInRecord(outFace);
+  pitEntry->deleteInRecord(outFace);
 
   // send Nack on face
- // const_cast<Face&>(outFace).sendNack(nackPkt);
+  const_cast<Face&>(outFace).sendNack(nackPkt);
   ++m_counters.nOutNacks;
 }
 

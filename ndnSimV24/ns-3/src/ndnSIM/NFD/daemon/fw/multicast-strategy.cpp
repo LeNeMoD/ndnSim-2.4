@@ -130,9 +130,11 @@ MulticastStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
   	//	Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-stationary-3n.txt");
 //  		ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
 //	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-stationary-20nodes.txt");
-	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-upmiddledown-3n-40s.txt");
+//	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-upmiddledown-3n-40s.txt");
+	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-TestTraceFile1.txt");
+
   	for (fib::NextHopList::const_iterator it = nexthops.begin(); it != nexthops.end(); ++it) {
-std:: cout << " FIB NODE " << node->GetId()<< " mac " << it->getMac() << " face " << it->getFace() << std::endl;
+std:: cout << " FIB NODE " << node->GetId()<< " fib entry: "<< fibEntry.getPrefix()<<" mac " << it->getMac() << " face " << it->getFace() << " fposition" << it->getFuturePositionX() << " y " << it->getFuturePositionY()<< std::endl;
   	}
 
 
@@ -184,6 +186,20 @@ std:: cout << " FIB NODE " << node->GetId()<< " mac " << it->getMac() << " face 
     	if (isItInternalMac==0){
 
 
+    		 std::string one[4];
+    		      				for(int i= 0; i<node->GetNDevices();i++){
+    		      	    	  	    std::ostringstream addr2;
+    		      					addr2<< (node->GetDevice(i)->GetAddress());
+    		      					one[i]= addr2.str().substr(6);
+
+    		      					//std::string two = (std::string) (outFace);
+    		      					std::string twoo = it->getFace().getLocalUri().toString().substr(10,17);
+    		      					std::cout<<"i "<<i<<" net dev "<<node->GetDevice(i)<< " one " << one << " twoo " << twoo<<std::endl;
+
+    		      				}
+
+    		      		std::string n=std::string("netdev://")+"["+it->getMac()+std::string("]");
+   				      	     FaceUri uri=  FaceUri(n);
     	  	if (it->getMac() != "eirini" && it->getFuturePositonWasSet()==1) {
 //    	  		ndn::FuturePositionInfo futPos2;
 //    	  		    		futPos2.setFutureLocationX(it->getFuturePositionX());
@@ -214,21 +230,23 @@ std:: cout << " FIB NODE " << node->GetId()<< " mac " << it->getMac() << " face 
 				    	       double angleRad = atan2(deltaY, deltaX);
 				    	       double angle = ns3::RadiansToDegrees(((angleRad + 3.14)));
 
-				    	       for (int i=0; i<node->GetNDevices(); i++){
-				      ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(i);
-				      ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
-				      ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy>(spectWPhy);
-				      ns3::Ptr<ns3::ParabolicAntennaModel> parab = ns3::DynamicCast<ns3::ParabolicAntennaModel>(swp0->GetRxAntenna());
-				//      std::cout<< "forwarder, on before send data : will turning Antenna for outgoing data to PitInRecord position: "<< std::endl;
+//				    	       for (int i=0; i<node->GetNDevices(); i++)
+//				      ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(i);
+//				      ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
+//				      ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy>(spectWPhy);
+//				      ns3::Ptr<ns3::ParabolicAntennaModel> parab = ns3::DynamicCast<ns3::ParabolicAntennaModel>(swp0->GetRxAntenna());
+//				//      std::cout<< "forwarder, on before send data : will turning Antenna for outgoing data to PitInRecord position: "<< std::endl;
 				//      std::cout<<"Forwarder Position from model outgoing data: "<<model->GetPosition()<<std::endl;
 				//      std::cout<<"Forwarder the Position from futurePositionInfo in PIT outgoing data: "<<targetFuturePosition.getFuturePositionVector()<<std::endl;
 
 				//      std::cout << "angle rad forwarder: " << angleRad<< std::endl;
 				//      parab->SetBeamwidth(90);
-				      parab->SetOrientation(angle+(i*90));
+//				      parab->SetOrientation(angle+(i*90));
 				 //     std::cout << "at time : " << ns3::Simulator::Now()<< std::endl;
 				//      std::cout << "inf Forwarder onDataIncoming parab turned to: " << angle << std::endl;
-				      }
+
+
+
 //				ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(searchedNetDev);
 //				ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
 //				ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy>(spectWPhy);
@@ -248,14 +266,49 @@ std:: cout << " FIB NODE " << node->GetId()<< " mac " << it->getMac() << " face 
 ////				parab->SetBeamwidth(90);
 //				parab->SetOrientation(angle);
 ////				std::cout<<"at time : "<< ns3::Simulator::Now() << std::endl;
-//				std::cout << "parab turned to: " << angle
-//						<< " degrees and set to beam " << 20 << std::endl;
-			}
+				std::cout << "parab turned to: " << angle
+						<< " degrees and set to beam " << 20 << std::endl;
 
-    	  	std::cout<<"node "<< node->GetId()<< " sends from " << node->GetDevice(forloopcounter)<< " outfave " << outFace<<" sends to " << it->getMac()<<" futurePositionInfo is : "<< interest2->getFuturePositionInfo().getFutureLocation_X()<<" counter: "<<counterbla<<" forlcounter: "<<forloopcounter<<std::endl;
-      counterbla++;
-    	  	this->sendInterest(pitEntry, outFace, *interest2, it->getMac());
-      break;
+				      	     int neededNetDevNr;
+
+
+				  //    	     switch(angle){
+				      	     if (angle>=315 && angle<45) {
+				      	     n=std::string("netdev://")+"["+one[0]+std::string("]");
+				      	      uri=  FaceUri(n);
+				      	     }
+				      	     else if(angle>=45 && angle<135){
+				      	    	n=std::string("netdev://")+"["+one[1]+std::string("]");
+				     	      uri=  FaceUri(n);
+				      	     }
+				      	     else if(angle>=135 && angle<225) {
+				      	    	  n=std::string("netdev://")+"["+one[2]+std::string("]");
+
+				     	      uri=  FaceUri(n);
+				      	     }else if(angle>=225 && angle<315) {
+				      	      n=std::string("netdev://")+"["+one[3]+std::string("]");
+
+				     	      uri=  FaceUri(n);
+				  //
+
+				      	     }
+				      	   outFace.setLocalUri(uri);
+
+				      	   std::cout<<"node "<< node->GetId()<< " sends from " << node->GetDevice(forloopcounter)<< " outfave " << outFace<<" sends to " << it->getMac()<<" futurePositionInfo is : "<< interest2->getFuturePositionInfo().getFutureLocation_X()<<" counter: "<<counterbla<<" forlcounter: "<<forloopcounter<<std::endl;
+				      	   this->sendInterest(pitEntry, outFace, *interest2, it->getMac());
+				      	   break;
+    	  	}
+
+    	  	else {
+  				for(int i= 0; i<node->GetNDevices();i++){
+	      	    	  n=std::string("netdev://")+"["+one[i]+std::string("]");
+		     	      uri=  FaceUri(n);
+  				 outFace.setLocalUri(uri);
+		      	   std::cout<<"node BROADCASTS Interest "<< node->GetId()<< " sends from " << node->GetDevice(forloopcounter)<< " outfave " << outFace<<" sends to " << it->getMac()<<" futurePositionInfo is : "<< interest2->getFuturePositionInfo().getFutureLocation_X()<<" counter: "<<counterbla<<" forlcounter: "<<forloopcounter<<std::endl;
+
+		      	   this->sendInterest(pitEntry, outFace, *interest2, it->getMac());
+  				}
+    	  	}
     	}
 
 

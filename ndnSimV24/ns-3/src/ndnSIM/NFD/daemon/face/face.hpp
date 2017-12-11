@@ -129,6 +129,8 @@ public: // static properties
    */
   FaceUri
   getLocalUri() const;
+  void
+    setLocalUri(FaceUri uri) const;
 
   /** \return a FaceUri representing remote endpoint
    */
@@ -254,7 +256,11 @@ Face::getLocalUri() const
 {
   return m_transport->getLocalUri();
 }
-
+inline void
+Face::setLocalUri(FaceUri faceuri) const
+{
+   m_transport->setLocalUri(faceuri);
+}
 inline FaceUri
 Face::getRemoteUri() const
 {

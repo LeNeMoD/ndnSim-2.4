@@ -25,7 +25,10 @@ int main(int argc, char* argv[]) {
 
 //	std::string traceFileString = "ns-movements-RSU-To-Moving-2n.txt";
 //	std::string traceFileString = "ns-movements-stationary-20nodes.txt";
-	std::string traceFileString = "ns-movements-TestTraceFile1.txt";
+//	std::string traceFileString = "ns-movements-TestTraceFile1.txt";
+	std::string traceFileString = "Domenico-BA-Trace-9n-near-static-100s.txt";
+
+
 
 
 
@@ -56,8 +59,8 @@ int main(int argc, char* argv[]) {
 	spectrumWifiPhyHelper.Set("TxPowerStart", DoubleValue(100));
 	spectrumWifiPhyHelper.Set("TxPowerEnd", DoubleValue(100));
 
-	spectrumWifiPhyHelper.SetPcapDataLinkType (YansWifiPhyHelper::DLT_IEEE802_11_RADIO);
-	spectrumWifiPhyHelper.SetPcapDataLinkType (SpectrumWifiPhyHelper::DLT_IEEE802_11_RADIO);
+//	spectrumWifiPhyHelper.SetPcapDataLinkType (YansWifiPhyHelper::DLT_IEEE802_11_RADIO);
+//	spectrumWifiPhyHelper.SetPcapDataLinkType (SpectrumWifiPhyHelper::DLT_IEEE802_11_RADIO);
 
 
 //	//Yans Wifi For interests
@@ -1471,7 +1474,7 @@ int main(int argc, char* argv[]) {
 //	consumerHelper3.SetTraceFile(traceFileString);
 
 
-	Simulator::Stop(Seconds(30.0));
+	Simulator::Stop(Seconds(100.0));
 
 	Simulator::Run();
 	Simulator::Destroy();

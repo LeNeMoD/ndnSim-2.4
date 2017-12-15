@@ -230,7 +230,8 @@ LinkService::getCounters() const
 inline void
 LinkService::receivePacket(Transport::Packet&& packet)
 {
-	std::cout<< " do receive " << std::endl;
+	//Dome
+//	std::cout<< " do receive " << std::endl;
   doReceivePacket(std::move(packet));
 }
 

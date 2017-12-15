@@ -70,8 +70,8 @@ int main(int argc, char* argv[]) {
 	spectrumWifiPhyHelper.Set("TxPowerStart", DoubleValue(100));
 	spectrumWifiPhyHelper.Set("TxPowerEnd", DoubleValue(100));
 
-	spectrumWifiPhyHelper.SetPcapDataLinkType (YansWifiPhyHelper::DLT_IEEE802_11_RADIO);
-	spectrumWifiPhyHelper.SetPcapDataLinkType (SpectrumWifiPhyHelper::DLT_IEEE802_11_RADIO);
+//	spectrumWifiPhyHelper.SetPcapDataLinkType (YansWifiPhyHelper::DLT_IEEE802_11_RADIO);
+//	spectrumWifiPhyHelper.SetPcapDataLinkType (SpectrumWifiPhyHelper::DLT_IEEE802_11_RADIO);
 
 
 //	YansWifiChannelHelper wifiChannel;

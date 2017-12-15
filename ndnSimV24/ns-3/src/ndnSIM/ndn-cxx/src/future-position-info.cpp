@@ -20,13 +20,8 @@ static_assert(std::is_base_of<tlv::Error, FuturePositionInfo::Error>::value,
               "FuturePositionInfo::Error must inherit from tlv::Error");
 
 
-//Ask Eirini how to initialize properly the future position with his variables.
 FuturePositionInfo::FuturePositionInfo() {
-//	m_location_X_Coord,
-//	m_location_Y_Coord ,
-//	m_location_Z_Coord_Velocity ,
-//	m_timeAtFuturePosition ,
-//	m_futurePositionWasSet = 0;
+
 
 }
 
@@ -51,38 +46,18 @@ size_t
 FuturePositionInfo::wireEncode(EncodingImpl<TAG>& encoder) const {
 	size_t totalLength = 0;
 
-	// if futurePositions were set the encode time
-
-
-	//		}
 	totalLength += prependNonNegativeIntegerBlock(encoder,
-					tlv::FuturePositionWasSet, m_futurePositionWasSet);
-	// if futurePositions were set then encode them
-//	if (m_futurePositionWasSet) {
+			tlv::FuturePositionWasSet, m_futurePositionWasSet);
 
+	totalLength += prependNonNegativeIntegerBlock(encoder,
+			tlv::TimeAtFuturePosition, m_timeAtFuturePosition);
+	totalLength += prependNonNegativeIntegerBlock(encoder, tlv::FuturePositionZ,
+			m_location_Z_Coord_Velocity);
+	totalLength += prependNonNegativeIntegerBlock(encoder, tlv::FuturePositionY,
+			m_location_Y_Coord);
 
-			totalLength += prependNonNegativeIntegerBlock(encoder,
-					tlv::TimeAtFuturePosition, m_timeAtFuturePosition);
-//		}
-			totalLength += prependNonNegativeIntegerBlock(encoder,
-					tlv::FuturePositionZ, m_location_Z_Coord_Velocity);
-//	if (m_futurePositionWasSet) {
-				totalLength += prependNonNegativeIntegerBlock(encoder,
-						tlv::FuturePositionY, m_location_Y_Coord);
-//			}
-
-//	if (m_futurePositionWasSet) {
-		totalLength += prependNonNegativeIntegerBlock(encoder,
-				tlv::FuturePositionX, m_location_X_Coord);
-//	}
-
-//	if (m_futurePositionWasSet) {
-
-//	}
-
-//	if (m_futurePositionWasSet) {
-
-//	}
+	totalLength += prependNonNegativeIntegerBlock(encoder, tlv::FuturePositionX,
+			m_location_X_Coord);
 
 	totalLength += encoder.prependVarNumber(totalLength);
 	totalLength += encoder.prependVarNumber(tlv::FuturePositionInfoData);
@@ -120,7 +95,6 @@ FuturePositionInfo::wireDecode(const Block& wire) {
 	m_Wire_futurePositionInfo = wire;
 	m_Wire_futurePositionInfo.parse();
 
-	//Dome !!! missing else statements if decoding fails
 	//FuturePosistion
 	Block::element_const_iterator val= m_Wire_futurePositionInfo.find(tlv::FuturePositionX);
 	if (val != m_Wire_futurePositionInfo.elements_end()) {

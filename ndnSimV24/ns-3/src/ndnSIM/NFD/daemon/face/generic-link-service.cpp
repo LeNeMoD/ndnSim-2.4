@@ -223,7 +223,7 @@ GenericLinkService::doReceivePacket(Transport::Packet&& packet)
     lp::Packet firstPkt;
     std::tie(isReassembled, netPkt, firstPkt) = m_reassembler.receiveFragment(packet.remoteEndpoint,
                                                                               pkt);
-    std::cout<< " generic link service "<< std::endl;
+//    std::cout<< " generic link service "<< std::endl;
     if (isReassembled) {
       this->decodeNetPacket(netPkt, firstPkt);
     }
@@ -245,13 +245,13 @@ GenericLinkService::decodeNetPacket(const Block& netPkt, const lp::Packet& first
           this->decodeNack(netPkt, firstPkt);
         }
         else {
-        	std::cout<< " interest decode" <<std::endl;
+//        	std::cout<< " interest decode" <<std::endl;
 
           this->decodeInterest(netPkt, firstPkt);
         }
         break;
       case tlv::Data:
-      	std::cout<< " data decode" <<std::endl;
+//      	std::cout<< " data decode" <<std::endl;
 
         this->decodeData(netPkt, firstPkt);
         break;

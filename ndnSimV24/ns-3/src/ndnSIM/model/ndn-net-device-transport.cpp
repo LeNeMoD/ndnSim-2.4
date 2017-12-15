@@ -156,7 +156,7 @@ NetDeviceTransport::receiveFromNetDevice(Ptr<NetDevice> device,
     }
     //If the reception is from broadcast mode
     else {
-		std::cout<<" BROADCAST receive from mac "<<from<<" to "<<to<< " in node " << node->GetId()<<std::endl;
+//		std::cout<<" BROADCAST receive from mac "<<from<<" to "<<to<< " in node " << node->GetId()<<std::endl;
 
   		this->receive(std::move(nfdPacket));
     }

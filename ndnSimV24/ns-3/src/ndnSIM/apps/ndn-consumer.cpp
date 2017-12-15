@@ -188,7 +188,9 @@ Consumer::SendPacket()
 //		Ns2MobilityHelper ns2MobHelper = Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
 //		ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-stationary-20nodes.txt");
 //		ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-upmiddledown-3n-40s.txt");
-				ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-TestTraceFile1.txt");
+//		ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-TestTraceFile1.txt");
+		ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("Domenico-BA-Trace-9n-near-static-100s.txt");
+
 
 
 		ns3::Time time = (ns3::Simulator::Now());
@@ -296,6 +298,8 @@ Consumer::OnData(shared_ptr<const Data> data)
     std::cout << "*****************************************************************" << std::endl;
     std::cout << "......consumer receiving data for: " << seq << " with hopcount: " << hopCount << " and name " << data->getName() << std::endl;
     std::cout << "*****************************************************************" << std::endl;
+    std::cout<<ns3::Simulator::Now()<<std::endl;
+
     Name name;
     name = data->getName();
     std::ostringstream tmpName;

@@ -284,51 +284,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
   this->dispatchToStrategy(*pitEntry,
     [&] (fw::Strategy& strategy) { strategy.afterReceiveInterest(inFace, interest, pitEntry); });
 }
-//void
-//Forwarder::onContentStoreMiss2(const Face& inFace, const shared_ptr<pit::Entry>& pitEntry,
-//                              const Interest& interest, std::string mac)
-//{
-//  NFD_LOG_DEBUG("onContentStoreMiss interest=" << interest.getName());
-//
-//  //Dome
-////  std::cout<< "onContentStrorMiss2 interest= " << interest.getName()<<std::endl;
-//
-//  // insert in-record
-//  pitEntry->insertOrUpdateInRecord(const_cast<Face&>(inFace), mac, interest.getFuturePositionInfo(), interest);
-////  std::cout<<"insertOrUpdateInRecord interest contStoreMiss futurePosX forwarder: "<<interest.getFuturePositionInfo().m_location_X_Coord<<std::endl;
-////  std::cout<<"insertOrUpdateInRecord interest contStoreMiss futurePosY forwarder: "<<interest.getFuturePositionInfo().m_location_Y_Coord<<std::endl;
-//
-//
-//
-////  std::cout<<"pitEntry->getInRecords().size() futurePosX forwarder: "<<pitEntry->getInRecords().size()<<std::endl;
-////   for (const pit::InRecord& inRecord : pitEntry->getInRecords()) {
-//// 	  std::cout<<"iRecord contStoreMiss futurePosX forwarder: "<<inRecord.getFuturePositionInfo().m_location_X_Coord<<std::endl;
-//// 	  std::cout<<"iRecord contStoreMiss futurePosY forwarder: "<<inRecord.getFuturePositionInfo().m_location_Y_Coord<<std::endl;
-//// 	  std::cout<<"iRecord contStoreMiss asdfasdfasdf futurePosX forwarder: "<<inRecord.getFuturePositionY()<<std::endl;
-//// 	  std::cout<<"iRecord contStoreMiss asdfasdfasdf futurePosY forwarder: "<<inRecord.getFuturePositionY()<<std::endl;
-////   }
-//
-//  // set PIT unsatisfy timer
-//  this->setUnsatisfyTimer(pitEntry);
-//
-//  // has NextHopFaceId?
-//  shared_ptr<lp::NextHopFaceIdTag> nextHopTag = interest.getTag<lp::NextHopFaceIdTag>();
-//  if (nextHopTag != nullptr) {
-//    // chosen NextHop face exists?
-//    Face* nextHopFace = m_faceTable.get(*nextHopTag);
-//    if (nextHopFace != nullptr) {
-//      NFD_LOG_DEBUG("onContentStoreMiss interest=" << interest.getName() << " nexthop-faceid=" << nextHopFace->getId());
-//      // go to outgoing Interest pipeline
-//      // scope control is unnecessary, because privileged app explicitly wants to forward
-//      this->onOutgoingInterest(pitEntry, *nextHopFace, interest);
-//    }
-//    return;
-//  }
-//
-//  // dispatch to strategy: after incoming Interest
-//  this->dispatchToStrategy(*pitEntry,
-//    [&] (fw::Strategy& strategy) { strategy.afterReceiveInterest(inFace, interest, pitEntry); });
-//}
+
 //Dome
 void
 Forwarder::onContentStoreMiss2(const Face& inFace, const shared_ptr<pit::Entry>& pitEntry,
@@ -607,61 +563,6 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
     // Dead Nonce List insert if necessary (for out-record of inFace)
     this->insertDeadNonceList(*pitEntry, true, data.getFreshnessPeriod(), &inFace);
 
-
-
-
-
-    //Dome Antenna Part
-//      ns3::Ptr<ns3::Node> node = ns3::NodeList::GetNode(ns3::Simulator::GetContext());
-//      std::cout<<"outgoing Data: "<< data.getName()<<" on node: " <<node->GetId()<<std::endl;
-//      ndn::FuturePositionInfo futurePositionInfoObject = data.getFuturePositionInfo();
-//      double futureX = futurePositionInfoObject.getFutureLocation_X();
-//      double futureY = futurePositionInfoObject.getFutureLocation_Y();
-//      double futureZ = futurePositionInfoObject.getFutureLocation_Z();
-//      std::cout<<"forwarder before antenna part simulator time is : " << ns3::Simulator::Now() <<std::endl;
-//      ns3::Ptr<ns3::MobilityModel> model = node->GetObject<ns3::MobilityModel>();
-//      std::cout<<"future Position unpacked from data in forwarder on outgoing data"<<std::endl;
-//      std::cout<<"node: "<<node->GetId()<<" has pos: " << model->GetPosition()<< " position in data is " << futurePositionInfoObject.getFuturePositionVector()<<std::endl;
-
-//    pit::DataMatchResult pitDataMatchresults = m_pit.findAllDataMatches(data);
-//		if (pitDataMatchresults.begin() != pitDataMatchresults.end()) {
-//    for (const pit::InRecord& inRecord : pitEntry->getInRecords()) {
-//			for (const shared_ptr<pit::Entry>& pEntry : pitDataMatchresults) { //		  for (int it = 0; it < pitDataMatchresults.size() ; it++) {
-				//			pit::Entry pEntry = pitDataMatchresults;
-
-
-//    ns3::Ptr<ns3::NetDevice> netDev = node->GetDevice(0);
-//				ns3::Ptr<ns3::WifiPhy> spectWPhy = netDev->GetObject<ns3::WifiNetDevice>()->GetPhy();
-//				ns3::Ptr<ns3::SpectrumWifiPhy> swp0 = ns3::DynamicCast<ns3::SpectrumWifiPhy>(spectWPhy);
-//				ns3::Ptr<ns3::ParabolicAntennaModel> parab = ns3::DynamicCast<ns3::ParabolicAntennaModel>(swp0->GetRxAntenna());
-//				std::cout<< "forwarder, on before send date : will turning Antenna for outgoing data to PitInRecord position: "<< std::endl;
-////				double inRecordSize = pEntry->getInRecords().size();
-////				std::cout << "inRecord size in forwarder: " << inRecordSize<< std::endl;
-//				for (const pit::InRecord& inRecord : pitEntry->getInRecords()) {
-//					ns3::Ptr<ns3::MobilityModel> model = node->GetObject<ns3::MobilityModel>();
-//					std::cout<<"Forwarder Position from model: "<<model->GetPosition()<<std::endl;
-//					std::cout<<"Forwarder the Position from futurePositionInfo in PIT: "<<inRecord.getFuturePositionInfo().getFuturePositionVector()<<std::endl;
-////					std::cout<<"Forwarder the Position from futurePositionInfo in PIT: "<<inRecord.getFuturePositionX<<std::endl;
-////					std::cout<<"Forwarder the Position from futurePositionInfo in PIT: "<<inRecord.getFuturePositionY<<std::endl;
-//					double deltaX =(model->GetPosition().x- (inRecord.getFuturePositionX()));
-//					double deltaY =(model->GetPosition().y- (inRecord.getFuturePositionY()));
-//					double angleRad = atan2(deltaY, deltaX);
-////					std::cout << "angle rad forwarder: " << angleRad<< std::endl;
-////					double angle = ns3::RadiansToDegrees(((angleRad + 3.14)));
-////					//				    	double agnle = angle+180;
-////					//						double angle = ns3::RadiansToDegrees((abs(angleRad)+3.14));
-////					parab->SetBeamwidth(20);
-////					parab->SetOrientation(angle);
-////					std::cout << "at time : " << ns3::Simulator::Now()<< std::endl;
-////					std::cout << "inf Forwarder onDataIncoming parab turned to: " << angle
-////							<< " degrees and set to beam " << 20 << std::endl;
-//				}
-//			}
-
-
-
-
-
     // mark PIT satisfied
     pitEntry->clearInRecords();
     pitEntry->deleteOutRecord(inFace);
@@ -704,9 +605,9 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
       if(targetmac != ""){
           ns3::Ptr<ns3::MobilityModel> model = node->GetObject<ns3::MobilityModel>();
     	  int deltaX =(model->GetPosition().x- (targetFuturePosition.getFutureLocation_X()));
-    	       int deltaY =(model->GetPosition().y- (targetFuturePosition.getFutureLocation_Y()));
-    	       double angleRad = atan2(deltaY, deltaX);
-    	       double angle = ns3::RadiansToDegrees(((angleRad + 3.14)));
+    	  int deltaY =(model->GetPosition().y- (targetFuturePosition.getFutureLocation_Y()));
+    	  double angleRad = atan2(deltaY, deltaX);
+    	  double angle = ns3::RadiansToDegrees(((angleRad + 3.14159265359)));
 
  //   	       for (int i=0; i<node->GetNDevices(); i++){
 //    	    	//   if(i==searchedNetDev){
@@ -723,9 +624,9 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 //      parab->SetBeamwidth(90);
       //parab->SetOrientation(angle+(i*90));
  //     std::cout << "at time : " << ns3::Simulator::Now()<< std::endl;
-    	     int neededNetDevNr;
+    	  int neededNetDevNr;
     	     //std::string n=std::string("netdev://")+"["+one[0]+std::string("]");
-    	     std::string n = pendingDownstream->getLocalUri().toString();
+    	  std::string n = pendingDownstream->getLocalUri().toString();
     	     FaceUri uri=  FaceUri(n);
 
 //    	     switch(angle){
@@ -807,7 +708,8 @@ Forwarder::onOutgoingData(const Data& data, Face& outFace)
 //	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-RSU-To-Moving-2n.txt");
 //	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-stationary-20nodes.txt");
 //	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-upmiddledown-3n-40s.txt");
-	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-TestTraceFile1.txt");
+//	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("ns-movements-TestTraceFile1.txt");
+	ns3::Ns2MobilityHelper ns2MobHelper = ns3::Ns2MobilityHelper("Domenico-BA-Trace-9n-near-static-100s.txt");
 
 
 
